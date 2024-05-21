@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes</title>
+</head>
+<body>
+<h1>Gestão de Clientes</h1>
+
+<h2>Cadastrar Cliente</h2>
+<form id="clienteForm">
+    <label for="telefone">Telefone:</label>
+    <input type="number" id="telefone" name="telefone" required><br>
+    <label for="nomeCliente">Nome do Cliente:</label>
+    <input type="text" id="nomeCliente" name="nomeCliente" required><br>
+    <label for="numero">Número:</label>
+    <input type="text" id="numero" name="numero" required><br>
+    <label for="rua">Rua:</label>
+    <input type="text" id="rua" name="rua" required><br>
+    <label for="bairro">Bairro:</label>
+    <input type="text" id="bairro" name="bairro" required><br>
+    <button type="submit">Cadastrar</button>
+</form>
+
+<h2>Todos os Clientes</h2>
+<button onclick="fetchClientes()">Visualizar Todos os Clientes</button>
+<ul id="clientesList"></ul>
+
+<h2>Pesquisar Cliente por ID</h2>
+<form id="pesquisaForm">
+    <label for="clienteId">ID do Cliente:</label>
+    <input type="number" id="clienteId" name="clienteId" required>
+    <button type="submit">Pesquisar</button>
+</form>
+<div id="clienteDetalhes"></div>
+
+<script>
+    document.getElementById('clienteForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const telefone = parseInt(document.getElementById('telefone').value, 10);
+        const nomeCliente = document.getElementById('nomeCliente').value;
+        const numero = document.getElementById('numero').value;
+        const rua = document.getElementById('rua').value;
+        const bairro = document.getElementById('bairro').value;
+
+        const response = await fetch('http://localhost:8080/clientes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                telefone,
+                nomeCliente,
+                numero,
+                rua,
+                bairro
+            }),
+        });
+
+        if (response.ok) {
+            alert('Cliente cadastrado com sucesso!');
+            document.getElementById('clienteForm').reset();
+        } else {
+            alert('Erro ao cadastrar cliente');
+        }
+    });
+
+    async function fetchClientes() {
+        const response = await fetch('http://localhost:8080/clientes');
+        const clientes = await response.json();
+        const clientesList = document.getElementById('clientesList');
+        clientesList.innerHTML = '';
+        clientes.forEach(cliente => {
+            const li = document.createElement('li');
+            li.textContent = `ID: ${cliente.codCliente}, Nome: ${cliente.nomeCliente}, Telefone: ${cliente.telefone}, Número: ${cliente.numero}, Rua: ${cliente.rua}, Bairro: ${cliente.bairro}`;
+            clientesList.appendChild(li);
+        });
+    }
+
+    document.getElementById('pesquisaForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const clienteId = document.getElementById('clienteId').value;
+        const response = await fetch(`http://localhost:8080/clientes/${clienteId}`);
+        const clienteDetalhes = document.getElementById('clienteDetalhes');
+        if (response.ok) {
+            const cliente = await response.json();
+            clienteDetalhes.innerHTML = `
+                    <p>ID: ${cliente.codCliente}</p>
+                    <p>Nome: ${cliente.nomeCliente}</p>
+                    <p>Telefone: ${cliente.telefone}</p>
+                    <p>Número: ${cliente.numero}</p>
+                    <p>Rua: ${cliente.rua}</p>
+                    <p>Bairro: ${cliente.bairro}</p>
+                `;
+        } else {
+            clienteDetalhes.innerHTML = '<p>Cliente não encontrado</p>';
+        }
+    });
+</script>
+</body>
+</html>
