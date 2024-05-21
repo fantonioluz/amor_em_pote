@@ -1,7 +1,7 @@
 package com.amor_em_pote.model;
 
 public class Cliente {
-    private Integer codCliente;
+    private String cpf;
     private String telefone;
     private String nomeCliente;
     private String numero;
@@ -10,8 +10,8 @@ public class Cliente {
 
     public Cliente() {}
 
-    public Cliente(int codCliente, String telefone, String nomeCliente, String numero, String rua, String bairro) {
-        this.codCliente = codCliente;
+    public Cliente(String cpf, String telefone, String nomeCliente, String numero, String rua, String bairro) {
+        this.cpf = cpf;
         this.telefone = telefone;
         this.nomeCliente = nomeCliente;
         this.numero = numero;
@@ -21,12 +21,12 @@ public class Cliente {
 
     // Getters e Setters
 
-    public Integer getCodCliente() {
-        return codCliente;
+    public String getcpf() {
+        return cpf;
     }
 
-    public void setCodCliente(Integer codCliente) {
-        this.codCliente = codCliente;
+    public void setcpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public String getTelefone() {

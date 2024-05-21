@@ -18,18 +18,14 @@ public class ClienteRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private static final class ClienteRowMapper implements RowMapper<Cliente> {
-        @Override
-        public Cliente mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Cliente(
-                    rs.getInt("cod_cliente"),
-                    rs.getString("telefone"),
-                    rs.getString("nome_cliente"),
-                    rs.getString("numero"),
-                    rs.getString("rua"),
-                    rs.getString("bairro")
-            );
-        }
+    public void save(Cliente cliente) {
+        String sql = "INSERT INTO Cliente (cpf, nomeCliente, telefone, numero, rua, bairro) VALUES (?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, cliente.getcpf(), cliente.getNomeCliente(), cliente.getTelefone(), cliente.getNumero(), cliente.getRua(), cliente.getBairro());
+    }
+
+    public Cliente findById(String cpf) {
+        String sql = "SELECT * FROM Cliente WHERE cpf = ?";
+        return jdbcTemplate.queryForObject(sql, new ClienteRowMapper(), cpf);
     }
 
     public List<Cliente> findAll() {
@@ -37,23 +33,22 @@ public class ClienteRepository {
         return jdbcTemplate.query(sql, new ClienteRowMapper());
     }
 
-    public Cliente findById(int id) {
-        String sql = "SELECT * FROM Cliente WHERE cod_cliente = ?";
-        return jdbcTemplate.queryForObject(sql, new ClienteRowMapper(), id);
+    public void delete(String cpf) {
+        String sql = "DELETE FROM Cliente WHERE cpf = ?";
+        jdbcTemplate.update(sql, cpf);
     }
 
-    public int save(Cliente cliente) {
-        String sql = "INSERT INTO Cliente (telefone, nome_cliente, numero, rua, bairro) VALUES (?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, cliente.getTelefone(), cliente.getNomeCliente(), cliente.getNumero(), cliente.getRua(), cliente.getBairro());
-    }
-
-    public int update(Cliente cliente) {
-        String sql = "UPDATE Cliente SET telefone = ?, nome_cliente = ?, numero = ?, rua = ?, bairro = ? WHERE cod_cliente = ?";
-        return jdbcTemplate.update(sql, cliente.getTelefone(), cliente.getNomeCliente(), cliente.getNumero(), cliente.getRua(), cliente.getBairro(), cliente.getCodCliente());
-    }
-
-    public int deleteById(int id) {
-        String sql = "DELETE FROM Cliente WHERE cod_cliente = ?";
-        return jdbcTemplate.update(sql, id);
+    private static final class ClienteRowMapper implements RowMapper<Cliente> {
+        @Override
+        public Cliente mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Cliente cliente = new Cliente();
+            cliente.setcpf(rs.getString("cpf"));
+            cliente.setNomeCliente(rs.getString("nomeCliente"));
+            cliente.setTelefone(rs.getString("telefone"));
+            cliente.setNumero(rs.getString("numero"));
+            cliente.setRua(rs.getString("rua"));
+            cliente.setBairro(rs.getString("bairro"));
+            return cliente;
+        }
     }
 }
