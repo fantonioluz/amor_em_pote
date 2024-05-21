@@ -31,18 +31,11 @@
 
 <h2>Pesquisar Cliente por CPF</h2>
 <form id="pesquisaForm">
-    <label for="cpf">CPF do Cliente:</label>
-    <input type="text" id="cpf" name="cpf" required>
+    <label for="cpfCliente">CPF do Cliente:</label>
+    <input type="text" id="cpfCliente" name="cpfCliente" required>
     <button type="submit">Pesquisar</button>
 </form>
 <div id="clienteDetalhes"></div>
-
-<h2>Deletar Cliente por CPF</h2>
-<form id="deleteForm">
-    <label for="deleteCpf">CPF do Cliente:</label>
-    <input type="text" id="deleteCpf" name="deleteCpf" required>
-    <button type="submit">Deletar</button>
-</form>
 
 <script>
     document.getElementById('clienteForm').addEventListener('submit', async function (e) {
@@ -84,50 +77,29 @@
         clientesList.innerHTML = '';
         clientes.forEach(cliente => {
             const li = document.createElement('li');
-            li.innerHTML = `CPF: ${cliente.cpf}, Nome: ${cliente.nomeCliente}, Telefone: ${cliente.telefone}, Número: ${cliente.numero}, Rua: ${cliente.rua}, Bairro: ${cliente.bairro}
-                <button onclick="deleteCliente('${cliente.cpf}')">Deletar</button>`;
+            li.textContent = `CPF: ${cliente.cpf}, Nome: ${cliente.nomeCliente}, Telefone: ${cliente.telefone}, Número: ${cliente.numero}, Rua: ${cliente.rua}, Bairro: ${cliente.bairro}`;
             clientesList.appendChild(li);
         });
     }
 
     document.getElementById('pesquisaForm').addEventListener('submit', async function (e) {
         e.preventDefault();
-        const cpf = document.getElementById('cpf').value;
-        const response = await fetch(`http://localhost:8080/clientes/${cpf}`);
+        const cpfCliente = document.getElementById('cpfCliente').value;
+        const response = await fetch(`http://localhost:8080/clientes/${cpfCliente}`);
         const clienteDetalhes = document.getElementById('clienteDetalhes');
         if (response.ok) {
             const cliente = await response.json();
             clienteDetalhes.innerHTML = `
-                    <p>CPF: ${cliente.cpf}</p>
-                    <p>Nome: ${cliente.nomeCliente}</p>
-                    <p>Telefone: ${cliente.telefone}</p>
-                    <p>Número: ${cliente.numero}</p>
-                    <p>Rua: ${cliente.rua}</p>
-                    <p>Bairro: ${cliente.bairro}</p>
-                `;
+                <p>CPF: ${cliente.cpf}</p>
+                <p>Nome: ${cliente.nomeCliente}</p>
+                <p>Telefone: ${cliente.telefone}</p>
+                <p>Número: ${cliente.numero}</p>
+                <p>Rua: ${cliente.rua}</p>
+                <p>Bairro: ${cliente.bairro}</p>
+            `;
         } else {
             clienteDetalhes.innerHTML = '<p>Cliente não encontrado</p>';
         }
-    });
-
-    async function deleteCliente(cpf) {
-        const response = await fetch(`http://localhost:8080/clientes/${cpf}`, {
-            method: 'DELETE',
-        });
-
-        if (response.ok) {
-            alert('Cliente deletado com sucesso!');
-            fetchClientes();
-        } else {
-            alert('Erro ao deletar cliente');
-        }
-    }
-
-    document.getElementById('deleteForm').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const cpf = document.getElementById('deleteCpf').value;
-        await deleteCliente(cpf);
-        document.getElementById('deleteForm').reset();
     });
 </script>
 </body>

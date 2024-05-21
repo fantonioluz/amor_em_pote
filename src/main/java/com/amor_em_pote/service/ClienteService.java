@@ -22,7 +22,12 @@ public class ClienteService {
     }
 
     public Cliente getClienteByCpf(String cpf) {
-        return clienteRepository.findById(cpf);
+        try {
+            return clienteRepository.findById(cpf);
+        } catch (Exception e) {
+            // handle exception (e.g., cliente not found)
+            return null;
+        }
     }
 
     public List<Cliente> getAllClientes() {

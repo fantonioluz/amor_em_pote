@@ -19,22 +19,29 @@ public class ClienteRepository {
     }
 
     public void save(Cliente cliente) {
-        String sql = "INSERT INTO Cliente (cpf, nomeCliente, telefone, numero, rua, bairro) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO cliente (cpf, nomeCliente, telefone, numero, rua, bairro) VALUES (?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, cliente.getcpf(), cliente.getNomeCliente(), cliente.getTelefone(), cliente.getNumero(), cliente.getRua(), cliente.getBairro());
     }
 
     public Cliente findById(String cpf) {
-        String sql = "SELECT * FROM Cliente WHERE cpf = ?";
-        return jdbcTemplate.queryForObject(sql, new ClienteRowMapper(), cpf);
+        String sql = "SELECT * FROM cliente WHERE cpf like ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{cpf}, new ClienteRowMapper());
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar cliente com CPF: " + cpf);
+            e.printStackTrace();
+            return null;
+        }
     }
 
+
     public List<Cliente> findAll() {
-        String sql = "SELECT * FROM Cliente";
+        String sql = "SELECT * FROM cliente";
         return jdbcTemplate.query(sql, new ClienteRowMapper());
     }
 
     public void delete(String cpf) {
-        String sql = "DELETE FROM Cliente WHERE cpf = ?";
+        String sql = "DELETE FROM cliente WHERE cpf = ?";
         jdbcTemplate.update(sql, cpf);
     }
 

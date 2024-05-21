@@ -25,7 +25,11 @@ public class ClienteController {
 
     @GetMapping("/{cpf}")
     public Cliente getCliente(@PathVariable String cpf) {
-        return clienteService.getClienteByCpf(cpf);
+        Cliente cliente = clienteService.getClienteByCpf(cpf);
+        if (cliente == null) {
+            throw new RuntimeException("Cliente não encontrado");
+        }
+        return cliente;
     }
 
     @GetMapping
