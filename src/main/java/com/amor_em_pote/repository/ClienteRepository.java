@@ -19,7 +19,7 @@ public class ClienteRepository {
     }
 
     public void save(Cliente cliente) {
-        String sql = "INSERT INTO Cliente (cpf, nome_cliente, numero, rua, bairro) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO cliente (cpf, nome_cliente, numero, rua, bairro) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, cliente.getCpf(), cliente.getNomeCliente(), cliente.getNumero(), cliente.getRua(), cliente.getBairro());
         saveTelefones(cliente.getCpf(), cliente.getTelefones());
     }
