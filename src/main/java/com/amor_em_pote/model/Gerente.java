@@ -6,7 +6,7 @@ public class Gerente extends Funcionario {
         super();
     }
 
-    public Gerente(int cod_funcionario, int salario, char expediente, String nome) {
+    public Gerente(String cod_funcionario, int salario, String expediente, String nome) {
         super(cod_funcionario, salario, expediente, nome);
     }
 }

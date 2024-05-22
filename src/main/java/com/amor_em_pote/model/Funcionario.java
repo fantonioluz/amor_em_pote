@@ -1,26 +1,28 @@
 package com.amor_em_pote.model;
 
+import java.util.Objects;
+
 public class Funcionario {
 
-    private int cod_funcionario;
+    private String cod_funcionario;
     private int salario;
-    private char expediente;
+    private String expediente;
     private String nome;
 
     public Funcionario() {}
 
-    public Funcionario(int cod_funcionario, int salario, char expediente, String nome) {
+    public Funcionario(String cod_funcionario, int salario, String expediente, String nome) {
         this.cod_funcionario = cod_funcionario;
         this.salario = salario;
         this.expediente = expediente;
         this.nome = nome;
     }
 
-    public int getCod_funcionario() {
+    public String getCod_funcionario() {
         return cod_funcionario;
     }
 
-    public void setCod_funcionario(int cod_funcionario) {
+    public void setCod_funcionario(String cod_funcionario) {
         this.cod_funcionario = cod_funcionario;
     }
 
@@ -36,16 +38,12 @@ public class Funcionario {
         }
     }
 
-    public char getExpediente() {
+    public String getExpediente() {
         return expediente;
     }
 
-    public void setExpediente(char expediente) {
-        if (expediente == 'M' || expediente == 'T' || expediente == 'N') {
-            this.expediente = expediente;
-        } else {
-            throw new IllegalArgumentException("Expediente must be 'M', 'T', or 'N'");
-        }
+    public void setExpediente(String expediente) {
+        this.expediente = expediente;
     }
 
     public String getNome() {

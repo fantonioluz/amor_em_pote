@@ -8,7 +8,7 @@ public class Cozinheiro extends Funcionario {
         super();
     }
 
-    public Cozinheiro(int cod_funcionario, int salario, char expediente, String nome, int experiencia) {
+    public Cozinheiro(String cod_funcionario, int salario, String expediente, String nome, int experiencia) {
         super(cod_funcionario, salario, expediente, nome);
         this.experiencia = experiencia;
     }
