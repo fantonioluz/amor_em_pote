@@ -1,48 +1,31 @@
 package com.amor_em_pote.model;
 
+import java.util.List;
+
 public class Cliente {
     private String cpf;
-    private String telefone;
-    private String nomeCliente;
+    private String nome_cliente;
     private String numero;
     private String rua;
     private String bairro;
-
-    public Cliente() {}
-
-    public Cliente(String cpf, String telefone, String nomeCliente, String numero, String rua, String bairro) {
-        this.cpf = cpf;
-        this.telefone = telefone;
-        this.nomeCliente = nomeCliente;
-        this.numero = numero;
-        this.rua = rua;
-        this.bairro = bairro;
-    }
+    private List<String> telefones; // Adicione esta linha
 
     // Getters e Setters
 
-    public String getcpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setcpf(String cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
     public String getNomeCliente() {
-        return nomeCliente;
+        return nome_cliente;
     }
 
-    public void setNomeCliente(String nomeCliente) {
-        this.nomeCliente = nomeCliente;
+    public void setNomeCliente(String nome_cliente) {
+        this.nome_cliente = nome_cliente;
     }
 
     public String getNumero() {
@@ -67,5 +50,13 @@ public class Cliente {
 
     public void setBairro(String bairro) {
         this.bairro = bairro;
+    }
+
+    public List<String> getTelefones() {
+        return telefones;
+    }
+
+    public void setTelefones(List<String> telefones) {
+        this.telefones = telefones;
     }
 }

@@ -19,29 +19,47 @@ public class ClienteRepository {
     }
 
     public void save(Cliente cliente) {
-        String sql = "INSERT INTO cliente (cpf, nomeCliente, telefone, numero, rua, bairro) VALUES (?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, cliente.getcpf(), cliente.getNomeCliente(), cliente.getTelefone(), cliente.getNumero(), cliente.getRua(), cliente.getBairro());
+        String sql = "INSERT INTO Cliente (cpf, nome_cliente, numero, rua, bairro) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, cliente.getCpf(), cliente.getNomeCliente(), cliente.getNumero(), cliente.getRua(), cliente.getBairro());
+        saveTelefones(cliente.getCpf(), cliente.getTelefones());
     }
 
     public Cliente findById(String cpf) {
-        String sql = "SELECT * FROM cliente WHERE cpf like ?";
-        try {
-            return jdbcTemplate.queryForObject(sql, new Object[]{cpf}, new ClienteRowMapper());
-        } catch (Exception e) {
-            System.err.println("Erro ao buscar cliente com CPF: " + cpf);
-            e.printStackTrace();
-            return null;
-        }
+        String sql = "SELECT * FROM cliente WHERE cpf = ?";
+        Cliente cliente = jdbcTemplate.queryForObject(sql, new Object[]{cpf}, new ClienteRowMapper());
+        cliente.setTelefones(findTelefonesByCpf(cpf)); // Adicione esta linha
+        return cliente;
     }
-
 
     public List<Cliente> findAll() {
         String sql = "SELECT * FROM cliente";
-        return jdbcTemplate.query(sql, new ClienteRowMapper());
+        List<Cliente> clientes = jdbcTemplate.query(sql, new ClienteRowMapper());
+        for (Cliente cliente : clientes) {
+            cliente.setTelefones(findTelefonesByCpf(cliente.getCpf())); // Adicione esta linha
+        }
+        return clientes;
     }
 
     public void delete(String cpf) {
+        deleteTelefonesByCpf(cpf); // Adicione esta linha
         String sql = "DELETE FROM cliente WHERE cpf = ?";
+        jdbcTemplate.update(sql, cpf);
+    }
+
+    private List<String> findTelefonesByCpf(String cpf) {
+        String sql = "SELECT telefone FROM telefone WHERE fk_cliente_cpf = ?";
+        return jdbcTemplate.query(sql, new Object[]{cpf}, (rs, rowNum) -> rs.getString("telefone"));
+    }
+
+    private void saveTelefones(String cpf, List<String> telefones) {
+        String sql = "INSERT INTO telefone (telefone, fk_cliente_cpf) VALUES (?, ?)";
+        for (String telefone : telefones) {
+            jdbcTemplate.update(sql, telefone, cpf);
+        }
+    }
+
+    private void deleteTelefonesByCpf(String cpf) {
+        String sql = "DELETE FROM telefone WHERE fk_cliente_cpf = ?";
         jdbcTemplate.update(sql, cpf);
     }
 
@@ -49,9 +67,8 @@ public class ClienteRepository {
         @Override
         public Cliente mapRow(ResultSet rs, int rowNum) throws SQLException {
             Cliente cliente = new Cliente();
-            cliente.setcpf(rs.getString("cpf"));
-            cliente.setNomeCliente(rs.getString("nomeCliente"));
-            cliente.setTelefone(rs.getString("telefone"));
+            cliente.setCpf(rs.getString("cpf"));
+            cliente.setNomeCliente(rs.getString("nome_cliente"));
             cliente.setNumero(rs.getString("numero"));
             cliente.setRua(rs.getString("rua"));
             cliente.setBairro(rs.getString("bairro"));
