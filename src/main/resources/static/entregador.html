@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entregador API Test</title>
+</head>
+<body>
+<h1>Entregador API Test</h1>
+
+<div>
+    <h2>Add Entregador</h2>
+    <form id="addEntregadorForm">
+        <label for="cod_entregador">Código:</label>
+        <input type="text" id="cod_entregador" name="cod_entregador"><br><br>
+        <button type="submit">Add Entregador</button>
+    </form>
+</div>
+
+<hr>
+
+<div>
+    <h2>Get Entregador by Código</h2>
+    <form id="getEntregadorForm">
+        <label for="getCod">Código:</label>
+        <input type="text" id="getCod" name="getCod"><br><br>
+        <button type="submit">Get Entregador</button>
+    </form>
+    <p id="entregadorByCod"></p>
+</div>
+
+<hr>
+
+<div>
+    <h2>Get All Entregadores</h2>
+    <button id="getAllEntregadores">Get All Entregadores</button>
+    <ul id="entregadoresList"></ul>
+</div>
+
+<hr>
+
+<div>
+    <h2>Delete Entregador by Código</h2>
+    <form id="deleteEntregadorForm">
+        <label for="deleteCod">Código:</label>
+        <input type="text" id="deleteCod" name="deleteCod"><br><br>
+        <button type="submit">Delete Entregador</button>
+    </form>
+    <p id="deleteStatus"></p>
+</div>
+
+<script>
+    document.getElementById('addEntregadorForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = {
+            cod_entregador: document.getElementById('cod_entregador').value
+        };
+
+        fetch('/entregadores/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Entregador adicionado com sucesso!');
+                    this.reset();
+                } else {
+                    alert('Erro ao adicionar entregador!');
+                }
+            });
+    });
+
+    document.getElementById('getEntregadorForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const getCod = document.getElementById('getCod').value;
+
+        fetch(`/entregadores/${getCod}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('entregadorByCod').innerText = JSON.stringify(data);
+            });
+    });
+
+    document.getElementById('getAllEntregadores').addEventListener('click', function() {
+        fetch('/entregadores/all')
+            .then(response => response.json())
+            .then(data => {
+                const entregadoresList = document.getElementById('entregadoresList');
+                entregadoresList.innerHTML = '';
+                data.forEach(entregador => {
+                    const listItem = document.createElement('li');
+                    listItem.innerText = JSON.stringify(entregador);
+                    entregadoresList.appendChild(listItem);
+                });
+            });
+    });
+
+    document.getElementById('deleteEntregadorForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const deleteCod = document.getElementById('deleteCod').value;
+
+        fetch(`/entregadores/${deleteCod}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('deleteStatus').innerText = 'Entregador deletado com sucesso!';
+                } else {
+                    document.getElementById('deleteStatus').innerText = 'Erro ao deletar entregador!';
+                }
+            });
+    });
+</script>
+</body>
+</html>
