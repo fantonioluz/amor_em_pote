@@ -1,124 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
     <title>Fornecedor API Test</title>
 </head>
 <body>
-<h1>Fornecedor API Test</h1>
+<div class="container">
+    <header>
+        <div class="title">Amor em Pote</div>
+        <div class="logo">LOGO</div>
+    </header>
+    <nav class="navbar">
+        <a href="" class="nav-button">Estoque</a>
+        <a href="" class="nav-button">Produtos</a>
+        <a href="" class="nav-button">Pedidos</a>
+    </nav>
+    <div>
+        <h2>Add Fornecedor</h2>
+        <form id="addFornecedorForm">
+            <label for="cod_fornecedor">Código:</label>
+            <input
+                    type="text"
+                    id="cod_fornecedor"
+                    name="cod_fornecedor"
+            /><br /><br />
+            <label for="nome_fornecedor">Nome:</label>
+            <input
+                    type="text"
+                    id="nome_fornecedor"
+                    name="nome_fornecedor"
+            /><br /><br />
+            <button type="submit">Add Fornecedor</button>
+        </form>
+    </div>
 
-<div>
-    <h2>Add Fornecedor</h2>
-    <form id="addFornecedorForm">
-        <label for="cod_fornecedor">Código:</label>
-        <input type="text" id="cod_fornecedor" name="cod_fornecedor"><br><br>
-        <label for="nome_fornecedor">Nome:</label>
-        <input type="text" id="nome_fornecedor" name="nome_fornecedor"><br><br>
-        <button type="submit">Add Fornecedor</button>
-    </form>
-</div>
+    <hr />
 
-<hr>
+    <div>
+        <h2>Get Fornecedor by Código</h2>
+        <form id="getFornecedorForm">
+            <label for="getCod">Código:</label>
+            <input type="text" id="getCod" name="getCod" /><br /><br />
+            <button type="submit">Get Fornecedor</button>
+        </form>
+        <p id="fornecedorByCod"></p>
+    </div>
 
-<div>
-    <h2>Get Fornecedor by Código</h2>
-    <form id="getFornecedorForm">
-        <label for="getCod">Código:</label>
-        <input type="text" id="getCod" name="getCod"><br><br>
-        <button type="submit">Get Fornecedor</button>
-    </form>
-    <p id="fornecedorByCod"></p>
-</div>
+    <hr />
 
-<hr>
+    <div>
+        <h2>Get All Fornecedores</h2>
+        <form class="getAllFornecedores">
+            <button id="getAllFornecedores">Get All Fornecedores</button>
+            <ul id="fornecedoresList"></ul>
+        </form>
+    </div>
 
-<div>
-    <h2>Get All Fornecedores</h2>
-    <button id="getAllFornecedores">Get All Fornecedores</button>
-    <ul id="fornecedoresList"></ul>
-</div>
+    <hr />
 
-<hr>
-
-<div>
-    <h2>Delete Fornecedor by Código</h2>
-    <form id="deleteFornecedorForm">
-        <label for="deleteCod">Código:</label>
-        <input type="text" id="deleteCod" name="deleteCod"><br><br>
-        <button type="submit">Delete Fornecedor</button>
-    </form>
-    <p id="deleteStatus"></p>
+    <div>
+        <h2>Delete Fornecedor by Código</h2>
+        <form id="deleteFornecedorForm">
+            <label for="deleteCod">Código:</label>
+            <input type="text" id="deleteCod" name="deleteCod" /><br /><br />
+            <button type="submit">Delete Fornecedor</button>
+        </form>
+        <p id="deleteStatus"></p>
+    </div>
 </div>
 
 <script>
-    document.getElementById('addFornecedorForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+    document
+        .getElementById("addFornecedorForm")
+        .addEventListener("submit", function (event) {
+            event.preventDefault();
 
-        const formData = {
-            cod_fornecedor: document.getElementById('cod_fornecedor').value,
-            nome_fornecedor: document.getElementById('nome_fornecedor').value
-        };
+            const formData = {
+                cod_fornecedor: document.getElementById("cod_fornecedor").value,
+                nome_fornecedor: document.getElementById("nome_fornecedor").value,
+            };
 
-        fetch('/fornecedores/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-            .then(response => {
+            fetch("/fornecedores/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            }).then((response) => {
                 if (response.ok) {
-                    alert('Fornecedor adicionado com sucesso!');
+                    alert("Fornecedor adicionado com sucesso!");
                     this.reset();
                 } else {
-                    alert('Erro ao adicionar fornecedor!');
+                    alert("Erro ao adicionar fornecedor!");
                 }
             });
-    });
+        });
 
-    document.getElementById('getFornecedorForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+    document
+        .getElementById("getFornecedorForm")
+        .addEventListener("submit", function (event) {
+            event.preventDefault();
 
-        const getCod = document.getElementById('getCod').value;
+            const getCod = document.getElementById("getCod").value;
 
-        fetch(`/fornecedores/${getCod}`)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('fornecedorByCod').innerText = JSON.stringify(data);
-            });
-    });
-
-    document.getElementById('getAllFornecedores').addEventListener('click', function() {
-        fetch('/fornecedores/all')
-            .then(response => response.json())
-            .then(data => {
-                const fornecedoresList = document.getElementById('fornecedoresList');
-                fornecedoresList.innerHTML = '';
-                data.forEach(fornecedor => {
-                    const listItem = document.createElement('li');
-                    listItem.innerText = JSON.stringify(fornecedor);
-                    fornecedoresList.appendChild(listItem);
+            fetch(`/fornecedores/${getCod}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    document.getElementById("fornecedorByCod").innerText =
+                        JSON.stringify(data);
                 });
-            });
-    });
+        });
 
-    document.getElementById('deleteFornecedorForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+    document
+        .getElementById("getAllFornecedores")
+        .addEventListener("click", function () {
+            fetch("/fornecedores/all")
+                .then((response) => response.json())
+                .then((data) => {
+                    const fornecedoresList =
+                        document.getElementById("fornecedoresList");
+                    fornecedoresList.innerHTML = "";
+                    data.forEach((fornecedor) => {
+                        const listItem = document.createElement("li");
+                        listItem.innerText = JSON.stringify(fornecedor);
+                        fornecedoresList.appendChild(listItem);
+                    });
+                });
+        });
 
-        const deleteCod = document.getElementById('deleteCod').value;
+    document
+        .getElementById("deleteFornecedorForm")
+        .addEventListener("submit", function (event) {
+            event.preventDefault();
 
-        fetch(`/fornecedores/${deleteCod}`, {
-            method: 'DELETE'
-        })
-            .then(response => {
+            const deleteCod = document.getElementById("deleteCod").value;
+
+            fetch(`/fornecedores/${deleteCod}`, {
+                method: "DELETE",
+            }).then((response) => {
                 if (response.ok) {
-                    document.getElementById('deleteStatus').innerText = 'Fornecedor deletado com sucesso!';
+                    document.getElementById("deleteStatus").innerText =
+                        "Fornecedor deletado com sucesso!";
                 } else {
-                    document.getElementById('deleteStatus').innerText = 'Erro ao deletar fornecedor!';
+                    document.getElementById("deleteStatus").innerText =
+                        "Erro ao deletar fornecedor!";
                 }
             });
-    });
+        });
 </script>
 </body>
 </html>

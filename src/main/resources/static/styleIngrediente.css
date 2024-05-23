@@ -14,6 +14,12 @@ header {
 
 }
 
+body {
+    background: #f5f5f5;
+    color: #000;
+    font-family: Arial, sans-serif;
+}
+
 .title {
     font-size: 24px;
 }
@@ -38,7 +44,8 @@ header {
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    text-decoration: none;
+    transition: background-color 0.3s
 }
 
 .nav-button:hover {
@@ -50,22 +57,15 @@ h2{
     margin-bottom: 15px;
 }
 
-body {
-    background: #f5f5f5;
-    color: #000;
-    font-family: Arial, sans-serif;
-}
-
 .container {
     width: 100%;
     height: 100vh;
     display: flex;
     flex-direction: column;
     overflow: auto;
-
 }
 
-#clienteForm, #pesquisaForm, #excluirForm, .getAllClientes{
+#addIngredienteForm, #getIngredienteForm, .getAllIngredientes, #deleteIngredienteForm{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -77,7 +77,7 @@ label {
     font-weight: bold;
 }
 
-input[type="text"] {
+input[type="text"], input[type="number"]{
     width: 12%;
     padding: 8px;
     margin-bottom: 10px;
@@ -94,7 +94,7 @@ form button {
     cursor: pointer;
     font-size: 16px;
     margin-bottom: 20px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s
 }
 
 button:hover {

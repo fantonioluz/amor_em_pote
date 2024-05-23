@@ -1,121 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
     <title>Entregador API Test</title>
 </head>
 <body>
-<h1>Entregador API Test</h1>
+<div class="container">
+    <header>
+        <div class="title">Amor em Pote</div>
+        <div class="logo">LOGO</div>
+    </header>
+    <nav class="navbar">
+        <a href="" class="nav-button">Estoque</a>
+        <a href="" class="nav-button">Produtos</a>
+        <a href="" class="nav-button">Pedidos</a>
+    </nav>
 
-<div>
-    <h2>Add Entregador</h2>
-    <form id="addEntregadorForm">
-        <label for="cod_entregador">Código:</label>
-        <input type="text" id="cod_entregador" name="cod_entregador"><br><br>
-        <button type="submit">Add Entregador</button>
-    </form>
-</div>
+    <div>
+        <h2>Add Entregador</h2>
+        <form id="addEntregadorForm">
+            <label for="cod_entregador">Código:</label>
+            <input
+                    type="text"
+                    id="cod_entregador"
+                    name="cod_entregador"
+            /><br /><br />
+            <button type="submit">Add Entregador</button>
+        </form>
+    </div>
 
-<hr>
+    <hr />
 
-<div>
-    <h2>Get Entregador by Código</h2>
-    <form id="getEntregadorForm">
-        <label for="getCod">Código:</label>
-        <input type="text" id="getCod" name="getCod"><br><br>
-        <button type="submit">Get Entregador</button>
-    </form>
-    <p id="entregadorByCod"></p>
-</div>
+    <div>
+        <h2>Get Entregador by Código</h2>
+        <form id="getEntregadorForm">
+            <label for="getCod">Código:</label>
+            <input type="text" id="getCod" name="getCod" /><br /><br />
+            <button type="submit">Get Entregador</button>
+        </form>
+        <p id="entregadorByCod"></p>
+    </div>
 
-<hr>
+    <hr />
 
-<div>
-    <h2>Get All Entregadores</h2>
-    <button id="getAllEntregadores">Get All Entregadores</button>
-    <ul id="entregadoresList"></ul>
-</div>
+    <div>
+        <h2>Get All Entregadores</h2>
+        <form class="getAllEntregadores">
+            <button id="getAllEntregadores">Get All Entregadores</button>
+            <ul id="entregadoresList"></ul>
+        </form>
+    </div>
 
-<hr>
+    <hr />
 
-<div>
-    <h2>Delete Entregador by Código</h2>
-    <form id="deleteEntregadorForm">
-        <label for="deleteCod">Código:</label>
-        <input type="text" id="deleteCod" name="deleteCod"><br><br>
-        <button type="submit">Delete Entregador</button>
-    </form>
-    <p id="deleteStatus"></p>
+    <div>
+        <h2>Delete Entregador by Código</h2>
+        <form id="deleteEntregadorForm">
+            <label for="deleteCod">Código:</label>
+            <input type="text" id="deleteCod" name="deleteCod" /><br /><br />
+            <button type="submit">Delete Entregador</button>
+        </form>
+        <p id="deleteStatus"></p>
+    </div>
 </div>
 
 <script>
-    document.getElementById('addEntregadorForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+    document
+        .getElementById("addEntregadorForm")
+        .addEventListener("submit", function (event) {
+            event.preventDefault();
 
-        const formData = {
-            cod_entregador: document.getElementById('cod_entregador').value
-        };
+            const formData = {
+                cod_entregador: document.getElementById("cod_entregador").value,
+            };
 
-        fetch('/entregadores/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-            .then(response => {
+            fetch("/entregadores/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            }).then((response) => {
                 if (response.ok) {
-                    alert('Entregador adicionado com sucesso!');
+                    alert("Entregador adicionado com sucesso!");
                     this.reset();
                 } else {
-                    alert('Erro ao adicionar entregador!');
+                    alert("Erro ao adicionar entregador!");
                 }
             });
-    });
+        });
 
-    document.getElementById('getEntregadorForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+    document
+        .getElementById("getEntregadorForm")
+        .addEventListener("submit", function (event) {
+            event.preventDefault();
 
-        const getCod = document.getElementById('getCod').value;
+            const getCod = document.getElementById("getCod").value;
 
-        fetch(`/entregadores/${getCod}`)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('entregadorByCod').innerText = JSON.stringify(data);
-            });
-    });
-
-    document.getElementById('getAllEntregadores').addEventListener('click', function() {
-        fetch('/entregadores/all')
-            .then(response => response.json())
-            .then(data => {
-                const entregadoresList = document.getElementById('entregadoresList');
-                entregadoresList.innerHTML = '';
-                data.forEach(entregador => {
-                    const listItem = document.createElement('li');
-                    listItem.innerText = JSON.stringify(entregador);
-                    entregadoresList.appendChild(listItem);
+            fetch(`/entregadores/${getCod}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    document.getElementById("entregadorByCod").innerText =
+                        JSON.stringify(data);
                 });
-            });
-    });
+        });
 
-    document.getElementById('deleteEntregadorForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+    document
+        .getElementById("getAllEntregadores")
+        .addEventListener("click", function () {
+            fetch("/entregadores/all")
+                .then((response) => response.json())
+                .then((data) => {
+                    const entregadoresList =
+                        document.getElementById("entregadoresList");
+                    entregadoresList.innerHTML = "";
+                    data.forEach((entregador) => {
+                        const listItem = document.createElement("li");
+                        listItem.innerText = JSON.stringify(entregador);
+                        entregadoresList.appendChild(listItem);
+                    });
+                });
+        });
 
-        const deleteCod = document.getElementById('deleteCod').value;
+    document
+        .getElementById("deleteEntregadorForm")
+        .addEventListener("submit", function (event) {
+            event.preventDefault();
 
-        fetch(`/entregadores/${deleteCod}`, {
-            method: 'DELETE'
-        })
-            .then(response => {
+            const deleteCod = document.getElementById("deleteCod").value;
+
+            fetch(`/entregadores/${deleteCod}`, {
+                method: "DELETE",
+            }).then((response) => {
                 if (response.ok) {
-                    document.getElementById('deleteStatus').innerText = 'Entregador deletado com sucesso!';
+                    document.getElementById("deleteStatus").innerText =
+                        "Entregador deletado com sucesso!";
                 } else {
-                    document.getElementById('deleteStatus').innerText = 'Erro ao deletar entregador!';
+                    document.getElementById("deleteStatus").innerText =
+                        "Erro ao deletar entregador!";
                 }
             });
-    });
+        });
 </script>
 </body>
 </html>

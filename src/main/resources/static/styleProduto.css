@@ -38,6 +38,7 @@ header {
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
 .nav-button:hover {
@@ -64,26 +65,11 @@ body {
 
 }
 
-#addProdutoForm {
+#addProdutoForm, #getProdutoForm, .getAllProdutosForm {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-#getProdutoForm{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.getAllProdutosForm {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
 }
 
 #deleteProdutoForm {
@@ -92,7 +78,6 @@ body {
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
-
 }
 
 label {
@@ -117,6 +102,7 @@ form button {
     cursor: pointer;
     font-size: 16px;
     margin-bottom: 20px;
+    transition: background-color 0.3s;
 }
 
 button:hover {
