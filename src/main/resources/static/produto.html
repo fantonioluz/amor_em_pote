@@ -1,58 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Produto API Test</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<h1>Produto API Test</h1>
+<div class="container">
+    <header>
+        <div class="title">Amor em Pote</div>
+        <div class="logo">LOGO</div>
+    </header>
+    <nav class="navbar">
+        <a class="nav-button"> Estoque </a>
+        <a class="nav-button"> Produtos </a>
+        <a class="nav-button"> Pedidos </a>
+    </nav>
 
-<div>
-    <h2>Add Produto</h2>
-    <form id="addProdutoForm">
-        <label for="cod_produto">Código:</label>
-        <input type="text" id="cod_produto" name="cod_produto"><br><br>
-        <label for="nome_produto">Nome:</label>
-        <input type="text" id="nome_produto" name="nome_produto"><br><br>
-        <label for="descricao">Descrição:</label>
-        <input type="text" id="descricao" name="descricao"><br><br>
-        <label for="valor">Valor:</label>
-        <input type="text" id="valor" name="valor"><br><br>
-        <button type="submit">Add Produto</button>
-    </form>
-</div>
+    <div>
+        <h2>Adicionar Produto</h2>
+        <form id="addProdutoForm">
+            <label for="cod_produto">Código:</label>
+            <input type="text" id="cod_produto" name="cod_produto" />
+            <label for="nome_produto">Nome:</label>
+            <input type="text" id="nome_produto" name="nome_produto" />
+            <label for="descricao">Descrição:</label>
+            <input type="text" id="descricao" name="descricao" />
+            <label for="valor">Valor:</label>
+            <input type="text" id="valor" name="valor" />
+            <button type="submit">Add Produto</button>
+        </form>
+    </div>
 
-<hr>
+    <div>
+        <h2>Get Produto by ID</h2>
+        <form id="getProdutoForm">
+            <label for="getById">ID:</label>
+            <input type="text" id="getById" name="getById" />
+            <button type="submit">Get Produto</button>
+        </form>
+        <p id="produtoById"></p>
+    </div>
 
-<div>
-    <h2>Get Produto by ID</h2>
-    <form id="getProdutoForm">
-        <label for="getById">ID:</label>
-        <input type="text" id="getById" name="getById"><br><br>
-        <button type="submit">Get Produto</button>
-    </form>
-    <p id="produtoById"></p>
-</div>
+    <div>
+        <h2>Get All Produtos</h2>
+        <form class="getAllProdutosForm">
+            <button id="getAllProdutos">Get All Produtos</button>
+            <ul id="produtosList"></ul>
+        </form>
+    </div>
 
-<hr>
-
-<div>
-    <h2>Get All Produtos</h2>
-    <button id="getAllProdutos">Get All Produtos</button>
-    <ul id="produtosList"></ul>
-</div>
-
-<hr>
-
-<div>
-    <h2>Delete Produto by ID</h2>
-    <form id="deleteProdutoForm">
-        <label for="deleteById">ID:</label>
-        <input type="text" id="deleteById" name="deleteById"><br><br>
-        <button type="submit">Delete Produto</button>
-    </form>
-    <p id="deleteStatus"></p>
+    <div>
+        <h2>Delete Produto by ID</h2>
+        <form id="deleteProdutoForm">
+            <label for="deleteById">ID:</label>
+            <input type="text" id="deleteById" name="deleteById" />
+            <button type="submit">Delete Produto</button>
+        </form>
+        <p id="deleteStatus"></p>
+    </div>
 </div>
 
 <script>
