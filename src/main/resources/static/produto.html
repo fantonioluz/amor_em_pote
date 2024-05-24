@@ -45,10 +45,8 @@
 
     <div>
         <h2>Get All Produtos</h2>
-        <form class="getAllProdutosForm">
-            <button id="getAllProdutos">Get All Produtos</button>
-            <ul id="produtosList"></ul>
-        </form>
+        <button id="getAllProdutos">Get All Produtos</button>
+        <ul id="produtosList"></ul>
     </div>
 
     <div>
@@ -96,9 +94,17 @@
         const getById = document.getElementById('getById').value;
 
         fetch(`/produtos/${getById}`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Produto não encontrado');
+                }
+                return response.json();
+            })
             .then(data => {
                 document.getElementById('produtoById').innerText = JSON.stringify(data);
+            })
+            .catch(error => {
+                document.getElementById('produtoById').innerText = error.message;
             });
     });
 
