@@ -29,6 +29,12 @@ public class ProdutoController {
         return produtoRepository.findAll();
     }
 
+    @PutMapping("/{cod_produto}")
+    public void updateProduto(@PathVariable int cod_produto, @RequestBody Produto produto) {
+        produto.setCod_produto(cod_produto);
+        produtoRepository.update(produto);
+    }
+
     @DeleteMapping("/{cod_produto}")
     public void deleteProduto(@PathVariable int cod_produto) {
         produtoRepository.delete(cod_produto);

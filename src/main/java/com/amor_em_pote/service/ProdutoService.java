@@ -34,6 +34,10 @@ public class ProdutoService {
         return produtoRepository.findAll();
     }
 
+    public void updateProduto(Produto produto) {
+        produtoRepository.update(produto);
+    }
+
     public void deleteProdutoByCod(int cod_produto) {
         produtoRepository.delete(cod_produto);
     }

@@ -5,11 +5,12 @@ public class Produto {
     private int cod_produto;
     private String nome_produto;
     private String descricao;
-    private int valor;
+    private float valor;
+    private int quantidade;
 
     public Produto() {}
 
-    public Produto(int cod_produto, String nome_produto, String descricao, int valor) {
+    public Produto(int cod_produto, String nome_produto, String descricao, float valor) {
         this.cod_produto = cod_produto;
         this.nome_produto = nome_produto;
         this.descricao = descricao;
@@ -40,16 +41,24 @@ public class Produto {
         this.descricao = descricao;
     }
 
-    public int getValor() {
+    public float getValor() {
         return valor;
     }
 
-    public void setValor(int valor) {
+    public void setValor(float valor) {
         if (valor > 0) {
             this.valor = valor;
         } else {
             throw new IllegalArgumentException("Valor must be greater than 0");
         }
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
     }
 }
 

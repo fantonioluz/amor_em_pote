@@ -11,7 +11,6 @@ header {
     padding: 20px;
     background-color: #764526;
     color: #ffffff;
-
 }
 
 .title {
@@ -45,7 +44,7 @@ header {
     background-color: #cd853f;
 }
 
-h2{
+h2 {
     text-align: center;
     margin-bottom: 15px;
 }
@@ -62,23 +61,23 @@ body {
     display: flex;
     flex-direction: column;
     overflow: auto;
-
-}
-
-#addProdutoForm, #getProdutoForm, .getAllProdutosForm {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
-
-#deleteProdutoForm {
+.row {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
     justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
+}
+
+.column {
+    width: 45%;
+    background: #ffffff;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 label {
@@ -87,14 +86,14 @@ label {
 }
 
 input[type="text"] {
-    width: 12%;
+    width: calc(100% - 20px);
     padding: 8px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
-form button {
+form button, button.nav-button {
     background-color: #d2691e;
     color: #fff;
     padding: 10px 15px;
@@ -106,9 +105,8 @@ form button {
     transition: background-color 0.3s;
 }
 
-button:hover {
+button:hover, button.nav-button:hover {
     background-color: #cd853f;
-
 }
 
 ul {
@@ -124,4 +122,27 @@ ul li {
 
 ul li:last-child {
     border-bottom: none;
+}
+
+table {
+    margin: 20px auto;
+    border-collapse: collapse;
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
 }

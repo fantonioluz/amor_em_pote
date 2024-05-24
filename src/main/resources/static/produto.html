@@ -7,56 +7,86 @@
     <link rel="stylesheet" href="styleProduto.css" />
 </head>
 <body>
+<header>
+    <div class="title">Amor em Pote</div>
+    <div class="logo">LOGO</div>
+</header>
+<nav class="navbar">
+    <a class="nav-button">Estoque</a>
+    <a class="nav-button">Produtos</a>
+    <a class="nav-button">Pedidos</a>
+</nav>
+
 <div class="container">
-    <header>
-        <div class="title">Amor em Pote</div>
-        <div class="logo">LOGO</div>
-    </header>
-    <nav class="navbar">
-        <a class="nav-button"> Estoque </a>
-        <a class="nav-button"> Produtos </a>
-        <a class="nav-button"> Pedidos </a>
-    </nav>
+    <div class="row">
+        <div class="column">
+            <h2>Adicionar Produto</h2>
+            <form id="addProdutoForm">
+                <label for="nome_produto">Nome:</label>
+                <input type="text" id="nome_produto" name="nome_produto" />
+                <label for="descricao">Descrição:</label>
+                <input type="text" id="descricao" name="descricao" />
+                <label for="valor">Valor:</label>
+                <input type="text" id="valor" name="valor" />
+                <label for="quantidade">Quantidade:</label>
+                <input type="text" id="quantidade" name="quantidade" />
+                <button type="submit">Add Produto</button>
+            </form>
+        </div>
+        <div class="column">
+            <h2>Pesquisar Produto por Código</h2>
+            <form id="getProdutoForm">
+                <label for="getById">Código:</label>
+                <input type="text" id="getById" name="getById" />
+                <button type="submit">Pesquisar</button>
+            </form>
+            <div id="produtoDetalhes"></div>
 
-    <div>
-        <h2>Adicionar Produto</h2>
-        <form id="addProdutoForm">
-            <label for="cod_produto">Código:</label>
-            <input type="text" id="cod_produto" name="cod_produto" />
-            <label for="nome_produto">Nome:</label>
-            <input type="text" id="nome_produto" name="nome_produto" />
-            <label for="descricao">Descrição:</label>
-            <input type="text" id="descricao" name="descricao" />
-            <label for="valor">Valor:</label>
-            <input type="text" id="valor" name="valor" />
-            <button type="submit">Add Produto</button>
-        </form>
+            <h2>Excluir Produto por Código</h2>
+            <form id="deleteProdutoForm">
+                <label for="deleteById">Código:</label>
+                <input type="text" id="deleteById" name="deleteById" />
+                <button type="submit">Excluir</button>
+            </form>
+            <p id="deleteStatus"></p>
+        </div>
     </div>
-
-    <div>
-        <h2>Get Produto by ID</h2>
-        <form id="getProdutoForm">
-            <label for="getById">ID:</label>
-            <input type="text" id="getById" name="getById" />
-            <button type="submit">Get Produto</button>
-        </form>
-        <p id="produtoById"></p>
+    <div class="row">
+        <div class="column">
+            <h2>Todos os Produtos</h2>
+            <button class="nav-button" id="getAllProdutos">Atualizar Lista</button>
+            <table id="produtosTable">
+                <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                    <th>Quantidade</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
-
-    <div>
-        <h2>Get All Produtos</h2>
-        <button id="getAllProdutos">Get All Produtos</button>
-        <ul id="produtosList"></ul>
-    </div>
-
-    <div>
-        <h2>Delete Produto by ID</h2>
-        <form id="deleteProdutoForm">
-            <label for="deleteById">ID:</label>
-            <input type="text" id="deleteById" name="deleteById" />
-            <button type="submit">Delete Produto</button>
-        </form>
-        <p id="deleteStatus"></p>
+    <div class="row" id="alterarContainer" style="display: none;">
+        <div class="column">
+            <h2>Alterar Dados do Produto</h2>
+            <form id="alterarForm">
+                <label for="cod_produtoAlterar">Código:</label>
+                <input type="text" id="cod_produtoAlterar" name="cod_produtoAlterar" required readonly />
+                <label for="nome_produtoAlterar">Nome do Produto:</label>
+                <input type="text" id="nome_produtoAlterar" name="nome_produtoAlterar" required />
+                <label for="descricaoAlterar">Descrição:</label>
+                <input type="text" id="descricaoAlterar" name="descricaoAlterar" required />
+                <label for="valorAlterar">Valor:</label>
+                <input type="text" id="valorAlterar" name="valorAlterar" required />
+                <label for="quantidadeAlterar">Quantidade:</label>
+                <input type="text" id="quantidadeAlterar" name="quantidadeAlterar" required />
+                <button type="submit">Atualizar</button>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -65,10 +95,10 @@
         event.preventDefault();
 
         const formData = {
-            cod_produto: document.getElementById('cod_produto').value,
             nome_produto: document.getElementById('nome_produto').value,
             descricao: document.getElementById('descricao').value,
-            valor: document.getElementById('valor').value
+            valor: document.getElementById('valor').value,
+            quantidade: document.getElementById('quantidade').value
         };
 
         fetch('/produtos/add', {
@@ -82,6 +112,7 @@
                 if (response.ok) {
                     alert('Produto adicionado com sucesso!');
                     this.reset();
+                    fetchProdutos(); // Atualiza a lista de produtos após adicionar um novo produto
                 } else {
                     alert('Erro ao adicionar produto!');
                 }
@@ -101,26 +132,21 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('produtoById').innerText = JSON.stringify(data);
+                document.getElementById('produtoDetalhes').innerText = JSON.stringify(data, null, 2);
+                document.getElementById('cod_produtoAlterar').value = data.cod_produto;
+                document.getElementById('nome_produtoAlterar').value = data.nome_produto;
+                document.getElementById('descricaoAlterar').value = data.descricao;
+                document.getElementById('valorAlterar').value = data.valor;
+                document.getElementById('quantidadeAlterar').value = data.quantidade;
+                document.getElementById('alterarContainer').style.display = 'flex';
             })
             .catch(error => {
-                document.getElementById('produtoById').innerText = error.message;
+                document.getElementById('produtoDetalhes').innerText = error.message;
+                document.getElementById('alterarContainer').style.display = 'none';
             });
     });
 
-    document.getElementById('getAllProdutos').addEventListener('click', function() {
-        fetch('/produtos/all')
-            .then(response => response.json())
-            .then(data => {
-                const produtosList = document.getElementById('produtosList');
-                produtosList.innerHTML = '';
-                data.forEach(produto => {
-                    const listItem = document.createElement('li');
-                    listItem.innerText = JSON.stringify(produto);
-                    produtosList.appendChild(listItem);
-                });
-            });
-    });
+    document.getElementById('getAllProdutos').addEventListener('click', fetchProdutos);
 
     document.getElementById('deleteProdutoForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -133,11 +159,65 @@
             .then(response => {
                 if (response.ok) {
                     document.getElementById('deleteStatus').innerText = 'Produto deletado com sucesso!';
+                    fetchProdutos(); // Atualiza a lista de produtos após deletar um produto
                 } else {
                     document.getElementById('deleteStatus').innerText = 'Erro ao deletar produto!';
                 }
             });
     });
+
+    document.getElementById('alterarForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = {
+            cod_produto: document.getElementById('cod_produtoAlterar').value,
+            nome_produto: document.getElementById('nome_produtoAlterar').value,
+            descricao: document.getElementById('descricaoAlterar').value,
+            valor: document.getElementById('valorAlterar').value,
+            quantidade: document.getElementById('quantidadeAlterar').value
+        };
+
+        fetch(`/produtos/${formData.cod_produto}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Produto atualizado com sucesso!');
+                    document.getElementById('alterarForm').reset();
+                    document.getElementById('alterarContainer').style.display = 'none';
+                    fetchProdutos(); // Atualiza a lista de produtos após atualizar os dados
+                } else {
+                    alert('Erro ao atualizar produto!');
+                }
+            });
+    });
+
+    function fetchProdutos() {
+        fetch('/produtos/all')
+            .then(response => response.json())
+            .then(data => {
+                const produtosTable = document.querySelector('#produtosTable tbody');
+                produtosTable.innerHTML = '';
+                data.forEach(produto => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${produto.cod_produto}</td>
+                        <td>${produto.nome_produto}</td>
+                        <td>${produto.descricao}</td>
+                        <td>${produto.valor}</td>
+                        <td>${produto.quantidade}</td>
+                    `;
+                    produtosTable.appendChild(tr);
+                });
+            });
+    }
+
+    // Carrega a lista de produtos automaticamente ao abrir a página
+    document.addEventListener('DOMContentLoaded', fetchProdutos);
 </script>
 </body>
 </html>

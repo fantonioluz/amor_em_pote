@@ -19,8 +19,8 @@ public class ProdutoRepository {
     }
 
     public void save(Produto produto) {
-        String sql = "INSERT INTO produto (cod_produto, nome_produto, descricao, valor) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, produto.getCod_produto(), produto.getNome_produto(), produto.getDescricao(), produto.getValor());
+        String sql = "INSERT INTO produto (nome_produto, descricao, valor, quantidade) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, produto.getNome_produto(), produto.getDescricao(), produto.getValor(), produto.getQuantidade());
     }
 
     public Produto findById(int cod_produto) {
@@ -39,6 +39,11 @@ public class ProdutoRepository {
         return jdbcTemplate.query(sql, new ProdutoRowMapper());
     }
 
+    public void update(Produto produto) {
+        String sql = "UPDATE produto SET nome_produto = ?, descricao = ?, valor = ?, quantidade = ? WHERE cod_produto = ?";
+        jdbcTemplate.update(sql, produto.getNome_produto(), produto.getDescricao(), produto.getValor(), produto.getQuantidade(), produto.getCod_produto());
+    }
+
     public void delete(int cod_produto) {
         String sql = "DELETE FROM produto WHERE cod_produto = ?";
         jdbcTemplate.update(sql, cod_produto);
@@ -51,7 +56,8 @@ public class ProdutoRepository {
             produto.setCod_produto(rs.getInt("cod_produto"));
             produto.setNome_produto(rs.getString("nome_produto"));
             produto.setDescricao(rs.getString("descricao"));
-            produto.setValor(rs.getInt("valor"));
+            produto.setValor(rs.getFloat("valor"));
+            produto.setQuantidade(rs.getInt("quantidade"));
             return produto;
         }
     }
