@@ -14,7 +14,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col">
+        <div class="column">
             <h2>Cadastrar Cliente</h2>
             <form id="clienteForm">
                 <label for="cpf">CPF:</label>
@@ -32,7 +32,7 @@
                 <button type="submit">Cadastrar</button>
             </form>
         </div>
-        <div class="col">
+        <div class="column">
             <h2>Pesquisar Cliente por CPF</h2>
             <form id="pesquisaForm">
                 <label for="clienteCpf">CPF do Cliente:</label>
@@ -50,7 +50,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="column">
             <h2>Todos os Clientes</h2>
             <table id="clientesTable">
                 <thead>
@@ -66,7 +66,27 @@
                 <tbody>
                 </tbody>
             </table>
-            <button onclick="fetchClientes()">Atualizar Lista</button>
+            <button class="nav-button" onclick="fetchClientes()">Atualizar Lista</button>
+        </div>
+    </div>
+    <div class="row" id="alterarContainer" style="display: none;">
+        <div class="column">
+            <h2>Alterar Dados do Cliente</h2>
+            <form id="alterarForm">
+                <label for="cpfAlterar">CPF:</label>
+                <input type="text" id="cpfAlterar" name="cpfAlterar" required readonly><br>
+                <label for="nomeClienteAlterar">Nome do Cliente:</label>
+                <input type="text" id="nomeClienteAlterar" name="nomeClienteAlterar" required><br>
+                <label for="ruaAlterar">Rua:</label>
+                <input type="text" id="ruaAlterar" name="ruaAlterar" required><br>
+                <label for="numeroAlterar">Número:</label>
+                <input type="text" id="numeroAlterar" name="numeroAlterar" required><br>
+                <label for="bairroAlterar">Bairro:</label>
+                <input type="text" id="bairroAlterar" name="bairroAlterar" required><br>
+                <label for="telefonesAlterar">Telefones (separados por vírgula):</label>
+                <input type="text" id="telefonesAlterar" name="telefonesAlterar" required><br>
+                <button type="submit">Atualizar</button>
+            </form>
         </div>
     </div>
 </div>
@@ -134,13 +154,21 @@
             clienteDetalhes.innerHTML = `
                 <p>CPF: ${cliente.cpf}</p>
                 <p>Nome: ${cliente.nomeCliente}</p>
-                <p>Número: ${cliente.numero}</p>
                 <p>Rua: ${cliente.rua}</p>
+                <p>Número: ${cliente.numero}</p>
                 <p>Bairro: ${cliente.bairro}</p>
                 <p>Telefones: ${cliente.telefones.join(', ')}</p>
             `;
+            document.getElementById('cpfAlterar').value = cliente.cpf;
+            document.getElementById('nomeClienteAlterar').value = cliente.nomeCliente;
+            document.getElementById('numeroAlterar').value = cliente.numero;
+            document.getElementById('ruaAlterar').value = cliente.rua;
+            document.getElementById('bairroAlterar').value = cliente.bairro;
+            document.getElementById('telefonesAlterar').value = cliente.telefones.join(', ');
+            document.getElementById('alterarContainer').style.display = 'flex';
         } else {
             clienteDetalhes.innerHTML = '<p>Cliente não encontrado</p>';
+            document.getElementById('alterarContainer').style.display = 'none';
         }
     });
 
@@ -157,6 +185,40 @@
             fetchClientes(); // Atualiza a lista de clientes
         } else {
             alert('Erro ao excluir cliente');
+        }
+    });
+
+    document.getElementById('alterarForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const cpf = document.getElementById('cpfAlterar').value;
+        const nomeCliente = document.getElementById('nomeClienteAlterar').value;
+        const numero = document.getElementById('numeroAlterar').value;
+        const rua = document.getElementById('ruaAlterar').value;
+        const bairro = document.getElementById('bairroAlterar').value;
+        const telefones = document.getElementById('telefonesAlterar').value.split(',').map(tel => tel.trim());
+
+        const response = await fetch(`http://localhost:8080/clientes/${cpf}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                cpf,
+                nomeCliente,
+                numero,
+                rua,
+                bairro,
+                telefones
+            }),
+        });
+
+        if (response.ok) {
+            alert('Cliente atualizado com sucesso!');
+            document.getElementById('alterarForm').reset();
+            document.getElementById('alterarContainer').style.display = 'none';
+            fetchClientes(); // Atualiza a lista de clientes após atualizar os dados
+        } else {
+            alert('Erro ao atualizar cliente');
         }
     });
 

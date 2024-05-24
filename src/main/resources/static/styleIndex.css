@@ -66,26 +66,18 @@ body {
 
 .row {
     display: flex;
-    justify-content: space-around;
+    flex-wrap: wrap;
     width: 100%;
-    margin: 10px 0;
+    justify-content: center;
 }
 
-.col {
-    flex: 1;
+.column {
+    width: 45%;
+    background: #ffffff;
     margin: 10px;
     padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#clienteForm, #pesquisaForm, #excluirForm {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    text-align: left;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 label {
@@ -101,9 +93,7 @@ input[type="text"] {
     border-radius: 4px;
 }
 
-
-
-form button {
+form button, button.nav-button {
     background-color: #d2691e;
     color: #fff;
     padding: 10px 15px;
@@ -115,7 +105,7 @@ form button {
     transition: background-color 0.3s;
 }
 
-button:hover {
+button:hover, button.nav-button:hover {
     background-color: #cd853f;
 }
 
@@ -137,7 +127,7 @@ ul li:last-child {
 table {
     margin: 20px auto;
     border-collapse: collapse;
-    width: 80%;
+    width: 100%;
     background: #ffffff;
     border: 1px solid #ccc;
     border-radius: 4px;

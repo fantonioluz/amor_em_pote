@@ -46,6 +46,8 @@ public class ClienteRepository {
         jdbcTemplate.update(sql, cpf);
     }
 
+
+
     private List<String> findTelefonesByCpf(String cpf) {
         String sql = "SELECT telefone FROM telefone WHERE fk_cliente_cpf = ?";
         return jdbcTemplate.query(sql, new Object[]{cpf}, (rs, rowNum) -> rs.getString("telefone"));
@@ -56,6 +58,13 @@ public class ClienteRepository {
         for (String telefone : telefones) {
             jdbcTemplate.update(sql, telefone, cpf);
         }
+    }
+
+    public void update(Cliente cliente) {
+        String sql = "UPDATE cliente SET nome_cliente = ?, numero = ?, rua = ?, bairro = ? WHERE cpf = ?";
+        jdbcTemplate.update(sql, cliente.getNomeCliente(), cliente.getNumero(), cliente.getRua(), cliente.getBairro(), cliente.getCpf());
+        deleteTelefonesByCpf(cliente.getCpf());
+        saveTelefones(cliente.getCpf(), cliente.getTelefones());
     }
 
     private void deleteTelefonesByCpf(String cpf) {

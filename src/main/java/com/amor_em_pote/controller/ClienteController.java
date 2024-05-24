@@ -32,6 +32,12 @@ public class ClienteController {
         return cliente;
     }
 
+    @PutMapping("/{cpf}")
+    public void updateCliente(@PathVariable String cpf, @RequestBody Cliente cliente) {
+        cliente.setCpf(cpf);
+        clienteService.updateCliente(cliente);
+    }
+
     @GetMapping
     public List<Cliente> getAllClientes() {
         return clienteService.getAllClientes();

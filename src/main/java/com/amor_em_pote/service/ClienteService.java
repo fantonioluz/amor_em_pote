@@ -34,6 +34,10 @@ public class ClienteService {
         return clienteRepository.findAll();
     }
 
+    public void updateCliente(Cliente cliente) {
+        clienteRepository.update(cliente);
+    }
+
     public void deleteClienteByCpf(String cpf) {
         clienteRepository.delete(cpf);
     }
