@@ -36,7 +36,7 @@ public class ProdutoService {
     }
 
 
-    public List<Produto> getAllProdutos() {
+    public static List<Produto> getAllProdutos() {
         return produtoRepository.findAll();
     }
 

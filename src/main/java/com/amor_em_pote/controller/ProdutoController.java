@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/produtos")
@@ -14,6 +15,9 @@ public class ProdutoController {
 
     @Autowired
     private ProdutoRepository produtoRepository;
+
+    public ProdutoController(ProdutoService produtoService) {
+    }
 
     @PostMapping("/add")
     public void addProduto(@RequestBody Produto produto) {
@@ -40,6 +44,15 @@ public class ProdutoController {
     public List<Produto> getAvailableProducts() {
         return ProdutoService.getAvailableProducts();
     }
+
+    @GetMapping("/estoque")
+    public List<Produto> getProdutosEmEstoque() {
+        return ProdutoService.getAllProdutos().stream()
+                .filter(produto -> produto.getQuantidade() > 0)
+                .collect(Collectors.toList());
+    }
+
+
 
 
     @DeleteMapping("/{cod_produto}")

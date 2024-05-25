@@ -7,8 +7,9 @@
 header {
     width: 100%;
     display: flex;
-    justify-content: space-around;
-    padding: 20px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
     background-color: #764526;
     color: #ffffff;
 }
@@ -18,11 +19,18 @@ header {
 }
 
 .logo {
-    font-size: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    max-height: 50px; /* Ajuste o tamanho conforme necessário */
+    padding: 0; /* Remove qualquer padding adicional */
+    margin-left: 10px; /* Ajuste conforme necessário */
 }
 
 .navbar {
-    margin: 3rem 0;
+    margin: 20px 0; /* Ajuste a margem conforme necessário */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,10 +46,16 @@ header {
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
+    text-decoration: none;
 }
 
 .nav-button:hover {
     background-color: #cd853f;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 h2 {
@@ -64,17 +78,21 @@ body {
 
 .row {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    flex-wrap: wrap;
     margin-bottom: 20px;
 }
 
 .column {
     flex: 1;
+    min-width: 300px;
+    max-width: 48%;
     padding: 10px;
     background: #fff;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
 label {
@@ -106,27 +124,42 @@ button:hover {
     background-color: #cd853f;
 }
 
-#pedidosTable, #clientesTable, #produtosTable {
+table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
-#pedidosTable th, #pedidosTable td, #clientesTable th, #clientesTable td, #produtosTable th, #produtosTable td {
+table th, table td {
     padding: 10px;
     text-align: left;
     border: 1px solid #ddd;
 }
 
-#pedidosTable th, #clientesTable th, #produtosTable th {
+table th {
     background-color: #d2691e;
     color: white;
 }
 
-#pedidosTable td, #clientesTable td, #produtosTable td {
+table td {
     background-color: #f9f9f9;
 }
 
-#pedidosTable tr:nth-child(even), #clientesTable tr:nth-child(even), #produtosTable tr:nth-child(even) {
+table tr:nth-child(even) {
     background-color: #f2f2f2;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    padding: 10px;
+    background: #f9f9f9;
+    border-bottom: 1px solid #eee;
+}
+
+ul li:last-child {
+    border-bottom: none;
 }

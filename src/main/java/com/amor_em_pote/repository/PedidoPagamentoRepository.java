@@ -23,8 +23,8 @@ public class PedidoPagamentoRepository {
     }
 
     public void save(PedidoPagamento pedidoPagamento) {
-        String sql = "INSERT INTO pedido_pagamento (descricao, valor, meio_pagamento, status, data_pedido, fk_cliente_cpf, cod_pagamento) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, pedidoPagamento.getDescricao(), pedidoPagamento.getValor(), pedidoPagamento.getMeio_pagamento(), pedidoPagamento.getStatus(), pedidoPagamento.getData_pedido(), pedidoPagamento.getFk_cliente_cpf(), pedidoPagamento.getCod_pagamento());
+        String sql = "INSERT INTO pedido_pagamento (descricao, valor, meio_pagamento, status, fk_cliente_cpf, cod_pagamento) VALUES (?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, pedidoPagamento.getDescricao(), pedidoPagamento.getValor(), pedidoPagamento.getMeio_pagamento(), pedidoPagamento.getStatus(), pedidoPagamento.getFk_cliente_cpf(), pedidoPagamento.getCod_pagamento());
     }
 
     public int getLastInsertedId() {

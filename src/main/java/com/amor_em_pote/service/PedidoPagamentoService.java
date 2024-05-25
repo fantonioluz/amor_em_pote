@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PedidoPagamentoService {
@@ -35,6 +38,13 @@ public class PedidoPagamentoService {
             produtoPedido.setCod_pedido_fk(codPedido);
             produtoPedidoRepository.save(produtoPedido);
         }
+    }
+
+    public List<PedidoPagamento> getPedidosNoUltimoMes() {
+        LocalDateTime umMesAtras = LocalDateTime.now().minusMonths(1);
+        return pedidoPagamentoRepository.findAllWithProducts().stream()
+                .filter(pedido -> pedido.getData_pedido().after(Timestamp.valueOf(umMesAtras)))
+                .collect(Collectors.toList());
     }
 
     public List<PedidoPagamento> getAllPedidosWithProducts() {

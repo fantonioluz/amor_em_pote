@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -21,6 +22,14 @@ public class PedidoPagamentoController {
     @PostMapping("/add")
     public void addPedido(@RequestBody PedidoPagamento pedidoPagamento) {
         pedidoPagamentoService.savePedidoWithProdutos(pedidoPagamento);
+    }
+
+    @GetMapping("/ultimos")
+    public List<PedidoPagamento> getUltimosPedidos() {
+        return pedidoPagamentoService.getAllPedidosWithProducts().stream()
+                .sorted((p1, p2) -> p2.getData_pedido().compareTo(p1.getData_pedido()))
+                .limit(5)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/all")

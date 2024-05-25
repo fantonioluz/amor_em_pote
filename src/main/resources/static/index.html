@@ -3,227 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styleIndex.css">
-    <title>Clientes</title>
+    <title>Amor em Pote - Página Inicial</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
-    <div class="logo">Logo</div>
-    <div class="title">Gestão de Clientes</div>
+    <div class="title">Amor em Pote</div>
+    <div class="logo">
+        <img src="images/logo.png" alt="Logo" class="logo-img">
+    </div>
 </header>
+<nav class="navbar">
+    <a href="estoque.html" class="nav-button">Estoque</a>
+    <a href="produtos.html" class="nav-button">Produtos</a>
+    <a href="pedidos.html" class="nav-button">Pedidos</a>
+    <a href="clientes.html" class="nav-button">Clientes</a>
+    <a href="ingredientes.html" class="nav-button">Ingredientes</a>
+</nav>
 
 <div class="container">
+    <h1>Bem-vindo ao Amor em Pote</h1>
     <div class="row">
         <div class="column">
-            <h2>Cadastrar Cliente</h2>
-            <form id="clienteForm">
-                <label for="cpf">CPF:</label>
-                <input type="text" id="cpf" name="cpf" required><br>
-                <label for="nomeCliente">Nome do Cliente:</label>
-                <input type="text" id="nomeCliente" name="nomeCliente" required><br>
-                <label for="rua">Rua:</label>
-                <input type="text" id="rua" name="rua" required><br>
-                <label for="numero">Número:</label>
-                <input type="text" id="numero" name="numero" required><br>
-                <label for="bairro">Bairro:</label>
-                <input type="text" id="bairro" name="bairro" required><br>
-                <label for="telefones">Telefones (separados por vírgula):</label>
-                <input type="text" id="telefones" name="telefones" required><br>
-                <button type="submit">Cadastrar</button>
-            </form>
-        </div>
-        <div class="column">
-            <h2>Pesquisar Cliente por CPF</h2>
-            <form id="pesquisaForm">
-                <label for="clienteCpf">CPF do Cliente:</label>
-                <input type="text" id="clienteCpf" name="clienteCpf" required>
-                <button type="submit">Pesquisar</button>
-            </form>
-            <div id="clienteDetalhes"></div>
-
-            <h2>Excluir Cliente por CPF</h2>
-            <form id="excluirForm">
-                <label for="cpfExcluir">CPF do Cliente:</label>
-                <input type="text" id="cpfExcluir" name="cpfExcluir" required>
-                <button type="submit">Excluir</button>
-            </form>
-        </div>
-    </div>
-    <div class="row">
-        <div class="column">
-            <h2>Todos os Clientes</h2>
-            <table id="clientesTable">
+            <h2>Resumo dos Produtos em Estoque</h2>
+            <table id="produtosEstoqueTable">
                 <thead>
                 <tr>
-                    <th>CPF</th>
                     <th>Nome</th>
-                    <th>Rua</th>
-                    <th>Número</th>
-                    <th>Bairro</th>
-                    <th>Telefones</th>
+                    <th>Quantidade</th>
                 </tr>
                 </thead>
                 <tbody>
                 </tbody>
             </table>
-            <button class="nav-button" onclick="fetchClientes()">Atualizar Lista</button>
         </div>
     </div>
-    <div class="row" id="alterarContainer" style="display: none;">
+    <div class="row">
         <div class="column">
-            <h2>Alterar Dados do Cliente</h2>
-            <form id="alterarForm">
-                <label for="cpfAlterar">CPF:</label>
-                <input type="text" id="cpfAlterar" name="cpfAlterar" required readonly><br>
-                <label for="nomeClienteAlterar">Nome do Cliente:</label>
-                <input type="text" id="nomeClienteAlterar" name="nomeClienteAlterar" required><br>
-                <label for="ruaAlterar">Rua:</label>
-                <input type="text" id="ruaAlterar" name="ruaAlterar" required><br>
-                <label for="numeroAlterar">Número:</label>
-                <input type="text" id="numeroAlterar" name="numeroAlterar" required><br>
-                <label for="bairroAlterar">Bairro:</label>
-                <input type="text" id="bairroAlterar" name="bairroAlterar" required><br>
-                <label for="telefonesAlterar">Telefones (separados por vírgula):</label>
-                <input type="text" id="telefonesAlterar" name="telefonesAlterar" required><br>
-                <button type="submit">Atualizar</button>
-            </form>
+            <h2>Últimos Pedidos Realizados</h2>
+            <table id="ultimosPedidosTable">
+                <thead>
+                <tr>
+                    <th>ID Pedido</th>
+                    <th>Data</th>
+                    <th>Cliente</th>
+                    <th>Valor</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <h2>Estatísticas Interessantes</h2>
+            <ul id="estatisticasList">
+                <!-- Estatísticas serão inseridas aqui -->
+            </ul>
         </div>
     </div>
 </div>
 
 <script>
-    document.getElementById('clienteForm').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const cpf = document.getElementById('cpf').value;
-        const nomeCliente = document.getElementById('nomeCliente').value;
-        const numero = document.getElementById('numero').value;
-        const rua = document.getElementById('rua').value;
-        const bairro = document.getElementById('bairro').value;
-        const telefones = document.getElementById('telefones').value.split(',').map(tel => tel.trim());
-
-        const response = await fetch('http://localhost:8080/clientes', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                cpf,
-                nomeCliente,
-                numero,
-                rua,
-                bairro,
-                telefones
-            }),
-        });
-
-        if (response.ok) {
-            alert('Cliente cadastrado com sucesso!');
-            document.getElementById('clienteForm').reset();
-            fetchClientes(); // Atualiza a lista de clientes após cadastrar um novo cliente
-        } else {
-            alert('Erro ao cadastrar cliente');
-        }
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchProdutosEstoque();
+        fetchUltimosPedidos();
+        fetchEstatisticas();
     });
 
-    async function fetchClientes() {
-        const response = await fetch('http://localhost:8080/clientes');
-        const clientes = await response.json();
-        const clientesTable = document.querySelector('#clientesTable tbody');
-        clientesTable.innerHTML = '';
-        clientes.forEach(cliente => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${cliente.cpf}</td>
-                <td>${cliente.nomeCliente}</td>
-                <td>${cliente.rua}</td>
-                <td>${cliente.numero}</td>
-                <td>${cliente.bairro}</td>
-                <td>${cliente.telefones.join(', ')}</td>
-            `;
-            clientesTable.appendChild(tr);
-        });
+    function fetchProdutosEstoque() {
+        fetch('/produtos/estoque')
+            .then(response => response.json())
+            .then(data => {
+                const produtosEstoqueTable = document.querySelector('#produtosEstoqueTable tbody');
+                produtosEstoqueTable.innerHTML = '';
+                data.forEach(produto => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${produto.nome_produto}</td>
+                        <td>${produto.quantidade}</td>
+                    `;
+                    produtosEstoqueTable.appendChild(tr);
+                });
+            });
     }
 
-    document.getElementById('pesquisaForm').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const cpf = document.getElementById('clienteCpf').value;
-        const response = await fetch(`http://localhost:8080/clientes/${cpf}`);
-        const clienteDetalhes = document.getElementById('clienteDetalhes');
-        if (response.ok) {
-            const cliente = await response.json();
-            clienteDetalhes.innerHTML = `
-                <p>CPF: ${cliente.cpf}</p>
-                <p>Nome: ${cliente.nomeCliente}</p>
-                <p>Rua: ${cliente.rua}</p>
-                <p>Número: ${cliente.numero}</p>
-                <p>Bairro: ${cliente.bairro}</p>
-                <p>Telefones: ${cliente.telefones.join(', ')}</p>
-            `;
-            document.getElementById('cpfAlterar').value = cliente.cpf;
-            document.getElementById('nomeClienteAlterar').value = cliente.nomeCliente;
-            document.getElementById('numeroAlterar').value = cliente.numero;
-            document.getElementById('ruaAlterar').value = cliente.rua;
-            document.getElementById('bairroAlterar').value = cliente.bairro;
-            document.getElementById('telefonesAlterar').value = cliente.telefones.join(', ');
-            document.getElementById('alterarContainer').style.display = 'flex';
-        } else {
-            clienteDetalhes.innerHTML = '<p>Cliente não encontrado</p>';
-            document.getElementById('alterarContainer').style.display = 'none';
-        }
-    });
+    function fetchUltimosPedidos() {
+        fetch('/pedidos/ultimos')
+            .then(response => response.json())
+            .then(data => {
+                const ultimosPedidosTable = document.querySelector('#ultimosPedidosTable tbody');
+                ultimosPedidosTable.innerHTML = '';
+                data.forEach(pedido => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${pedido.cod_pedido}</td>
+                        <td>${new Date(pedido.data_pedido).toLocaleDateString()}</td>
+                        <td>${pedido.nome_cliente}</td>
+                        <td>R$ ${pedido.valor.toFixed(2)}</td>
+                        <td>${pedido.status}</td>
+                    `;
+                    ultimosPedidosTable.appendChild(tr);
+                });
+            });
+    }
 
-    document.getElementById('excluirForm').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const cpf = document.getElementById('cpfExcluir').value;
-        const response = await fetch(`http://localhost:8080/clientes/${cpf}`, {
-            method: 'DELETE',
-        });
-
-        if (response.ok) {
-            alert('Cliente excluído com sucesso!');
-            document.getElementById('excluirForm').reset();
-            fetchClientes(); // Atualiza a lista de clientes
-        } else {
-            alert('Erro ao excluir cliente');
-        }
-    });
-
-    document.getElementById('alterarForm').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const cpf = document.getElementById('cpfAlterar').value;
-        const nomeCliente = document.getElementById('nomeClienteAlterar').value;
-        const numero = document.getElementById('numeroAlterar').value;
-        const rua = document.getElementById('ruaAlterar').value;
-        const bairro = document.getElementById('bairroAlterar').value;
-        const telefones = document.getElementById('telefonesAlterar').value.split(',').map(tel => tel.trim());
-
-        const response = await fetch(`http://localhost:8080/clientes/${cpf}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                cpf,
-                nomeCliente,
-                numero,
-                rua,
-                bairro,
-                telefones
-            }),
-        });
-
-        if (response.ok) {
-            alert('Cliente atualizado com sucesso!');
-            document.getElementById('alterarForm').reset();
-            document.getElementById('alterarContainer').style.display = 'none';
-            fetchClientes(); // Atualiza a lista de clientes após atualizar os dados
-        } else {
-            alert('Erro ao atualizar cliente');
-        }
-    });
-
-    // Carrega a lista de clientes automaticamente ao abrir a página
-    document.addEventListener('DOMContentLoaded', fetchClientes);
+    function fetchEstatisticas() {
+        fetch('/estatisticas')
+            .then(response => response.json())
+            .then(data => {
+                const estatisticasList = document.querySelector('#estatisticasList');
+                estatisticasList.innerHTML = '';
+                data.forEach(estatistica => {
+                    const li = document.createElement('li');
+                    li.textContent = estatistica;
+                    estatisticasList.appendChild(li);
+                });
+            });
+    }
 </script>
 </body>
 </html>

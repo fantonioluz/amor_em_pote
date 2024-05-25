@@ -96,4 +96,5 @@ public class PedidoPagamento {
     public void setProdutos(List<ProdutoPedido> produtos) {
         this.produtos = produtos;
     }
+
 }

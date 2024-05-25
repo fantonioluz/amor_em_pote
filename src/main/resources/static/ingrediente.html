@@ -3,150 +3,175 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
-    <title>Ingrediente API Test</title>
+    <link rel="stylesheet" href="style.css" />
+    <title>Ingredientes</title>
 </head>
 <body>
-<div>
-    <header>
-        <div class="title">Amor em Pote</div>
-        <div class="logo">LOGO</div>
-    </header>
-    <nav class="navbar">
-        <a href="" class="nav-button">Estoque</a>
-        <a href="" class="nav-button">Produtos</a>
-        <a href="" class="nav-button">Pedidos</a>
-    </nav>
-</div>
-<div>
-    <h2>Add Ingrediente</h2>
-    <form id="addIngredienteForm">
-        <label for="cod_ingrediente">Código:</label>
-        <input type="text" id="cod_ingrediente" name="cod_ingrediente" />
-        <label for="nome_ingrediente">Nome:</label>
-        <input type="text" id="nome_ingrediente" name="nome_ingrediente" />
-        <label for="descricao">Descrição:</label>
-        <input type="text" id="descricao" name="descricao" />
-        <label for="valor">Valor:</label>
-        <input type="text" id="valor" name="valor" />
-        <button type="submit">Add Ingrediente</button>
-    </form>
-</div>
+<header>
+    <div class="title">Amor em Pote</div>
+    <div class="logo">
+        <img src="images/logo.png" alt="Logo" class="logo-img">
+    </div>
+</header>
+<nav class="navbar">
+    <a class="nav-button" href="clientes.html">Clientes</a>
+    <a class="nav-button" href="ingrediente.html">Estoque</a>
+    <a class="nav-button" href="produto.html">Produtos</a>
+    <a class="nav-button" href="pedido.html">Pedidos</a>
+</nav>
 
-<hr />
+<div class="container">
+    <div class="row">
+        <div class="column">
+            <h2>Adicionar Ingrediente</h2>
+            <form id="addIngredienteForm">
+                <label for="nome_ingrediente">Nome:</label>
+                <input type="text" id="nome_ingrediente" name="nome_ingrediente" />
+                <label for="descricao">Descrição:</label>
+                <input type="text" id="descricao" name="descricao" />
+                <label for="valor">Valor:</label>
+                <input type="text" id="valor" name="valor" />
+                <button type="submit">Add Ingrediente</button>
+            </form>
+        </div>
+    </div>
 
-<div>
-    <h2>Get Ingrediente by Código</h2>
-    <form id="getIngredienteForm">
-        <label for="getCod">Código:</label>
-        <input type="text" id="getCod" name="getCod" />
-        <button type="submit">Get Ingrediente</button>
-    </form>
-    <p id="ingredienteByCod"></p>
-</div>
+    <div class="row">
+        <div class="column">
+            <h2>Get Ingrediente by Código</h2>
+            <form id="getIngredienteForm">
+                <label for="getCod">Código:</label>
+                <input type="text" id="getCod" name="getCod" />
+                <button type="submit">Get Ingrediente</button>
+            </form>
+            <div id="ingredienteByCod"></div>
+        </div>
+    </div>
 
-<hr />
+    <div class="row">
+        <div class="column">
+            <h2>Todos os Ingredientes</h2>
+            <button class="nav-button" id="getAllIngredientes">Atualizar Lista</button>
+            <table id="ingredientesTable">
+                <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-<div>
-    <h2>Get All Ingredientes</h2>
-    <form class="getAllIngredientes">
-        <button id="getAllIngredientes">Get All Ingredientes</button>
-        <ul id="ingredientesList"></ul>
-    </form>
-</div>
-
-<hr />
-
-<div>
-    <h2>Delete Ingrediente by Código</h2>
-    <form id="deleteIngredienteForm">
-        <label for="deleteCod">Código:</label>
-        <input type="text" id="deleteCod" name="deleteCod" />
-        <button type="submit">Delete Ingrediente</button>
-    </form>
-    <p id="deleteStatus"></p>
+    <div class="row">
+        <div class="column">
+            <h2>Delete Ingrediente by Código</h2>
+            <form id="deleteIngredienteForm">
+                <label for="deleteCod">Código:</label>
+                <input type="text" id="deleteCod" name="deleteCod" />
+                <button type="submit">Delete Ingrediente</button>
+            </form>
+            <p id="deleteStatus"></p>
+        </div>
+    </div>
 </div>
 
 <script>
-    document
-        .getElementById("addIngredienteForm")
-        .addEventListener("submit", function (event) {
-            event.preventDefault();
+    document.getElementById('addIngredienteForm').addEventListener('submit', function(event) {
+        event.preventDefault();
 
-            const formData = {
-                cod_ingrediente: document.getElementById("cod_ingrediente").value,
-                nome_ingrediente: document.getElementById("nome_ingrediente").value,
-                descricao: document.getElementById("descricao").value,
-                valor: document.getElementById("valor").value,
-            };
+        const formData = {
+            nome_ingrediente: document.getElementById('nome_ingrediente').value,
+            descricao: document.getElementById('descricao').value,
+            valor: document.getElementById('valor').value
+        };
 
-            fetch("/ingredientes/add", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            }).then((response) => {
-                if (response.ok) {
-                    alert("Ingrediente adicionado com sucesso!");
-                    this.reset();
-                } else {
-                    alert("Erro ao adicionar ingrediente!");
+        fetch('/ingredientes/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        }).then((response) => {
+            if (response.ok) {
+                alert('Ingrediente adicionado com sucesso!');
+                this.reset();
+                fetchIngredientes(); // Atualiza a lista de ingredientes após adicionar um novo ingrediente
+            } else {
+                alert('Erro ao adicionar ingrediente!');
+            }
+        });
+    });
+
+    document.getElementById('getIngredienteForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const getCod = document.getElementById('getCod').value;
+
+        fetch(`/ingredientes/${getCod}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Ingrediente não encontrado');
                 }
+                return response.json();
+            })
+            .then((data) => {
+                document.getElementById('ingredienteByCod').innerText = `
+                    Código: ${data.cod_ingrediente}<br>
+                    Nome: ${data.nome_ingrediente}<br>
+                    Descrição: ${data.descricao}<br>
+                    Valor: R$ ${data.valor.toFixed(2)}
+                `;
+            })
+            .catch((error) => {
+                document.getElementById('ingredienteByCod').innerText = error.message;
             });
-        });
+    });
 
-    document
-        .getElementById("getIngredienteForm")
-        .addEventListener("submit", function (event) {
-            event.preventDefault();
+    document.getElementById('getAllIngredientes').addEventListener('click', fetchIngredientes);
 
-            const getCod = document.getElementById("getCod").value;
-
-            fetch(`/ingredientes/${getCod}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    document.getElementById("ingredienteByCod").innerText =
-                        JSON.stringify(data);
+    function fetchIngredientes() {
+        fetch('/ingredientes/all')
+            .then((response) => response.json())
+            .then((data) => {
+                const ingredientesTable = document.querySelector('#ingredientesTable tbody');
+                ingredientesTable.innerHTML = '';
+                data.forEach((ingrediente) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${ingrediente.cod_ingrediente}</td>
+                        <td>${ingrediente.nome_ingrediente}</td>
+                        <td>${ingrediente.descricao}</td>
+                        <td>R$ ${ingrediente.valor.toFixed(2)}</td>
+                    `;
+                    ingredientesTable.appendChild(tr);
                 });
-        });
-
-    document
-        .getElementById("getAllIngredientes")
-        .addEventListener("click", function () {
-            fetch("/ingredientes/all")
-                .then((response) => response.json())
-                .then((data) => {
-                    const ingredientesList =
-                        document.getElementById("ingredientesList");
-                    ingredientesList.innerHTML = "";
-                    data.forEach((ingrediente) => {
-                        const listItem = document.createElement("li");
-                        listItem.innerText = JSON.stringify(ingrediente);
-                        ingredientesList.appendChild(listItem);
-                    });
-                });
-        });
-
-    document
-        .getElementById("deleteIngredienteForm")
-        .addEventListener("submit", function (event) {
-            event.preventDefault();
-
-            const deleteCod = document.getElementById("deleteCod").value;
-
-            fetch(`/ingredientes/${deleteCod}`, {
-                method: "DELETE",
-            }).then((response) => {
-                if (response.ok) {
-                    document.getElementById("deleteStatus").innerText =
-                        "Ingrediente deletado com sucesso!";
-                } else {
-                    document.getElementById("deleteStatus").innerText =
-                        "Erro ao deletar ingrediente!";
-                }
             });
+    }
+
+    document.getElementById('deleteIngredienteForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const deleteCod = document.getElementById('deleteCod').value;
+
+        fetch(`/ingredientes/${deleteCod}`, {
+            method: 'DELETE'
+        }).then((response) => {
+            if (response.ok) {
+                document.getElementById('deleteStatus').innerText = 'Ingrediente deletado com sucesso!';
+                fetchIngredientes(); // Atualiza a lista de ingredientes após deletar um ingrediente
+            } else {
+                document.getElementById('deleteStatus').innerText = 'Erro ao deletar ingrediente!';
+            }
         });
+    });
+
+    // Carrega a lista de ingredientes automaticamente ao abrir a página
+    document.addEventListener('DOMContentLoaded', fetchIngredientes);
 </script>
 </body>
 </html>
