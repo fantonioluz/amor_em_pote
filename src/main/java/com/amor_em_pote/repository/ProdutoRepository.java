@@ -49,6 +49,12 @@ public class ProdutoRepository {
         jdbcTemplate.update(sql, cod_produto);
     }
 
+    public List<Produto> findAvailableProducts() {
+        String sql = "SELECT * FROM produto WHERE quantidade > 0";
+        return jdbcTemplate.query(sql, new ProdutoRowMapper());
+    }
+
+
     private static final class ProdutoRowMapper implements RowMapper<Produto> {
         @Override
         public Produto mapRow(ResultSet rs, int rowNum) throws SQLException {

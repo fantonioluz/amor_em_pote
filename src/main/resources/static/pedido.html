@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pedido API Test</title>
+    <link rel="stylesheet" href="stylePedido.css" />
+</head>
+<body>
+<header>
+    <div class="title">Amor em Pote</div>
+    <div class="logo">LOGO</div>
+</header>
+<nav class="navbar">
+    <a class="nav-button" href="clientes.html">Clientes</a>
+    <a class="nav-button" href="estoque.html">Estoque</a>
+    <a class="nav-button" href="produto.html">Produtos</a>
+    <a class="nav-button" href="pedido.html">Pedidos</a>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="column">
+            <h2>Adicionar Pedido</h2>
+            <form id="addPedidoForm">
+                <label for="descricao">Descrição:</label>
+                <input type="text" id="descricao" name="descricao" />
+                <label for="meio_pagamento">Meio de Pagamento:</label>
+                <select id="meio_pagamento" name="meio_pagamento">
+                    <option value="Débito">Débito</option>
+                    <option value="Crédito">Crédito</option>
+                    <option value="Dinheiro">Dinheiro</option>
+                </select>
+                <label for="fk_cliente_cpf">Cliente:</label>
+                <select id="fk_cliente_cpf" name="fk_cliente_cpf">
+                    <option value="">Selecione um cliente</option>
+                </select>
+                <button type="button" onclick="showNewClientForm()">Cadastrar Novo Cliente</button>
+                <div id="newClientForm" style="display: none;">
+                    <!-- Formulário para cadastrar novo cliente -->
+                    <label for="newClientCpf">CPF:</label>
+                    <input type="text" id="newClientCpf" name="newClientCpf" />
+                    <label for="newClientNome">Nome:</label>
+                    <input type="text" id="newClientNome" name="newClientNome" />
+                    <label for="newClientNumero">Número:</label>
+                    <input type="text" id="newClientNumero" name="newClientNumero" />
+                    <label for="newClientRua">Rua:</label>
+                    <input type="text" id="newClientRua" name="newClientRua" />
+                    <label for="newClientBairro">Bairro:</label>
+                    <input type="text" id="newClientBairro" name="newClientBairro" />
+                    <label for="newClientTelefones">Telefones (separados por vírgula):</label>
+                    <input type="text" id="newClientTelefones" name="newClientTelefones" />
+                    <button type="button" onclick="addNewClient()">Adicionar Cliente</button>
+                </div>
+                <div id="produtosContainer">
+                    <h3>Selecione os Produtos</h3>
+                </div>
+                <h3>Valor Total: <span id="valorTotal">R$ 0.00</span></h3>
+                <button type="submit">Adicionar Pedido</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <h2>Todos os Pedidos</h2>
+            <button class="nav-button" id="getAllPedidos">Atualizar Lista</button>
+            <table id="pedidosTable">
+                <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                    <th>Meio de Pagamento</th>
+                    <th>Status</th>
+                    <th>Data</th>
+                    <th>CPF do Cliente</th>
+                    <th>Nome do Cliente</th>
+                    <th>Código de Pagamento</th>
+                    <th>Produtos</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('addPedidoForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const produtosSelecionados = Array.from(document.querySelectorAll('.produto')).map(produto => {
+            const checkbox = produto.querySelector('.cod_produto');
+            const quantidade = produto.querySelector('.quantidade');
+            if (checkbox.checked) {
+                return {
+                    cod_produto_fk: checkbox.value,
+                    quantidade_produto_pedido: quantidade.value
+                };
+            }
+        }).filter(produto => produto !== undefined);
+
+        const formData = {
+            descricao: document.getElementById('descricao').value,
+            valor: parseFloat(document.getElementById('valorTotal').innerText.replace('R$ ', '')),
+            meio_pagamento: document.getElementById('meio_pagamento').value,
+            fk_cliente_cpf: document.getElementById('fk_cliente_cpf').value,
+            produtos: produtosSelecionados
+        };
+
+        fetch('/pedidos/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Pedido adicionado com sucesso!');
+                    this.reset();
+                    fetchPedidos(); // Atualiza a lista de pedidos após adicionar um novo pedido
+                } else {
+                    alert('Erro ao adicionar pedido!');
+                }
+            });
+    });
+
+    document.getElementById('getAllPedidos').addEventListener('click', fetchPedidos);
+
+    function fetchPedidos() {
+        fetch('/pedidos/all')
+            .then(response => response.json())
+            .then(data => {
+                const pedidosTable = document.querySelector('#pedidosTable tbody');
+                pedidosTable.innerHTML = '';
+                data.forEach(pedido => {
+                    const produtosList = pedido.produtos.map(p => `${p.nome_produto} (Quantidade: ${p.quantidade_produto_pedido}, Preço: R$ ${p.valor_produto.toFixed(2)})`).join('<br>');
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${pedido.cod_pedido}</td>
+                        <td>${pedido.descricao}</td>
+                        <td>R$ ${pedido.valor.toFixed(2)}</td>
+                        <td>${pedido.meio_pagamento}</td>
+                        <td>${pedido.status}</td>
+                        <td>${new Date(pedido.data_pedido).toLocaleString()}</td>
+                        <td>${pedido.fk_cliente_cpf}</td>
+                        <td>${pedido.nomeCliente}</td>
+                        <td>${pedido.cod_pagamento}</td>
+                        <td>${produtosList}</td>
+                    `;
+                    pedidosTable.appendChild(tr);
+                });
+            });
+    }
+
+    function fetchAvailableProducts() {
+        fetch('/produtos/available')
+            .then(response => response.json())
+            .then(data => {
+                const produtosContainer = document.getElementById('produtosContainer');
+                produtosContainer.innerHTML = '<h3>Selecione os Produtos</h3>';
+                data.forEach(produto => {
+                    const div = document.createElement('div');
+                    div.className = 'produto';
+                    div.innerHTML = `
+                        <label>
+                            <input type="checkbox" class="cod_produto" value="${produto.cod_produto}" data-valor="${produto.valor}" />
+                            ${produto.nome_produto} (Quantidade disponível: ${produto.quantidade}, Preço: R$ ${produto.valor.toFixed(2)})
+                        </label>
+                        <input type="number" class="quantidade" min="1" max="${produto.quantidade}" value="1" disabled />
+                    `;
+                    produtosContainer.appendChild(div);
+                });
+
+                // Atualiza o valor total ao selecionar/desmarcar produtos
+                document.querySelectorAll('.cod_produto').forEach(input => {
+                    input.addEventListener('change', function() {
+                        const quantidadeInput = this.closest('.produto').querySelector('.quantidade');
+                        if (this.checked) {
+                            quantidadeInput.disabled = false;
+                            quantidadeInput.addEventListener('input', updateValorTotal);
+                        } else {
+                            quantidadeInput.disabled = true;
+                            quantidadeInput.removeEventListener('input', updateValorTotal);
+                        }
+                        updateValorTotal();
+                    });
+                });
+            });
+    }
+
+    function fetchClientes() {
+        fetch('/clientes/all')
+            .then(response => response.json())
+            .then(data => {
+                const clienteSelect = document.getElementById('fk_cliente_cpf');
+                clienteSelect.innerHTML = '<option value="">Selecione um cliente</option>';
+                data.forEach(cliente => {
+                    const option = document.createElement('option');
+                    option.value = cliente.cpf;
+                    option.text = cliente.nomeCliente;
+                    clienteSelect.add(option);
+                });
+            });
+    }
+
+    function showNewClientForm() {
+        document.getElementById('newClientForm').style.display = 'block';
+    }
+
+    function addNewClient() {
+        const newClient = {
+            cpf: document.getElementById('newClientCpf').value,
+            nomeCliente: document.getElementById('newClientNome').value,
+            numero: document.getElementById('newClientNumero').value,
+            rua: document.getElementById('newClientRua').value,
+            bairro: document.getElementById('newClientBairro').value,
+            telefones: document.getElementById('newClientTelefones').value.split(',').map(tel => tel.trim())
+        };
+
+        fetch('/clientes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newClient)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Cliente adicionado com sucesso!');
+                    document.getElementById('newClientForm').reset();
+                    document.getElementById('newClientForm').style.display = 'none';
+                    fetchClientes(); // Atualiza a lista de clientes
+                } else {
+                    alert('Erro ao adicionar cliente!');
+                }
+            });
+    }
+
+    function updateValorTotal() {
+        const produtos = document.querySelectorAll('.produto');
+        let total = 0;
+        produtos.forEach(produto => {
+            const checkbox = produto.querySelector('.cod_produto');
+            if (checkbox.checked) {
+                const quantidade = parseInt(produto.querySelector('.quantidade').value);
+                const valor = parseFloat(checkbox.getAttribute('data-valor'));
+                total += quantidade * valor;
+            }
+        });
+        document.getElementById('valorTotal').innerText = `R$ ${total.toFixed(2)}`;
+    }
+
+    // Carrega a lista de pedidos, produtos disponíveis e clientes automaticamente ao abrir a página
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchPedidos();
+        fetchAvailableProducts();
+        fetchClientes();
+    });
+</script>
+</body>
+</html>

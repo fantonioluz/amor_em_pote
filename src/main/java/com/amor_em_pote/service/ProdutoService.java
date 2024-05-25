@@ -10,11 +10,11 @@ import java.util.List;
 @Service
 public class ProdutoService {
 
-    private final ProdutoRepository produtoRepository;
+    private static ProdutoRepository produtoRepository = null;
 
     @Autowired
     public ProdutoService(ProdutoRepository produtoRepository) {
-        this.produtoRepository = produtoRepository;
+        ProdutoService.produtoRepository = produtoRepository;
     }
 
     public void saveProduto(Produto produto) {
@@ -29,6 +29,12 @@ public class ProdutoService {
             return null;
         }
     }
+
+
+    public static List<Produto> getAvailableProducts() {
+        return produtoRepository.findAvailableProducts();
+    }
+
 
     public List<Produto> getAllProdutos() {
         return produtoRepository.findAll();

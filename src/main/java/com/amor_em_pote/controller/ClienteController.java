@@ -38,7 +38,7 @@ public class ClienteController {
         clienteService.updateCliente(cliente);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<Cliente> getAllClientes() {
         return clienteService.getAllClientes();
     }

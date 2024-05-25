@@ -2,6 +2,7 @@ package com.amor_em_pote.controller;
 
 import com.amor_em_pote.model.Produto;
 import com.amor_em_pote.repository.ProdutoRepository;
+import com.amor_em_pote.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +35,12 @@ public class ProdutoController {
         produto.setCod_produto(cod_produto);
         produtoRepository.update(produto);
     }
+
+    @GetMapping("/available")
+    public List<Produto> getAvailableProducts() {
+        return ProdutoService.getAvailableProducts();
+    }
+
 
     @DeleteMapping("/{cod_produto}")
     public void deleteProduto(@PathVariable int cod_produto) {

@@ -1,40 +1,22 @@
 package com.amor_em_pote.model;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.util.List;
 
 public class PedidoPagamento {
 
     private int cod_pedido;
     private String descricao;
-    private int valor;
-    private String nome_pedido;
+    private float valor;
     private String meio_pagamento;
     private String status;
-    private LocalDateTime data_pedido;
-    private int fk_Funcionario_cod_funcionario;
-    private int fk_Cliente_cod_cliente;
+    private Timestamp data_pedido;
+    private String fk_cliente_cpf;
     private int cod_pagamento;
+    private String nomeCliente;
+    private List<ProdutoPedido> produtos;
 
-    public PedidoPagamento() {
-        this.status = "Aguardando confirmação";
-        this.data_pedido = LocalDateTime.now();
-    }
-
-    public PedidoPagamento(int cod_pedido, String descricao, int valor, String nome_pedido, String meio_pagamento,
-                           String status, LocalDateTime data_pedido, int fk_Funcionario_cod_funcionario,
-                           int fk_Cliente_cod_cliente, int cod_pagamento) {
-        this.cod_pedido = cod_pedido;
-        this.descricao = descricao;
-        this.valor = valor;
-        this.nome_pedido = nome_pedido;
-        this.meio_pagamento = meio_pagamento;
-        this.status = status != null ? status : "Aguardando confirmação";
-        this.data_pedido = data_pedido != null ? data_pedido : LocalDateTime.now();
-        this.fk_Funcionario_cod_funcionario = fk_Funcionario_cod_funcionario;
-        this.fk_Cliente_cod_cliente = fk_Cliente_cod_cliente;
-        this.cod_pagamento = cod_pagamento;
-    }
-
+    // Getters e Setters para todos os campos
     public int getCod_pedido() {
         return cod_pedido;
     }
@@ -51,24 +33,12 @@ public class PedidoPagamento {
         this.descricao = descricao;
     }
 
-    public int getValor() {
+    public float getValor() {
         return valor;
     }
 
-    public void setValor(int valor) {
-        if (valor > 0) {
-            this.valor = valor;
-        } else {
-            throw new IllegalArgumentException("Valor must be greater than 0");
-        }
-    }
-
-    public String getNome_pedido() {
-        return nome_pedido;
-    }
-
-    public void setNome_pedido(String nome_pedido) {
-        this.nome_pedido = nome_pedido;
+    public void setValor(float valor) {
+        this.valor = valor;
     }
 
     public String getMeio_pagamento() {
@@ -87,28 +57,20 @@ public class PedidoPagamento {
         this.status = status;
     }
 
-    public LocalDateTime getData_pedido() {
+    public Timestamp getData_pedido() {
         return data_pedido;
     }
 
-    public void setData_pedido(LocalDateTime data_pedido) {
+    public void setData_pedido(Timestamp data_pedido) {
         this.data_pedido = data_pedido;
     }
 
-    public int getFk_Funcionario_cod_funcionario() {
-        return fk_Funcionario_cod_funcionario;
+    public String getFk_cliente_cpf() {
+        return fk_cliente_cpf;
     }
 
-    public void setFk_Funcionario_cod_funcionario(int fk_Funcionario_cod_funcionario) {
-        this.fk_Funcionario_cod_funcionario = fk_Funcionario_cod_funcionario;
-    }
-
-    public int getFk_Cliente_cod_cliente() {
-        return fk_Cliente_cod_cliente;
-    }
-
-    public void setFk_Cliente_cod_cliente(int fk_Cliente_cod_cliente) {
-        this.fk_Cliente_cod_cliente = fk_Cliente_cod_cliente;
+    public void setFk_cliente_cpf(String fk_cliente_cpf) {
+        this.fk_cliente_cpf = fk_cliente_cpf;
     }
 
     public int getCod_pagamento() {
@@ -118,5 +80,20 @@ public class PedidoPagamento {
     public void setCod_pagamento(int cod_pagamento) {
         this.cod_pagamento = cod_pagamento;
     }
-}
 
+    public String getNomeCliente() {
+        return nomeCliente;
+    }
+
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
+    }
+
+    public List<ProdutoPedido> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<ProdutoPedido> produtos) {
+        this.produtos = produtos;
+    }
+}
