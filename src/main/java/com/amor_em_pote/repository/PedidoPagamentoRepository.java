@@ -1,6 +1,5 @@
 package com.amor_em_pote.repository;
 
-import com.amor_em_pote.extractor.PedidoComProdutosExtractor;
 import com.amor_em_pote.model.PedidoPagamento;
 import com.amor_em_pote.model.ProdutoPedido;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -47,7 +46,6 @@ public class PedidoPagamentoRepository {
         return jdbcTemplate.query(sql, new PedidoComProdutosExtractor());
     }
 
-
     private static final class PedidoComProdutosExtractor implements ResultSetExtractor<List<PedidoPagamento>> {
         @Override
         public List<PedidoPagamento> extractData(ResultSet rs) throws SQLException {
@@ -67,7 +65,7 @@ public class PedidoPagamentoRepository {
                     pedido.setCod_pagamento(rs.getInt("cod_pagamento"));
                     pedido.setNomeCliente(rs.getString("nome_cliente"));
                     pedido.setProdutos(new ArrayList<>());
-                    pedido.setNomeEntregador(rs.getString("nome_entregador")); // Inclua o nome do entregador aqui
+                    pedido.setNomeEntregador(rs.getString("nome_entregador"));
                     pedidoMap.put(codPedido, pedido);
                 }
 

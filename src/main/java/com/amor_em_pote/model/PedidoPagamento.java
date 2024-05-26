@@ -14,10 +14,11 @@ public class PedidoPagamento {
     private String fk_cliente_cpf;
     private int cod_pagamento;
     private String nomeCliente;
+    private String nomeEntregador; // Adicione este campo
     private List<ProdutoPedido> produtos;
-    private String nomeEntregador;
 
-    // Getters e Setters para todos os campos
+    // Getters e Setters
+
     public int getCod_pedido() {
         return cod_pedido;
     }
@@ -90,15 +91,19 @@ public class PedidoPagamento {
         this.nomeCliente = nomeCliente;
     }
 
+    public String getNomeEntregador() {
+        return nomeEntregador;
+    }
+
+    public void setNomeEntregador(String nomeEntregador) {
+        this.nomeEntregador = nomeEntregador;
+    }
+
     public List<ProdutoPedido> getProdutos() {
         return produtos;
     }
 
     public void setProdutos(List<ProdutoPedido> produtos) {
         this.produtos = produtos;
-    }
-
-    public void setNomeEntregador(String nomeEntregador) {
-        this.nomeEntregador = nomeEntregador;
     }
 }
