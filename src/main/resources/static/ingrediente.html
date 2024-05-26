@@ -31,7 +31,9 @@
                 <input type="text" id="descricao" name="descricao" />
                 <label for="valor">Valor:</label>
                 <input type="text" id="valor" name="valor" />
-                <button type="submit">Add Ingrediente</button>
+                <label for="quantidade">Quantidade:</label>
+                <input type="text" id="quantidade" name="quantidade" />
+                <button type="submit">Confirmar</button>
             </form>
         </div>
     </div>
@@ -42,7 +44,7 @@
             <form id="getIngredienteForm">
                 <label for="getCod">Código:</label>
                 <input type="text" id="getCod" name="getCod" />
-                <button type="submit">Get Ingrediente</button>
+                <button type="submit">Retornar Ingrediente</button>
             </form>
             <div id="ingredienteByCod"></div>
         </div>
@@ -96,7 +98,8 @@
         const formData = {
             nome_ingrediente: document.getElementById('nome_ingrediente').value,
             descricao: document.getElementById('descricao').value,
-            valor: document.getElementById('valor').value
+            valor: document.getElementById('valor').value,
+            quantidade: document.getElementById('quantidade').value
         };
 
         fetch('/ingredientes/add', {
@@ -111,10 +114,13 @@
                 this.reset();
                 fetchIngredientes(); // Atualiza a lista de ingredientes após adicionar um novo ingrediente
             } else {
-                alert('Erro ao adicionar ingrediente!');
+                response.text().then((errorMessage) => {
+                    alert(errorMessage); // Exibe a mensagem de erro recebida do servidor
+                });
             }
         });
     });
+
 
     document.getElementById('getIngredienteForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -138,7 +144,7 @@
                 `;
             })
             .catch((error) => {
-                document.getElementById('ingredienteByCod').innerText = error.message;
+                document.getElementById('ingredienteByCod').innerText = "Ingrediente não cadastrado na tabela";
             });
     });
 

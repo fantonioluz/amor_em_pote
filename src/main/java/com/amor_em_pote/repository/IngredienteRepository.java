@@ -4,6 +4,7 @@ import com.amor_em_pote.model.Ingrediente;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import javax.swing.JOptionPane;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,8 +20,12 @@ public class IngredienteRepository {
     }
 
     public void save(Ingrediente ingrediente) {
-        String sql = "INSERT INTO ingrediente (cod_ingrediente, nome_ingrediente, descricao, valor) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, ingrediente.getCod_ingrediente(), ingrediente.getNome_ingrediente(), ingrediente.getDescricao(), ingrediente.getValor());
+        if (ingrediente.getQuantidade() > 0) {
+            String sql = "INSERT INTO ingrediente (cod_ingrediente, nome_ingrediente, descricao, valor, quantidade) VALUES (?, ?, ?, ?, ?)";
+            jdbcTemplate.update(sql, ingrediente.getCod_ingrediente(), ingrediente.getNome_ingrediente(), ingrediente.getDescricao(), ingrediente.getValor(), ingrediente.getQuantidade());
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingrediente deve ter quantidade maior que 0 (zero)!", "Alerta", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     public Ingrediente findById(int cod_ingrediente) {

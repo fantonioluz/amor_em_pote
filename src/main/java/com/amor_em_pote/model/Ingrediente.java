@@ -15,6 +15,8 @@ public class Ingrediente {
         this.nome_ingrediente = nome_ingrediente;
         this.descricao = descricao;
         this.valor = valor;
+        this.quantidade = 0;
+
     }
 
     public int getCod_ingrediente() {
@@ -46,19 +48,15 @@ public class Ingrediente {
     }
 
     public void setValor(float valor) {
-        if (valor > 0) {
-            this.valor = valor;
-        } else {
-            throw new IllegalArgumentException("Valor must be greater than 0");
-        }
+        this.valor = valor;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
     }
 
     public void setQuantidade(int quantidade) {
-        if (quantidade >= 0) {
-            this.quantidade = quantidade;
-        } else {
-            throw new IllegalArgumentException("Quantidade must be greater than or equal to 0");
-        }
+        this.quantidade = quantidade;
     }
 }
 
