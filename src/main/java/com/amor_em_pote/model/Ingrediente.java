@@ -5,7 +5,8 @@ public class Ingrediente {
     private int cod_ingrediente;
     private String nome_ingrediente;
     private String descricao;
-    private int valor;
+    private float valor;
+    private int quantidade;
 
     public Ingrediente() {}
 
@@ -40,15 +41,23 @@ public class Ingrediente {
         this.descricao = descricao;
     }
 
-    public int getValor() {
+    public float getValor() {
         return valor;
     }
 
-    public void setValor(int valor) {
+    public void setValor(float valor) {
         if (valor > 0) {
             this.valor = valor;
         } else {
             throw new IllegalArgumentException("Valor must be greater than 0");
+        }
+    }
+
+    public void setQuantidade(int quantidade) {
+        if (quantidade >= 0) {
+            this.quantidade = quantidade;
+        } else {
+            throw new IllegalArgumentException("Quantidade must be greater than or equal to 0");
         }
     }
 }

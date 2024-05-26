@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Produto API Test</title>
-    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos</title>
+    <link rel="stylesheet" href="styleProduto.css">
 </head>
 <body>
 <header>
@@ -14,10 +14,11 @@
     </div>
 </header>
 <nav class="navbar">
-    <a class="nav-button" href="clientes.html">Clientes</a>
-    <a class="nav-button" href="ingrediente.html">Estoque</a>
-    <a class="nav-button" href="produto.html">Produtos</a>
-    <a class="nav-button" href="pedido.html">Pedidos</a>
+    <a href="index.html" class="nav-button">Início</a>
+    <a href="produto.html" class="nav-button">Produtos</a>
+    <a href="pedido.html" class="nav-button">Pedidos</a>
+    <a href="clientes.html" class="nav-button">Clientes</a>
+    <a href="ingrediente.html" class="nav-button">Ingredientes</a>
 </nav>
 
 <div class="container">
@@ -26,32 +27,23 @@
             <h2>Adicionar Produto</h2>
             <form id="addProdutoForm">
                 <label for="nome_produto">Nome:</label>
-                <input type="text" id="nome_produto" name="nome_produto" />
+                <input type="text" id="nome_produto" name="nome_produto" required><br>
                 <label for="descricao">Descrição:</label>
-                <input type="text" id="descricao" name="descricao" />
+                <input type="text" id="descricao" name="descricao" required><br>
                 <label for="valor">Valor:</label>
-                <input type="text" id="valor" name="valor" />
+                <input type="number" id="valor" name="valor" required step="0.01"><br>
                 <label for="quantidade">Quantidade:</label>
-                <input type="number" id="quantidade" name="quantidade" />
-                <button type="submit">Add Produto</button>
+                <input type="number" id="quantidade" name="quantidade" required><br>
+                <label for="ingredientes">Ingredientes:</label>
+                <div id="ingredientesList"></div><br>
+                <button type="submit">Adicionar Produto</button>
             </form>
-        </div>
-    </div>
-    <div class="row">
-        <div class="column">
-            <h2>Confirmar</h2>
-            <form id="getProdutoForm">
-                <label for="getById">ID:</label>
-                <input type="text" id="getById" name="getById" />
-                <button type="submit">Get Produto</button>
-            </form>
-            <p id="produtoById"></p>
         </div>
     </div>
     <div class="row">
         <div class="column">
             <h2>Todos os Produtos</h2>
-            <button class="nav-button" id="getAllProdutos">Atualizar Lista</button>
+            <button id="refreshProdutos" class="nav-button">Atualizar Lista</button>
             <table id="produtosTable">
                 <thead>
                 <tr>
@@ -62,33 +54,78 @@
                     <th>Quantidade</th>
                 </tr>
                 </thead>
-                <tbody>
-                </tbody>
+                <tbody id="produtosList"></tbody>
             </table>
-        </div>
-    </div>
-    <div class="row">
-        <div class="column">
-            <h2>Deletar Produto</h2>
-            <form id="deleteProdutoForm">
-                <label for="deleteById">ID:</label>
-                <input type="text" id="deleteById" name="deleteById" />
-                <button type="submit">Delete Produto</button>
-            </form>
-            <p id="deleteStatus"></p>
         </div>
     </div>
 </div>
 
 <script>
-    document.getElementById('addProdutoForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchIngredientes();
+        fetchProdutos();
 
-        const formData = {
+        document.getElementById('addProdutoForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            createProduto();
+        });
+
+        document.getElementById('refreshProdutos').addEventListener('click', function() {
+            fetchProdutos();
+        });
+    });
+
+    function fetchIngredientes() {
+        fetch('/ingredientes/disponiveis')
+            .then(response => response.json())
+            .then(data => {
+                const ingredientesList = document.getElementById('ingredientesList');
+                ingredientesList.innerHTML = '';
+                data.forEach(ingrediente => {
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = 'ingrediente-' + ingrediente.cod_ingrediente;
+                    checkbox.name = 'ingredientes';
+                    checkbox.value = ingrediente.cod_ingrediente;
+
+                    const label = document.createElement('label');
+                    label.htmlFor = 'ingrediente-' + ingrediente.cod_ingrediente;
+                    label.textContent = ingrediente.nome_ingrediente + ' (Estoque: ' + ingrediente.quantidade + ')';
+
+                    const quantityInput = document.createElement('input');
+                    quantityInput.type = 'number';
+                    quantityInput.id = 'quantidade-' + ingrediente.cod_ingrediente;
+                    quantityInput.name = 'quantidade-' + ingrediente.cod_ingrediente;
+                    quantityInput.min = '1';
+                    quantityInput.max = ingrediente.quantidade;
+                    quantityInput.value = '1';
+                    quantityInput.style.marginLeft = '10px';
+
+                    const div = document.createElement('div');
+                    div.appendChild(checkbox);
+                    div.appendChild(label);
+                    div.appendChild(quantityInput);
+
+                    ingredientesList.appendChild(div);
+                });
+            });
+    }
+
+    function createProduto() {
+        const ingredientesCheckboxes = document.querySelectorAll('#ingredientesList input[type="checkbox"]:checked');
+        const ingredientesUsados = {};
+        ingredientesCheckboxes.forEach(checkbox => {
+            const ingredienteId = checkbox.value;
+            const quantidade = document.getElementById('quantidade-' + ingredienteId).value;
+            ingredientesUsados[ingredienteId] = quantidade;
+        });
+
+        const produtoData = {
             nome_produto: document.getElementById('nome_produto').value,
             descricao: document.getElementById('descricao').value,
             valor: document.getElementById('valor').value,
-            quantidade: document.getElementById('quantidade').value
+            quantidade: document.getElementById('quantidade').value,
+            ingredientesUsados: ingredientesUsados
         };
 
         fetch('/produtos/add', {
@@ -96,81 +133,38 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(formData)
-        })
-            .then(response => {
-                if (response.ok) {
-                    alert('Produto adicionado com sucesso!');
-                    this.reset();
-                    fetchProdutos(); // Atualiza a lista de produtos após adicionar um novo produto
-                } else {
-                    alert('Erro ao adicionar produto!');
-                }
-            });
-    });
-
-    document.getElementById('getProdutoForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const getById = document.getElementById('getById').value;
-
-        fetch(`/produtos/${getById}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Produto não encontrado');
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('produtoById').innerText = JSON.stringify(data);
-            })
-            .catch(error => {
-                document.getElementById('produtoById').innerText = error.message;
-            });
-    });
-
-    document.getElementById('getAllProdutos').addEventListener('click', fetchProdutos);
+            body: JSON.stringify(produtoData)
+        }).then(response => {
+            if (response.ok) {
+                alert('Produto adicionado com sucesso!');
+                document.getElementById('addProdutoForm').reset();
+                fetchIngredientes();
+                fetchProdutos();
+            } else {
+                alert('Erro ao adicionar produto!');
+            }
+        });
+    }
 
     function fetchProdutos() {
         fetch('/produtos/all')
             .then(response => response.json())
             .then(data => {
-                const produtosTable = document.querySelector('#produtosTable tbody');
-                produtosTable.innerHTML = '';
+                const produtosList = document.getElementById('produtosList');
+                produtosList.innerHTML = '';
                 data.forEach(produto => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
                         <td>${produto.cod_produto}</td>
                         <td>${produto.nome_produto}</td>
                         <td>${produto.descricao}</td>
                         <td>R$ ${produto.valor.toFixed(2)}</td>
                         <td>${produto.quantidade}</td>
                     `;
-                    produtosTable.appendChild(tr);
+                    produtosList.appendChild(row);
                 });
             });
     }
-
-    document.getElementById('deleteProdutoForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const deleteById = document.getElementById('deleteById').value;
-
-        fetch(`/produtos/${deleteById}`, {
-            method: 'DELETE'
-        })
-            .then(response => {
-                if (response.ok) {
-                    document.getElementById('deleteStatus').innerText = 'Produto deletado com sucesso!';
-                    fetchProdutos(); // Atualiza a lista de produtos após deletar um produto
-                } else {
-                    document.getElementById('deleteStatus').innerText = 'Erro ao deletar produto!';
-                }
-            });
-    });
-
-    // Carrega a lista de produtos automaticamente ao abrir a página
-    document.addEventListener('DOMContentLoaded', fetchProdutos);
 </script>
 </body>
 </html>

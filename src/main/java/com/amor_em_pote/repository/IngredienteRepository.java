@@ -44,6 +44,17 @@ public class IngredienteRepository {
         jdbcTemplate.update(sql, cod_ingrediente);
     }
 
+    public void updateQuantidade(int cod_ingrediente, int quantidade) {
+        String sql = "UPDATE ingrediente SET quantidade = quantidade + ? WHERE cod_ingrediente = ?";
+        jdbcTemplate.update(sql, quantidade, cod_ingrediente);
+    }
+
+    public List<Ingrediente> findAllWithQuantidadeGreaterThanZero() {
+        String sql = "SELECT * FROM ingrediente WHERE quantidade > 0";
+        return jdbcTemplate.query(sql, new IngredienteRowMapper());
+    }
+
+
     private static final class IngredienteRowMapper implements RowMapper<Ingrediente> {
         @Override
         public Ingrediente mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -51,7 +62,8 @@ public class IngredienteRepository {
             ingrediente.setCod_ingrediente(rs.getInt("cod_ingrediente"));
             ingrediente.setNome_ingrediente(rs.getString("nome_ingrediente"));
             ingrediente.setDescricao(rs.getString("descricao"));
-            ingrediente.setValor(rs.getInt("valor"));
+            ingrediente.setValor(rs.getFloat("valor"));
+            ingrediente.setQuantidade(rs.getInt("quantidade"));
             return ingrediente;
         }
     }

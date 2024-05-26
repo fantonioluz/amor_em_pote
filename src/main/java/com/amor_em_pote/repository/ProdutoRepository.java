@@ -54,6 +54,12 @@ public class ProdutoRepository {
         return jdbcTemplate.query(sql, new ProdutoRowMapper());
     }
 
+    public int getLastInsertedId() {
+        String sql = "SELECT LAST_INSERT_ID()";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+
 
     private static final class ProdutoRowMapper implements RowMapper<Produto> {
         @Override

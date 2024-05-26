@@ -30,6 +30,10 @@ public class IngredienteService {
         }
     }
 
+    public List<Ingrediente> findAllWithQuantidadeGreaterThanZero() {
+        return ingredienteRepository.findAllWithQuantidadeGreaterThanZero();
+    }
+
     public List<Ingrediente> getAllIngredientes() {
         return ingredienteRepository.findAll();
     }

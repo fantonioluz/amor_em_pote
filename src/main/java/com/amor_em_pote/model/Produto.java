@@ -1,5 +1,6 @@
 package com.amor_em_pote.model;
 
+
 public class Produto {
 
     private int cod_produto;
@@ -60,5 +61,6 @@ public class Produto {
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
+
 }
 
