@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styleIngrediente.css" />
     <title>Ingredientes</title>
 </head>
+
 <body>
 <header>
     <div class="title">Amor em Pote</div>
@@ -37,7 +39,7 @@
             </form>
         </div>
     </div>
-
+    <hr />
     <div class="row">
         <div class="column">
             <h2>Selecionar Ingrediente por Código</h2>
@@ -49,35 +51,39 @@
             <div id="ingredienteByCod"></div>
         </div>
     </div>
-
+    <hr />
     <div class="row">
         <div class="column">
             <h2>Todos os Ingredientes</h2>
-            <button class="nav-button" id="getAllIngredientes">Atualizar Lista</button>
-            <label for="sortOptions">Ordenar por:</label>
-            <select id="sortOptions">
-                <option value="none">Selecione</option>
-                <option value="quantidadeAsc">Quantidade (Crescente)</option>
-                <option value="quantidadeDesc">Quantidade (Decrescente)</option>
-                <option value="nomeAsc">Nome (Alfabética)</option>
-                <option value="valorAsc">Valor (Crescente)</option>
-                <option value="valorDesc">Valor (Decrescente)</option>
-            </select>
-            <table id="ingredientesTable">
-                <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Nome</th>
-                    <th>Descrição</th>
-                    <th>Valor</th>
-                    <th>Quantidade</th>
-                </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <form id="getAllIngredientesForm">
+                <button class="nav-button" id="getAllIngredientes">Atualizar Lista</button> <br />
+                <label for="sortOptions">Ordenar por:</label>
+                <select id="sortOptions">
+                    <option value="none">Selecione</option>
+                    <option value="quantidadeAsc">Quantidade (Crescente)</option>
+                    <option value="quantidadeDesc">Quantidade (Decrescente)</option>
+                    <option value="nomeAsc">Nome (Alfabética)</option>
+                    <option value="valorAsc">Valor (Crescente)</option>
+                    <option value="valorDesc">Valor (Decrescente)</option>
+                </select>
+                <br />
+                <table id="ingredientesTable">
+                    <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Valor</th>
+                        <th>Quantidade</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <br/>
+            </form>
         </div>
     </div>
-
+    <hr/>
     <div class="row">
         <div class="column">
             <h2>Deletar Ingrediente por Código</h2>
@@ -92,7 +98,7 @@
 </div>
 
 <script>
-    document.getElementById('addIngredienteForm').addEventListener('submit', function(event) {
+    document.getElementById('addIngredienteForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
         const formData = {
@@ -122,7 +128,7 @@
     });
 
 
-    document.getElementById('getIngredienteForm').addEventListener('submit', function(event) {
+    document.getElementById('getIngredienteForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
         const getCod = document.getElementById('getCod').value;
@@ -149,7 +155,7 @@
     });
 
     document.getElementById('getAllIngredientes').addEventListener('click', fetchIngredientes);
-    document.getElementById('sortOptions').addEventListener('change', function() {
+    document.getElementById('sortOptions').addEventListener('change', function () {
         const selectedOption = this.value;
         fetchSortedIngredientes(selectedOption);
     });
@@ -206,7 +212,7 @@
         });
     }
 
-    document.getElementById('deleteIngredienteForm').addEventListener('submit', function(event) {
+    document.getElementById('deleteIngredienteForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
         const deleteCod = document.getElementById('deleteCod').value;
@@ -227,4 +233,5 @@
     document.addEventListener('DOMContentLoaded', fetchIngredientes);
 </script>
 </body>
+
 </html>
