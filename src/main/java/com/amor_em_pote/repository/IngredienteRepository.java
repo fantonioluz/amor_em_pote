@@ -59,6 +59,11 @@ public class IngredienteRepository {
         return jdbcTemplate.query(sql, new IngredienteRowMapper());
     }
 
+    public List<Ingrediente> findIngredientesComQuantidadeBaixa() {
+        String sql = "SELECT * FROM ingrediente WHERE quantidade <= 2";
+        return jdbcTemplate.query(sql, new IngredienteRowMapper());
+    }
+
 
     public List<Ingrediente> findAllOrderByQuantidadeAsc() {
         String sql = "SELECT * FROM ingrediente ORDER BY quantidade ASC";

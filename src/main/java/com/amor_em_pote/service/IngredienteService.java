@@ -21,6 +21,10 @@ public class IngredienteService {
         ingredienteRepository.save(ingrediente);
     }
 
+    public void updateQuantidade(int cod_ingrediente, int quantidade) {
+        ingredienteRepository.updateQuantidade(cod_ingrediente, quantidade);
+    }
+
     public Ingrediente getIngredienteByCod(int cod_ingrediente) {
         try {
             return ingredienteRepository.findById(cod_ingrediente);
@@ -28,6 +32,10 @@ public class IngredienteService {
             // handle exception (e.g., ingrediente not found)
             return null;
         }
+    }
+
+    public List<Ingrediente> getIngredientesComQuantidadeBaixa() {
+        return ingredienteRepository.findIngredientesComQuantidadeBaixa();
     }
 
     public List<Ingrediente> findAllWithQuantidadeGreaterThanZero() {

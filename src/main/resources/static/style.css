@@ -7,9 +7,8 @@
 header {
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
+    justify-content: space-around;
+    padding: 20px;
     background-color: #764526;
     color: #ffffff;
 }
@@ -30,7 +29,7 @@ header {
 }
 
 .navbar {
-    margin: 20px 0; /* Ajuste a margem conforme necessário */
+    margin: 3rem 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -46,16 +45,10 @@ header {
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
-    text-decoration: none;
 }
 
 .nav-button:hover {
     background-color: #cd853f;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 30px;
 }
 
 h2 {
@@ -78,21 +71,17 @@ body {
 
 .row {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    justify-content: space-around;
     margin-bottom: 20px;
 }
 
 .column {
     flex: 1;
-    min-width: 300px;
-    max-width: 48%;
     padding: 10px;
     background: #fff;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
 }
 
 label {
@@ -124,42 +113,27 @@ button:hover {
     background-color: #cd853f;
 }
 
-table {
+#pedidosTable, #clientesTable, #produtosTable, #ingredientesTable {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
-table th, table td {
+#pedidosTable th, #pedidosTable td, #clientesTable th, #clientesTable td, #produtosTable th, #produtosTable td, #ingredientesTable th, #ingredientesTable td {
     padding: 10px;
     text-align: left;
     border: 1px solid #ddd;
 }
 
-table th {
+#pedidosTable th, #clientesTable th, #produtosTable th, #ingredientesTable th {
     background-color: #d2691e;
     color: white;
 }
 
-table td {
+#pedidosTable td, #clientesTable td, #produtosTable td, #ingredientesTable td {
     background-color: #f9f9f9;
 }
 
-table tr:nth-child(even) {
+#pedidosTable tr:nth-child(even), #clientesTable tr:nth-child(even), #produtosTable tr:nth-child(even), #ingredientesTable tr:nth-child(even) {
     background-color: #f2f2f2;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-ul li {
-    padding: 10px;
-    background: #f9f9f9;
-    border-bottom: 1px solid #eee;
-}
-
-ul li:last-child {
-    border-bottom: none;
 }

@@ -26,6 +26,11 @@ public class IngredienteController {
         return ingredienteService.getIngredienteByCod(cod_ingrediente);
     }
 
+    @PutMapping("/update/{cod_ingrediente}")
+    public void updateQuantidade(@PathVariable int cod_ingrediente, @RequestBody Ingrediente ingrediente) {
+        ingredienteService.updateQuantidade(cod_ingrediente, ingrediente.getQuantidade());
+    }
+
     @GetMapping("/all")
     public List<Ingrediente> getAllIngredientes() {
         return ingredienteService.getAllIngredientes();
@@ -63,5 +68,11 @@ public class IngredienteController {
     @GetMapping("/orderByValorDesc")
     public List<Ingrediente> getIngredientesOrderByValorDesc() {
         return ingredienteService.getIngredientesOrderByValorDesc();
+    }
+
+
+    @GetMapping("/alertas")
+    public List<Ingrediente> getAlertasQuantidadeBaixa() {
+        return ingredienteService.getIngredientesComQuantidadeBaixa();
     }
 }
