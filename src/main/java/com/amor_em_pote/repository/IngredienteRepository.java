@@ -55,6 +55,29 @@ public class IngredienteRepository {
     }
 
 
+    public List<Ingrediente> findAllOrderByQuantidadeAsc() {
+        String sql = "SELECT * FROM ingrediente ORDER BY quantidade ASC";
+        return jdbcTemplate.query(sql, new IngredienteRowMapper());
+    }
+    public List<Ingrediente> findAllOrderByQuantidadeDesc() {
+        String sql = "SELECT * FROM ingrediente ORDER BY quantidade DESC";
+        return jdbcTemplate.query(sql, new IngredienteRowMapper());
+    }
+    public List<Ingrediente> findAllOrderByNomeAsc() {
+        String sql = "SELECT * FROM ingrediente ORDER BY nome_ingrediente ASC";
+        return jdbcTemplate.query(sql, new IngredienteRowMapper());
+    }
+    public List<Ingrediente> findAllOrderByValorAsc() {
+        String sql = "SELECT * FROM ingrediente ORDER BY valor ASC";
+        return jdbcTemplate.query(sql, new IngredienteRowMapper());
+    }
+    public List<Ingrediente> findAllOrderByValorDesc() {
+        String sql = "SELECT * FROM ingrediente ORDER BY valor DESC";
+        return jdbcTemplate.query(sql, new IngredienteRowMapper());
+    }
+
+
+
     private static final class IngredienteRowMapper implements RowMapper<Ingrediente> {
         @Override
         public Ingrediente mapRow(ResultSet rs, int rowNum) throws SQLException {

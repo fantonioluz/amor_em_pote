@@ -36,7 +36,6 @@
         </div>
     </div>
 
-
     <div class="row">
         <div class="column">
             <h2>Selecionar Ingrediente por Código</h2>
@@ -53,6 +52,15 @@
         <div class="column">
             <h2>Todos os Ingredientes</h2>
             <button class="nav-button" id="getAllIngredientes">Atualizar Lista</button>
+            <label for="sortOptions">Ordenar por:</label>
+            <select id="sortOptions">
+                <option value="none">Selecione</option>
+                <option value="quantidadeAsc">Quantidade (Crescente)</option>
+                <option value="quantidadeDesc">Quantidade (Decrescente)</option>
+                <option value="nomeAsc">Nome (Alfabética)</option>
+                <option value="valorAsc">Valor (Crescente)</option>
+                <option value="valorDesc">Valor (Decrescente)</option>
+            </select>
             <table id="ingredientesTable">
                 <thead>
                 <tr>
@@ -60,10 +68,10 @@
                     <th>Nome</th>
                     <th>Descrição</th>
                     <th>Valor</th>
+                    <th>Quantidade</th>
                 </tr>
                 </thead>
-                <tbody>
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
     </div>
@@ -121,11 +129,12 @@
                 return response.json();
             })
             .then((data) => {
-                document.getElementById('ingredienteByCod').innerText = `
+                document.getElementById('ingredienteByCod').innerHTML = `
                     Código: ${data.cod_ingrediente}<br>
                     Nome: ${data.nome_ingrediente}<br>
                     Descrição: ${data.descricao}<br>
-                    Valor: R$ ${data.valor.toFixed(2)}
+                    Valor: R$ ${data.valor.toFixed(2)}<br>
+                    Quantidade: ${data.quantidade}
                 `;
             })
             .catch((error) => {
@@ -134,24 +143,61 @@
     });
 
     document.getElementById('getAllIngredientes').addEventListener('click', fetchIngredientes);
+    document.getElementById('sortOptions').addEventListener('change', function() {
+        const selectedOption = this.value;
+        fetchSortedIngredientes(selectedOption);
+    });
 
     function fetchIngredientes() {
         fetch('/ingredientes/all')
             .then((response) => response.json())
             .then((data) => {
-                const ingredientesTable = document.querySelector('#ingredientesTable tbody');
-                ingredientesTable.innerHTML = '';
-                data.forEach((ingrediente) => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${ingrediente.cod_ingrediente}</td>
-                        <td>${ingrediente.nome_ingrediente}</td>
-                        <td>${ingrediente.descricao}</td>
-                        <td>R$ ${ingrediente.valor.toFixed(2)}</td>
-                    `;
-                    ingredientesTable.appendChild(tr);
-                });
+                updateTable(data);
             });
+    }
+
+    function fetchSortedIngredientes(order) {
+        let endpoint = '/ingredientes/orderBy';
+        switch (order) {
+            case 'quantidadeAsc':
+                endpoint += 'QuantidadeAsc';
+                break;
+            case 'quantidadeDesc':
+                endpoint += 'QuantidadeDesc';
+                break;
+            case 'nomeAsc':
+                endpoint += 'NomeAsc';
+                break;
+            case 'valorAsc':
+                endpoint += 'ValorAsc';
+                break;
+            case 'valorDesc':
+                endpoint += 'ValorDesc';
+                break;
+            default:
+                endpoint = '/ingredientes/all';
+        }
+        fetch(endpoint)
+            .then((response) => response.json())
+            .then((data) => {
+                updateTable(data);
+            });
+    }
+
+    function updateTable(data) {
+        const ingredientesTable = document.querySelector('#ingredientesTable tbody');
+        ingredientesTable.innerHTML = '';
+        data.forEach((ingrediente) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${ingrediente.cod_ingrediente}</td>
+                <td>${ingrediente.nome_ingrediente}</td>
+                <td>${ingrediente.descricao}</td>
+                <td>R$ ${ingrediente.valor.toFixed(2)}</td>
+                <td>${ingrediente.quantidade}</td>
+            `;
+            ingredientesTable.appendChild(tr);
+        });
     }
 
     document.getElementById('deleteIngredienteForm').addEventListener('submit', function(event) {

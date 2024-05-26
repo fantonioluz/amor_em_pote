@@ -40,4 +40,28 @@ public class IngredienteController {
     public void deleteIngredienteByCod(@PathVariable int cod_ingrediente) {
         ingredienteService.deleteIngredienteByCod(cod_ingrediente);
     }
+    @GetMapping("/orderByQuantidadeAsc")
+    public List<Ingrediente> getIngredientesOrderByQuantidadeAsc() {
+        return ingredienteService.getIngredientesOrderByQuantidadeAsc();
+    }
+
+    @GetMapping("/orderByQuantidadeDesc")
+    public List<Ingrediente> getIngredientesOrderByQuantidadeDesc() {
+        return ingredienteService.getIngredientesOrderByQuantidadeDesc();
+    }
+
+    @GetMapping("/orderByNomeAsc")
+    public List<Ingrediente> getIngredientesOrderByNomeAsc() {
+        return ingredienteService.getIngredientesOrderByNomeAsc();
+    }
+
+    @GetMapping("/orderByValorAsc")
+    public List<Ingrediente> getIngredientesOrderByValorAsc() {
+        return ingredienteService.getIngredientesOrderByValorAsc();
+    }
+
+    @GetMapping("/orderByValorDesc")
+    public List<Ingrediente> getIngredientesOrderByValorDesc() {
+        return ingredienteService.getIngredientesOrderByValorDesc();
+    }
 }

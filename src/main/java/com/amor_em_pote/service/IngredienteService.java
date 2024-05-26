@@ -41,4 +41,23 @@ public class IngredienteService {
     public void deleteIngredienteByCod(int cod_ingrediente) {
         ingredienteRepository.delete(cod_ingrediente);
     }
+    public List<Ingrediente> getIngredientesOrderByQuantidadeAsc() {
+        return ingredienteRepository.findAllOrderByQuantidadeAsc();
+    }
+
+    public List<Ingrediente> getIngredientesOrderByQuantidadeDesc() {
+        return ingredienteRepository.findAllOrderByQuantidadeDesc();
+    }
+
+    public List<Ingrediente> getIngredientesOrderByNomeAsc() {
+        return ingredienteRepository.findAllOrderByNomeAsc();
+    }
+
+    public List<Ingrediente> getIngredientesOrderByValorAsc() {
+        return ingredienteRepository.findAllOrderByValorAsc();
+    }
+
+    public List<Ingrediente> getIngredientesOrderByValorDesc() {
+        return ingredienteRepository.findAllOrderByValorDesc();
+    }
 }
