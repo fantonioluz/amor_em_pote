@@ -32,7 +32,7 @@ public class EntregadorController {
         return entregador != null ? ResponseEntity.ok(entregador) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<Entregador> getAllEntregadores() {
         return entregadorService.getAllEntregadores();
     }

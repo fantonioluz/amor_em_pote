@@ -15,6 +15,7 @@ public class PedidoPagamento {
     private int cod_pagamento;
     private String nomeCliente;
     private List<ProdutoPedido> produtos;
+    private String nomeEntregador;
 
     // Getters e Setters para todos os campos
     public int getCod_pedido() {
@@ -97,4 +98,7 @@ public class PedidoPagamento {
         this.produtos = produtos;
     }
 
+    public void setNomeEntregador(String nomeEntregador) {
+        this.nomeEntregador = nomeEntregador;
+    }
 }

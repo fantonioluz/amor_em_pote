@@ -78,6 +78,8 @@
                     <th>Nome do Cliente</th>
                     <th>Código de Pagamento</th>
                     <th>Produtos</th>
+                    <th>Entregador</th>
+                    <th>Ação</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -138,6 +140,7 @@
                 pedidosTable.innerHTML = '';
                 data.forEach(pedido => {
                     const produtosList = pedido.produtos.map(p => `${p.nome_produto} (Quantidade: ${p.quantidade_produto_pedido}, Preço: R$ ${p.valor_produto.toFixed(2)})`).join('<br>');
+                    const entregador = pedido.nome_entregador ? pedido.nome_entregador : 'Não atribuído';
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td>${pedido.cod_pedido}</td>
@@ -150,10 +153,63 @@
                         <td>${pedido.nomeCliente}</td>
                         <td>${pedido.cod_pagamento}</td>
                         <td>${produtosList}</td>
+                        <td>${entregador}</td>
+                        <td>
+                            <select class="entregadorSelect" data-pedido-id="${pedido.cod_pedido}">
+                                <option value="">Selecione um entregador</option>
+                            </select>
+                            <button class="nav-button" onclick="assignEntregador(${pedido.cod_pedido})">Atribuir</button>
+                        </td>
                     `;
                     pedidosTable.appendChild(tr);
+                    fetchEntregadores(pedido.cod_pedido);
                 });
             });
+    }
+
+    function fetchEntregadores(pedidoId) {
+        fetch('/entregadores')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.querySelector(`.entregadorSelect[data-pedido-id="${pedidoId}"]`);
+                select.innerHTML = '<option value="">Selecione um entregador</option>';
+                data.forEach(entregador => {
+                    const option = document.createElement('option');
+                    option.value = entregador.cod_entregador;
+                    option.text = entregador.nome_entregador;
+                    select.add(option);
+                });
+            });
+    }
+
+    function assignEntregador(pedidoId) {
+        const select = document.querySelector(`.entregadorSelect[data-pedido-id="${pedidoId}"]`);
+        const entregadorId = select.value;
+        if (entregadorId) {
+            const entrega = {
+                fk_entregador_cod_entregador: entregadorId,
+                fk_pedido_pagamento_cod_pedido: pedidoId,
+                fk_cliente_cpf: select.closest('tr').querySelector('td:nth-child(7)').textContent
+            };
+            fetch('/entregas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(entrega)
+            }).then(response => {
+                if (response.ok) {
+                    alert('Entregador atribuído com sucesso!');
+                    fetchPedidos();
+                } else {
+                    response.text().then(text => {
+                        alert(`Erro ao atribuir entregador: ${text}`);
+                    });
+                }
+            });
+        } else {
+            alert('Selecione um entregador.');
+        }
     }
 
     function fetchAvailableProducts() {

@@ -19,8 +19,8 @@ public class EntregadorRepository {
     }
 
     public void save(Entregador entregador) {
-        String sql = "INSERT INTO entregador (cod_entregador) VALUES (?)";
-        jdbcTemplate.update(sql, entregador.getCod_entregador());
+        String sql = "INSERT INTO entregador (cod_entregador, nome_entregador) VALUES (?, ?)";
+        jdbcTemplate.update(sql, entregador.getCod_entregador(), entregador.getNome());
     }
 
     public Entregador findById(String cod_entregador) {
@@ -49,7 +49,9 @@ public class EntregadorRepository {
         public Entregador mapRow(ResultSet rs, int rowNum) throws SQLException {
             Entregador entregador = new Entregador();
             entregador.setCod_entregador(rs.getString("cod_entregador"));
+            entregador.setNome(rs.getString("nome_entregador"));
             return entregador;
         }
     }
+
 }

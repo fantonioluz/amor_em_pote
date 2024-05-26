@@ -50,4 +50,5 @@ public class PedidoPagamentoService {
     public List<PedidoPagamento> getAllPedidosWithProducts() {
         return pedidoPagamentoRepository.findAllWithProducts();
     }
+
 }
