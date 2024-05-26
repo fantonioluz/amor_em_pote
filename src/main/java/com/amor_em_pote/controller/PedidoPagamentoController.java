@@ -36,4 +36,22 @@ public class PedidoPagamentoController {
     public List<PedidoPagamento> getAllPedidosWithProducts() {
         return pedidoPagamentoService.getAllPedidosWithProducts();
     }
+
+    @GetMapping("/data/{date}")
+    public List<PedidoPagamento> findByDateWithDetails(@PathVariable String date) {
+        // Retorna os pedidos de uma determinada data com detalhes
+        return pedidoPagamentoService.findByDateWithDetails(date);
+    }
+
+    @GetMapping("/mes/{month}")
+    public List<PedidoPagamento> findByMonthWithDetails(@PathVariable String month) {
+        // Retorna os pedidos de um determinado mês com detalhes
+        return pedidoPagamentoService.findByMonthWithDetails(month);
+    }
+
+    @GetMapping("/ano/{year}")
+    public List<PedidoPagamento> findByYearWithDetails(@PathVariable String year) {
+        // Retorna os pedidos de um determinado ano com detalhes
+        return pedidoPagamentoService.findByYearWithDetails(year);
+    }
 }

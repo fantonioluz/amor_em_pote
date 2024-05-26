@@ -50,5 +50,19 @@ public class PedidoPagamentoService {
     public List<PedidoPagamento> getAllPedidosWithProducts() {
         return pedidoPagamentoRepository.findAllWithProducts();
     }
+    public List<PedidoPagamento> findByDateWithDetails(String date) {
+        // Obtém os pedidos de uma determinada data com detalhes
+        return pedidoPagamentoRepository.findByDateWithDetails(date);
+    }
+
+    public List<PedidoPagamento> findByMonthWithDetails(String month) {
+        // Obtém os pedidos de um determinado mês com detalhes
+        return pedidoPagamentoRepository.findByMonthWithDetails(month);
+    }
+
+    public List<PedidoPagamento> findByYearWithDetails(String year) {
+        // Obtém os pedidos de um determinado ano com detalhes
+        return pedidoPagamentoRepository.findByYearWithDetails(year);
+    }
 
 }

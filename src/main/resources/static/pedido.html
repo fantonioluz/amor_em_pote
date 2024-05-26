@@ -65,6 +65,14 @@
         <div class="column">
             <h2>Todos os Pedidos</h2>
             <button class="nav-button" id="getAllPedidos">Atualizar Lista</button>
+            <div class="row">
+                <div class="column">
+                    <h2>Consultas Especiais</h2>
+                    <button class="nav-button" onclick="fetchPedidosByDate()">Pedidos por Data</button>
+                    <button class="nav-button" onclick="fetchPedidosByMonth()">Pedidos por Mês</button>
+                    <button class="nav-button" onclick="fetchPedidosByYear()">Pedidos por Ano</button>
+                </div>
+            </div>
             <table id="pedidosTable">
                 <thead>
                 <tr>
@@ -316,6 +324,38 @@
         fetchAvailableProducts();
         fetchClientes();
     });
+    function fetchPedidosByDate() {
+        const date = prompt('Digite a data (YYYY-MM-DD):');
+        if (date) {
+            fetch(`/pedidos/data/${date}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Atualiza a exibição dos pedidos por data
+                });
+        }
+    }
+
+    function fetchPedidosByMonth() {
+        const month = prompt('Digite o mês (MM):');
+        if (month) {
+            fetch(`/pedidos/mes/${month}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Atualiza a exibição dos pedidos por mês
+                });
+        }
+    }
+
+    function fetchPedidosByYear() {
+        const year = prompt('Digite o ano (YYYY):');
+        if (year) {
+            fetch(`/pedidos/ano/${year}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Atualiza a exibição dos pedidos por ano
+                });
+        }
+    }
 </script>
 </body>
 </html>
