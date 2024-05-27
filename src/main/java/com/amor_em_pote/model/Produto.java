@@ -8,6 +8,8 @@ public class Produto {
     private String descricao;
     private float valor;
     private int quantidade;
+    private String fk_cozinheiro_cod_funcionario;
+    private String nome_cozinheiro;
 
     public Produto() {}
 
@@ -62,5 +64,20 @@ public class Produto {
         this.quantidade = quantidade;
     }
 
+    public String getFk_cozinheiro_cod_funcionario() {
+        return fk_cozinheiro_cod_funcionario;
+    }
+
+    public void setFk_cozinheiro_cod_funcionario(String fk_cozinheiro_cod_funcionario) {
+        this.fk_cozinheiro_cod_funcionario = fk_cozinheiro_cod_funcionario;
+    }
+
+    public String getNome_cozinheiro() {
+        return nome_cozinheiro;
+    }
+
+    public void setNome_cozinheiro(String nome_cozinheiro) {
+        this.nome_cozinheiro = nome_cozinheiro;
+    }
 }
 

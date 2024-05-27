@@ -19,17 +19,14 @@ public class FuncionarioController {
     }
 
     @PostMapping
-    public void createFuncionario(@RequestBody Funcionario funcionario) {
-        funcionarioService.saveFuncionario(funcionario);
+    public void addFuncionario(@RequestBody FuncionarioRequest request) {
+        Funcionario funcionario = new Funcionario(request.getCod_funcionario(), request.getSalario(), request.getExpediente(), request.getNome());
+        funcionarioService.saveFuncionario(funcionario, request.getTipo());
     }
 
-    @GetMapping("/{id}")
-    public Funcionario getFuncionario(@PathVariable String id) {
-        Funcionario funcionario = funcionarioService.getFuncionarioById(id);
-        if (funcionario == null) {
-            throw new RuntimeException("Funcionario não encontrado");
-        }
-        return funcionario;
+    @GetMapping("/{codFuncionario}")
+    public Funcionario getFuncionarioByCod(@PathVariable String codFuncionario) {
+        return funcionarioService.getFuncionarioByCod(codFuncionario);
     }
 
     @GetMapping
@@ -37,14 +34,63 @@ public class FuncionarioController {
         return funcionarioService.getAllFuncionarios();
     }
 
-    @PutMapping("/{id}")
-    public void updateFuncionario(@PathVariable String id, @RequestBody Funcionario funcionario) {
-        funcionario.setCod_funcionario(id);
+    @PutMapping("/{codFuncionario}")
+    public void updateFuncionario(@PathVariable String codFuncionario, @RequestBody Funcionario funcionario) {
+        funcionario.setCod_funcionario(codFuncionario);
         funcionarioService.updateFuncionario(funcionario);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteFuncionario(@PathVariable String id) {
-        funcionarioService.deleteFuncionarioById(id);
+    @DeleteMapping("/{codFuncionario}")
+    public void deleteFuncionarioByCod(@PathVariable String codFuncionario) {
+        funcionarioService.deleteFuncionarioByCod(codFuncionario);
+    }
+
+    public static class FuncionarioRequest {
+        private String cod_funcionario;
+        private int salario;
+        private String expediente;
+        private String nome;
+        private String tipo;
+
+        public String getCod_funcionario() {
+            return cod_funcionario;
+        }
+
+        public void setCod_funcionario(String cod_funcionario) {
+            this.cod_funcionario = cod_funcionario;
+        }
+
+        public int getSalario() {
+            return salario;
+        }
+
+        public void setSalario(int salario) {
+            this.salario = salario;
+        }
+
+        public String getExpediente() {
+            return expediente;
+        }
+
+        public void setExpediente(String expediente) {
+            this.expediente = expediente;
+        }
+
+        public String getNome() {
+            return nome;
+        }
+
+        public void setNome(String nome) {
+            this.nome = nome;
+        }
+
+        public String getTipo() {
+            return tipo;
+        }
+
+        public void setTipo(String tipo) {
+            this.tipo = tipo;
+        }
     }
 }
+

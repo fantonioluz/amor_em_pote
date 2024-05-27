@@ -31,19 +31,24 @@
                 <label for="descricao">Descrição:</label>
                 <input type="text" id="descricao" name="descricao" required><br>
                 <label for="valor">Valor:</label>
-                <input type="number" id="valor" name="valor" required step="0.01"><br>
+                <input type="number" id="valor" name="valor" required><br>
                 <label for="quantidade">Quantidade:</label>
                 <input type="number" id="quantidade" name="quantidade" required><br>
                 <label for="ingredientes">Ingredientes:</label>
                 <div id="ingredientesList"></div><br>
+                <label for="cozinheiro">Cozinheiro:</label>
+                <select id="cozinheiro" name="cozinheiro" required>
+                    <option value="">Selecione um cozinheiro</option>
+                </select><br>
                 <button type="submit">Adicionar Produto</button>
             </form>
         </div>
     </div>
+    <hr>
     <div class="row">
         <div class="column">
             <h2>Todos os Produtos</h2>
-            <button id="refreshProdutos" class="nav-button">Atualizar Lista</button>
+            <button class="nav-button" id="getAllProdutos">Atualizar Lista</button>
             <table id="produtosTable">
                 <thead>
                 <tr>
@@ -52,9 +57,11 @@
                     <th>Descrição</th>
                     <th>Valor</th>
                     <th>Quantidade</th>
+                    <th>Cozinheiro</th>
                 </tr>
                 </thead>
-                <tbody id="produtosList"></tbody>
+                <tbody>
+                </tbody>
             </table>
         </div>
     </div>
@@ -63,15 +70,11 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         fetchIngredientes();
-        fetchProdutos();
+        fetchCozinheiros();
 
         document.getElementById('addProdutoForm').addEventListener('submit', function(event) {
             event.preventDefault();
             createProduto();
-        });
-
-        document.getElementById('refreshProdutos').addEventListener('click', function() {
-            fetchProdutos();
         });
     });
 
@@ -111,6 +114,21 @@
             });
     }
 
+    function fetchCozinheiros() {
+        fetch('/cozinheiros')
+            .then(response => response.json())
+            .then(data => {
+                const cozinheiroSelect = document.getElementById('cozinheiro');
+                cozinheiroSelect.innerHTML = '<option value="">Selecione um cozinheiro</option>';
+                data.forEach(cozinheiro => {
+                    const option = document.createElement('option');
+                    option.value = cozinheiro.cod_funcionario;
+                    option.text = cozinheiro.nome;
+                    cozinheiroSelect.add(option);
+                });
+            });
+    }
+
     function createProduto() {
         const ingredientesCheckboxes = document.querySelectorAll('#ingredientesList input[type="checkbox"]:checked');
         const ingredientesUsados = {};
@@ -125,7 +143,8 @@
             descricao: document.getElementById('descricao').value,
             valor: document.getElementById('valor').value,
             quantidade: document.getElementById('quantidade').value,
-            ingredientesUsados: ingredientesUsados
+            ingredientesUsados: ingredientesUsados,
+            fk_cozinheiro_cod_funcionario: document.getElementById('cozinheiro').value
         };
 
         fetch('/produtos/add', {
@@ -146,22 +165,25 @@
         });
     }
 
+    document.getElementById('getAllProdutos').addEventListener('click', fetchProdutos);
+
     function fetchProdutos() {
         fetch('/produtos/all')
             .then(response => response.json())
             .then(data => {
-                const produtosList = document.getElementById('produtosList');
-                produtosList.innerHTML = '';
+                const produtosTable = document.querySelector('#produtosTable tbody');
+                produtosTable.innerHTML = '';
                 data.forEach(produto => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
                         <td>${produto.cod_produto}</td>
                         <td>${produto.nome_produto}</td>
                         <td>${produto.descricao}</td>
                         <td>R$ ${produto.valor.toFixed(2)}</td>
                         <td>${produto.quantidade}</td>
+                        <td>${produto.nome_cozinheiro || 'Não atribuído'}</td>
                     `;
-                    produtosList.appendChild(row);
+                    produtosTable.appendChild(tr);
                 });
             });
     }

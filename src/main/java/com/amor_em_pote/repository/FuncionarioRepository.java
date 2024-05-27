@@ -18,13 +18,21 @@ public class FuncionarioRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void save(Funcionario funcionario) {
-        String sql = "INSERT INTO funcionario (cod_funcionario, salario, expediente, nome) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, funcionario.getCod_funcionario(), funcionario.getSalario(), funcionario.getExpediente(), funcionario.getNome());
+    public void save(Funcionario funcionario, String tipo) {
+        String sqlFuncionario = "INSERT INTO funcionario (cpf_funcionario, nome, salario, expediente) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sqlFuncionario, funcionario.getCod_funcionario(), funcionario.getNome(), funcionario.getSalario(), funcionario.getExpediente());
+
+        String sqlTipo;
+        if (tipo.equals("gerente")) {
+            sqlTipo = "INSERT INTO gerente (fk_funcionario_cod_funcionario) VALUES (?)";
+        } else {
+            sqlTipo = "INSERT INTO cozinheiro (fk_cozinheiro_cod_funcionario) VALUES (?)";
+        }
+        jdbcTemplate.update(sqlTipo, funcionario.getCod_funcionario());
     }
 
     public Funcionario findById(String codFuncionario) {
-        String sql = "SELECT * FROM funcionario WHERE cod_funcionario = ?";
+        String sql = "SELECT * FROM funcionario WHERE cpf_funcionario = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{codFuncionario}, new FuncionarioRowMapper());
     }
 
@@ -34,12 +42,12 @@ public class FuncionarioRepository {
     }
 
     public void update(Funcionario funcionario) {
-        String sql = "UPDATE funcionario SET salario = ?, expediente = ?, nome = ? WHERE cod_funcionario = ?";
+        String sql = "UPDATE funcionario SET salario = ?, expediente = ?, nome = ? WHERE cpf_funcionario = ?";
         jdbcTemplate.update(sql, funcionario.getSalario(), funcionario.getExpediente(), funcionario.getNome(), funcionario.getCod_funcionario());
     }
 
     public void delete(String codFuncionario) {
-        String sql = "DELETE FROM funcionario WHERE cod_funcionario = ?";
+        String sql = "DELETE FROM funcionario WHERE cpf_funcionario = ?";
         jdbcTemplate.update(sql, codFuncionario);
     }
 
@@ -47,7 +55,7 @@ public class FuncionarioRepository {
         @Override
         public Funcionario mapRow(ResultSet rs, int rowNum) throws SQLException {
             Funcionario funcionario = new Funcionario();
-            funcionario.setCod_funcionario(rs.getString("cod_funcionario"));
+            funcionario.setCod_funcionario(rs.getString("cpf_funcionario"));
             funcionario.setSalario(rs.getInt("salario"));
             funcionario.setExpediente(rs.getString("expediente"));
             funcionario.setNome(rs.getString("nome"));
@@ -55,3 +63,4 @@ public class FuncionarioRepository {
         }
     }
 }
+

@@ -17,17 +17,12 @@ public class FuncionarioService {
         this.funcionarioRepository = funcionarioRepository;
     }
 
-    public void saveFuncionario(Funcionario funcionario) {
-        funcionarioRepository.save(funcionario);
+    public void saveFuncionario(Funcionario funcionario, String tipo) {
+        funcionarioRepository.save(funcionario, tipo);
     }
 
-    public Funcionario getFuncionarioById(String codFuncionario) {
-        try {
-            return funcionarioRepository.findById(codFuncionario);
-        } catch (Exception e) {
-            // handle exception (e.g., funcionario not found)
-            return null;
-        }
+    public Funcionario getFuncionarioByCod(String codFuncionario) {
+        return funcionarioRepository.findById(codFuncionario);
     }
 
     public List<Funcionario> getAllFuncionarios() {
@@ -38,7 +33,8 @@ public class FuncionarioService {
         funcionarioRepository.update(funcionario);
     }
 
-    public void deleteFuncionarioById(String codFuncionario) {
+    public void deleteFuncionarioByCod(String codFuncionario) {
         funcionarioRepository.delete(codFuncionario);
     }
 }
+

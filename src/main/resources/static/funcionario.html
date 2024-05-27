@@ -3,139 +3,122 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="style.css" />
     <title>Gestão de Funcionários</title>
 </head>
 <body>
-<div>
-    <header>
-        <div class="title">Amor em Pote</div>
-        <div class="logo">LOGO</div>
-    </header>
-    <nav class="navbar">
-        <a href="" class="nav-button">Estoque</a>
-        <a href="" class="nav-button">Produtos</a>
-        <a href="" class="nav-button">Pedidos</a>
-    </nav>
+<header>
+    <div class="title">Amor em Pote</div>
+    <div class="logo"><img src="images/logo.png" alt="Logo" class="logo-img"></div>
+</header>
+<nav class="navbar">
+    <a href="ingrediente.html" class="nav-button">Estoque</a>
+    <a href="produto.html" class="nav-button">Produtos</a>
+    <a href="pedido.html" class="nav-button">Pedidos</a>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="column">
+            <h2>Cadastrar Funcionário</h2>
+            <form id="funcionarioForm">
+                <label for="cod_funcionario">Código do Funcionário:</label>
+                <input type="number" id="cod_funcionario" name="cod_funcionario" required />
+                <label for="salario">Salário:</label>
+                <input type="number" id="salario" name="salario" required />
+                <label for="expediente">Expediente (M, T, N):</label>
+                <input type="text" id="expediente" name="expediente" required />
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" required />
+                <label for="tipo">Tipo:</label>
+                <select id="tipo" name="tipo" required>
+                    <option value="cozinheiro">Cozinheiro</option>
+                    <option value="gerente">Gerente</option>
+                </select>
+                <button type="submit">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="column">
+            <h2>Todos os Funcionários</h2>
+            <button class="nav-button" onclick="fetchFuncionarios()">Visualizar Todos os Funcionários</button>
+            <ul id="funcionariosList"></ul>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="column">
+            <h2>Pesquisar Funcionário por Código</h2>
+            <form id="pesquisaForm">
+                <label for="funcionarioId">Código do Funcionário:</label>
+                <input type="number" id="funcionarioId" name="funcionarioId" required />
+                <button type="submit">Pesquisar</button>
+            </form>
+            <div id="funcionarioDetalhes"></div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="column">
+            <h2>Atualizar Funcionário</h2>
+            <form id="atualizarForm">
+                <label for="cod_funcionario_atualizar">Código do Funcionário:</label>
+                <input type="number" id="cod_funcionario_atualizar" name="cod_funcionario_atualizar" required />
+                <label for="salario_atualizar">Salário:</label>
+                <input type="number" id="salario_atualizar" name="salario_atualizar" required />
+                <label for="expediente_atualizar">Expediente (M, T, N):</label>
+                <input type="text" id="expediente_atualizar" name="expediente_atualizar" required />
+                <label for="nome_atualizar">Nome:</label>
+                <input type="text" id="nome_atualizar" name="nome_atualizar" required />
+                <button type="submit">Atualizar</button>
+            </form>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="column">
+            <h2>Excluir Funcionário por Código</h2>
+            <form id="excluirForm">
+                <label for="funcionarioIdExcluir">Código do Funcionário:</label>
+                <input type="number" id="funcionarioIdExcluir" name="funcionarioIdExcluir" required />
+                <button type="submit">Excluir</button>
+            </form>
+        </div>
+    </div>
 </div>
-<h2>Cadastrar Funcionário</h2>
-<form id="funcionarioForm">
-    <label for="cod_funcionario">Código do Funcionário:</label>
-    <input
-            type="number"
-            id="cod_funcionario"
-            name="cod_funcionario"
-            required
-    />
-    <label for="salario">Salário:</label>
-    <input type="number" id="salario" name="salario" required />
-    <label for="expediente">Expediente (M, T, N):</label>
-    <input type="text" id="expediente" name="expediente" required />
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" name="nome" required />
-    <button type="submit">Cadastrar</button>
-</form>
-
-<hr />
-
-<h2>Todos os Funcionários</h2>
-<form class="allFuncionarios">
-    <button onclick="fetchFuncionarios()">
-        Visualizar Todos os Funcionários
-    </button>
-    <ul id="funcionariosList"></ul>
-</form>
-
-<hr />
-
-<h2>Pesquisar Funcionário por Código</h2>
-<form id="pesquisaForm">
-    <label for="funcionarioId">Código do Funcionário:</label>
-    <input type="number" id="funcionarioId" name="funcionarioId" required />
-    <button type="submit">Pesquisar</button>
-</form>
-<div id="funcionarioDetalhes"></div>
-
-<hr />
-
-<h2>Atualizar Funcionário</h2>
-<form id="atualizarForm">
-    <label for="cod_funcionario_atualizar">Código do Funcionário:</label>
-    <input
-            type="number"
-            id="cod_funcionario_atualizar"
-            name="cod_funcionario_atualizar"
-            required
-    />
-    <label for="salario_atualizar">Salário:</label>
-    <input
-            type="number"
-            id="salario_atualizar"
-            name="salario_atualizar"
-            required
-    />
-    <label for="expediente_atualizar">Expediente (M, T, N):</label>
-    <input
-            type="text"
-            id="expediente_atualizar"
-            name="expediente_atualizar"
-            required
-    />
-    <label for="nome_atualizar">Nome:</label>
-    <input
-            type="text"
-            id="nome_atualizar"
-            name="nome_atualizar"
-            required
-    />
-    <button type="submit">Atualizar</button>
-</form>
-
-<hr />
-
-<h2>Excluir Funcionário por Código</h2>
-<form id="excluirForm">
-    <label for="funcionarioIdExcluir">Código do Funcionário:</label>
-    <input
-            type="number"
-            id="funcionarioIdExcluir"
-            name="funcionarioIdExcluir"
-            required
-    />
-    <button type="submit">Excluir</button>
-</form>
 
 <script>
-    document
-        .getElementById("funcionarioForm")
-        .addEventListener("submit", async function (e) {
-            e.preventDefault();
-            const cod_funcionario =
-                document.getElementById("cod_funcionario").value;
-            const salario = document.getElementById("salario").value;
-            const expediente = document.getElementById("expediente").value.upper;
-            const nome = document.getElementById("nome").value;
+    document.getElementById("funcionarioForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const cod_funcionario = document.getElementById("cod_funcionario").value;
+        const salario = document.getElementById("salario").value;
+        const expediente = document.getElementById("expediente").value.toUpperCase();
+        const nome = document.getElementById("nome").value;
+        const tipo = document.getElementById("tipo").value;
 
-            const response = await fetch("http://localhost:8080/funcionarios", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    cod_funcionario,
-                    salario,
-                    expediente,
-                    nome,
-                }),
-            });
-
-            if (response.ok) {
-                alert("Funcionário cadastrado com sucesso!");
-                document.getElementById("funcionarioForm").reset();
-            } else {
-                alert("Erro ao cadastrar funcionário");
-            }
+        const response = await fetch("http://localhost:8080/funcionarios", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                cod_funcionario,
+                salario,
+                expediente,
+                nome,
+                tipo,
+            }),
         });
+
+        if (response.ok) {
+            alert("Funcionário cadastrado com sucesso!");
+            document.getElementById("funcionarioForm").reset();
+        } else {
+            alert("Erro ao cadastrar funcionário");
+        }
+    });
 
     async function fetchFuncionarios() {
         const response = await fetch("http://localhost:8080/funcionarios");
@@ -149,90 +132,68 @@
         });
     }
 
-    document
-        .getElementById("pesquisaForm")
-        .addEventListener("submit", async function (e) {
-            e.preventDefault();
-            const codFuncionario = document.getElementById("funcionarioId").value;
-            const response = await fetch(
-                `http://localhost:8080/funcionarios/${codFuncionario}`
-            );
-            const funcionarioDetalhes = document.getElementById(
-                "funcionarioDetalhes"
-            );
-            if (response.ok) {
-                const funcionario = await response.json();
-                funcionarioDetalhes.innerHTML = `
+    document.getElementById("pesquisaForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const codFuncionario = document.getElementById("funcionarioId").value;
+        const response = await fetch(`http://localhost:8080/funcionarios/${codFuncionario}`);
+        const funcionarioDetalhes = document.getElementById("funcionarioDetalhes");
+        if (response.ok) {
+            const funcionario = await response.json();
+            funcionarioDetalhes.innerHTML = `
                 <p>Código: ${funcionario.cod_funcionario}</p>
                 <p>Nome: ${funcionario.nome}</p>
                 <p>Salário: ${funcionario.salario}</p>
                 <p>Expediente: ${funcionario.expediente}</p>
             `;
-            } else {
-                funcionarioDetalhes.innerHTML = "<p>Funcionário não encontrado</p>";
-            }
+        } else {
+            funcionarioDetalhes.innerHTML = "<p>Funcionário não encontrado</p>";
+        }
+    });
+
+    document.getElementById("atualizarForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const cod_funcionario = document.getElementById("cod_funcionario_atualizar").value;
+        const salario = document.getElementById("salario_atualizar").value;
+        const expediente = document.getElementById("expediente_atualizar").value.toUpperCase();
+        const nome = document.getElementById("nome_atualizar").value;
+
+        const response = await fetch(`http://localhost:8080/funcionarios/${cod_funcionario}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                cod_funcionario,
+                salario,
+                expediente,
+                nome,
+            }),
         });
 
-    document
-        .getElementById("atualizarForm")
-        .addEventListener("submit", async function (e) {
-            e.preventDefault();
-            const cod_funcionario = document.getElementById(
-                "cod_funcionario_atualizar"
-            ).value;
-            const salario = document.getElementById("salario_atualizar").value;
-            const expediente = document.getElementById(
-                "expediente_atualizar"
-            ).value;
-            const nome = document.getElementById("nome_atualizar").value;
+        if (response.ok) {
+            alert("Funcionário atualizado com sucesso!");
+            document.getElementById("atualizarForm").reset();
+            fetchFuncionarios(); // Atualiza a lista de funcionários
+        } else {
+            alert("Erro ao atualizar funcionário");
+        }
+    });
 
-            const response = await fetch(
-                `http://localhost:8080/funcionarios/${cod_funcionario}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        cod_funcionario,
-                        salario,
-                        expediente,
-                        nome,
-                    }),
-                }
-            );
-
-            if (response.ok) {
-                alert("Funcionário atualizado com sucesso!");
-                document.getElementById("atualizarForm").reset();
-                fetchFuncionarios(); // Atualiza a lista de funcionários
-            } else {
-                alert("Erro ao atualizar funcionário");
-            }
+    document.getElementById("excluirForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const codFuncionario = document.getElementById("funcionarioIdExcluir").value;
+        const response = await fetch(`http://localhost:8080/funcionarios/${codFuncionario}`, {
+            method: "DELETE",
         });
 
-    document
-        .getElementById("excluirForm")
-        .addEventListener("submit", async function (e) {
-            e.preventDefault();
-            const codFuncionario = document.getElementById(
-                "funcionarioIdExcluir"
-            ).value;
-            const response = await fetch(
-                `http://localhost:8080/funcionarios/${codFuncionario}`,
-                {
-                    method: "DELETE",
-                }
-            );
-
-            if (response.ok) {
-                alert("Funcionário excluído com sucesso!");
-                document.getElementById("excluirForm").reset();
-                fetchFuncionarios(); // Atualiza a lista de funcionários
-            } else {
-                alert("Erro ao excluir funcionário");
-            }
-        });
+        if (response.ok) {
+            alert("Funcionário excluído com sucesso!");
+            document.getElementById("excluirForm").reset();
+            fetchFuncionarios(); // Atualiza a lista de funcionários
+        } else {
+            alert("Erro ao excluir funcionário");
+        }
+    });
 </script>
 </body>
 </html>

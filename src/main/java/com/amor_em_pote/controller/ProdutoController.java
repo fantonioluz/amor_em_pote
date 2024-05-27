@@ -29,6 +29,7 @@ public class ProdutoController {
         produto.setDescricao((String) payload.get("descricao"));
         produto.setValor(Float.parseFloat(payload.get("valor").toString()));
         produto.setQuantidade(Integer.parseInt(payload.get("quantidade").toString()));
+        produto.setFk_cozinheiro_cod_funcionario((String) payload.get("fk_cozinheiro_cod_funcionario"));
 
         // Converte os valores dos ingredientes para Integer
         Map<Integer, Integer> ingredientesUsados = ((Map<String, String>) payload.get("ingredientesUsados"))

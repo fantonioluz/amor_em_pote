@@ -19,8 +19,8 @@ public class ProdutoRepository {
     }
 
     public void save(Produto produto) {
-        String sql = "INSERT INTO produto (nome_produto, descricao, valor, quantidade) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, produto.getNome_produto(), produto.getDescricao(), produto.getValor(), produto.getQuantidade());
+        String sql = "INSERT INTO produto (nome_produto, descricao, valor, quantidade, fk_cozinheiro_cod_funcionario) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, produto.getNome_produto(), produto.getDescricao(), produto.getValor(), produto.getQuantidade(), produto.getFk_cozinheiro_cod_funcionario());
     }
 
     public Produto findById(int cod_produto) {
@@ -35,13 +35,17 @@ public class ProdutoRepository {
     }
 
     public List<Produto> findAll() {
-        String sql = "SELECT * FROM produto";
+        String sql = "SELECT p.*, f.nome AS nome_cozinheiro " +
+                "FROM produto p " +
+                "LEFT JOIN cozinheiro c ON p.fk_cozinheiro_cod_funcionario = c.fk_cozinheiro_cod_funcionario " +
+                "LEFT JOIN funcionario f ON c.fk_cozinheiro_cod_funcionario = f.cpf_funcionario";
         return jdbcTemplate.query(sql, new ProdutoRowMapper());
     }
 
+
     public void update(Produto produto) {
-        String sql = "UPDATE produto SET nome_produto = ?, descricao = ?, valor = ?, quantidade = ? WHERE cod_produto = ?";
-        jdbcTemplate.update(sql, produto.getNome_produto(), produto.getDescricao(), produto.getValor(), produto.getQuantidade(), produto.getCod_produto());
+        String sql = "UPDATE produto SET nome_produto = ?, descricao = ?, valor = ?, quantidade = ?, fk_cozinheiro_cod_funcionario = ? WHERE cod_produto = ?";
+        jdbcTemplate.update(sql, produto.getNome_produto(), produto.getDescricao(), produto.getValor(), produto.getQuantidade(), produto.getFk_cozinheiro_cod_funcionario(), produto.getCod_produto());
     }
 
     public void delete(int cod_produto) {
@@ -70,6 +74,8 @@ public class ProdutoRepository {
             produto.setDescricao(rs.getString("descricao"));
             produto.setValor(rs.getFloat("valor"));
             produto.setQuantidade(rs.getInt("quantidade"));
+            produto.setFk_cozinheiro_cod_funcionario(rs.getString("fk_cozinheiro_cod_funcionario"));
+            produto.setNome_cozinheiro(rs.getString("nome_cozinheiro")); // Adicionado para exibição
             return produto;
         }
     }
