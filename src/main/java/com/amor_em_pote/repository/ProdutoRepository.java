@@ -55,7 +55,7 @@ public class ProdutoRepository {
 
     public List<Produto> findAvailableProducts() {
         String sql = "SELECT * FROM produto WHERE quantidade > 0";
-        return jdbcTemplate.query(sql, new ProdutoRowMapper());
+        return jdbcTemplate.query(sql, new ProdutoRowMapperWithoutChefName());
     }
 
     public int getLastInsertedId() {
@@ -76,6 +76,20 @@ public class ProdutoRepository {
             produto.setQuantidade(rs.getInt("quantidade"));
             produto.setFk_cozinheiro_cod_funcionario(rs.getString("fk_cozinheiro_cod_funcionario"));
             produto.setNome_cozinheiro(rs.getString("nome_cozinheiro")); // Adicionado para exibição
+            return produto;
+        }
+    }
+
+    private static final class ProdutoRowMapperWithoutChefName implements RowMapper<Produto> {
+        @Override
+        public Produto mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Produto produto = new Produto();
+            produto.setCod_produto(rs.getInt("cod_produto"));
+            produto.setNome_produto(rs.getString("nome_produto"));
+            produto.setDescricao(rs.getString("descricao"));
+            produto.setValor(rs.getFloat("valor"));
+            produto.setQuantidade(rs.getInt("quantidade"));
+            produto.setFk_cozinheiro_cod_funcionario(rs.getString("fk_cozinheiro_cod_funcionario"));
             return produto;
         }
     }

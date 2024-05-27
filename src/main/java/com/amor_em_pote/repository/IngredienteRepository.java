@@ -52,9 +52,17 @@ public class IngredienteRepository {
         jdbcTemplate.update(sql, cod_ingrediente);
     }
 
-    public void updateQuantidade(int cod_ingrediente, int quantidade) {
-        String sql = "UPDATE ingrediente SET quantidade = quantidade + ? WHERE cod_ingrediente = ?";
-        jdbcTemplate.update(sql, quantidade, cod_ingrediente);
+    public void usoIngrediente(int codIngrediente, int quantidade) {
+        String sqlUpdate = "UPDATE ingrediente SET quantidade = quantidade + ? WHERE cod_ingrediente = ?";
+        jdbcTemplate.update(sqlUpdate, quantidade, codIngrediente);
+    }
+
+    public void updateQuantidade(int codIngrediente, int quantidade, String gerenteCodFuncionario) {
+        String sqlUpdate = "UPDATE ingrediente SET quantidade =  quantidade + ? WHERE cod_ingrediente = ?";
+        jdbcTemplate.update(sqlUpdate, quantidade, codIngrediente);
+
+        String sqlInsertCompra = "INSERT INTO compra_ingrediente_gerente_fornecedor (fk_ingrediente_cod_ingrediente, fk_gerente_fk_funcionario_cod_funcionario) VALUES (?, ?)";
+        jdbcTemplate.update(sqlInsertCompra, codIngrediente, gerenteCodFuncionario);
     }
 
     public List<Ingrediente> findAllWithQuantidadeGreaterThanZero() {

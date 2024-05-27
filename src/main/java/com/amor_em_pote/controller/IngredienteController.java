@@ -40,6 +40,14 @@ public class IngredienteController {
         ingredienteService.deleteIngredienteByCod(cod_ingrediente);
     }
 
+    @PostMapping("/updateQuantidade")
+    public void updateQuantidade(@RequestBody Map<String, String> payload) {
+        int codIngrediente = Integer.parseInt(payload.get("codIngrediente"));
+        int quantidade = Integer.parseInt(payload.get("quantidade"));
+        String gerenteCodFuncionario = payload.get("gerenteCodFuncionario");
+        ingredienteService.updateQuantidade(codIngrediente, quantidade, gerenteCodFuncionario);
+    }
+
     @GetMapping("/orderByQuantidadeAsc")
     public List<Ingrediente> getIngredientesOrderByQuantidadeAsc() {
         return ingredienteService.getIngredientesOrderByQuantidadeAsc();

@@ -62,7 +62,7 @@ public class ProdutoService {
         for (Map.Entry<Integer, Integer> entry : ingredientesUsados.entrySet()) {
             int codIngrediente = entry.getKey();
             int quantidade = entry.getValue();
-            ingredienteRepository.updateQuantidade(codIngrediente, -quantidade);
+            ingredienteRepository.usoIngrediente(codIngrediente, -quantidade);
         }
     }
 }

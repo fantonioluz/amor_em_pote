@@ -63,22 +63,11 @@
                     <th>Descrição</th>
                     <th>Valor</th>
                     <th>Quantidade</th>
+                    <th>Adc. Quantidade</th>
                 </tr>
                 </thead>
                 <tbody></tbody>
             </table>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="column">
-            <h2>Deletar Ingrediente por Código</h2>
-            <form id="deleteIngredienteForm">
-                <label for="deleteCod">Código:</label>
-                <input type="text" id="deleteCod" name="deleteCod" required><br>
-                <button type="submit">Deletar Ingrediente</button>
-            </form>
-            <p id="deleteStatus"></p>
         </div>
     </div>
     <hr>
@@ -97,6 +86,24 @@
                 <tbody></tbody>
             </table>
         </div>
+    </div>
+</div>
+
+<!-- Modal para editar quantidade -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <h2>Editar Quantidade</h2>
+        <form id="editQuantidadeForm">
+            <input type="hidden" id="editCodIngrediente">
+            <label for="editQuantidade">Quantidade:</label>
+            <input type="number" id="editQuantidade" required><br>
+            <label for="editGerente">Gerente:</label>
+            <select id="editGerente" name="editGerente" required>
+                <option value="">Selecione um gerente</option>
+            </select><br>
+            <button type="submit">Salvar</button>
+            <button type="button" onclick="closeEditModal()">Cancelar</button>
+        </form>
     </div>
 </div>
 
@@ -186,33 +193,61 @@
                 <td>${ingrediente.descricao}</td>
                 <td>R$ ${ingrediente.valor.toFixed(2)}</td>
                 <td>${ingrediente.quantidade}</td>
+                <td><button onclick="openEditModal(${ingrediente.cod_ingrediente}, ${ingrediente.quantidade})">Editar</button></td>
             `;
             ingredientesTable.appendChild(tr);
         });
     }
 
-    document.getElementById('deleteIngredienteForm').addEventListener('submit', function (event) {
+    function openEditModal(codIngrediente, quantidade) {
+        document.getElementById('editCodIngrediente').value = codIngrediente;
+        document.getElementById('editQuantidade').value = quantidade;
+        document.getElementById('editModal').style.display = 'block';
+        fetchGerentes('editGerente'); // Atualiza a lista de gerentes no modal
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').style.display = 'none';
+    }
+
+    document.getElementById('editQuantidadeForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
-        const deleteCod = document.getElementById('deleteCod').value;
+        const codIngrediente = document.getElementById('editCodIngrediente').value;
+        const quantidade = document.getElementById('editQuantidade').value;
+        const gerenteCodFuncionario = document.getElementById('editGerente').value;
 
-        fetch(`/ingredientes/${deleteCod}`, {
-            method: 'DELETE'
+        const payload = {
+            codIngrediente,
+            quantidade,
+            gerenteCodFuncionario
+        };
+
+        fetch('/ingredientes/updateQuantidade', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
         }).then((response) => {
             if (response.ok) {
-                document.getElementById('deleteStatus').innerText = 'Ingrediente deletado com sucesso!';
-                fetchIngredientes(); // Atualiza a lista de ingredientes após deletar um ingrediente
+                alert('Quantidade atualizada com sucesso!');
+                closeEditModal();
+                fetchIngredientes(); // Atualiza a lista de ingredientes
+                fetchCompraHistorico(); // Atualiza o histórico de compras
             } else {
-                document.getElementById('deleteStatus').innerText = 'Erro ao deletar ingrediente!';
+                response.text().then((errorMessage) => {
+                    alert(errorMessage); // Exibe a mensagem de erro recebida do servidor
+                });
             }
         });
     });
 
-    function fetchGerentes() {
+    function fetchGerentes(selectId = 'gerente') {
         fetch('/gerentes')
             .then((response) => response.json())
             .then((data) => {
-                const gerenteSelect = document.getElementById('gerente');
+                const gerenteSelect = document.getElementById(selectId);
                 gerenteSelect.innerHTML = '<option value="">Selecione um gerente</option>';
                 data.forEach(gerente => {
                     const option = document.createElement('option');

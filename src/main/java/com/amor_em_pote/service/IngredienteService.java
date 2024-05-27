@@ -22,8 +22,8 @@ public class IngredienteService {
         ingredienteRepository.save(ingrediente, gerenteCodFuncionario);
     }
 
-    public void updateQuantidade(int cod_ingrediente, int quantidade) {
-        ingredienteRepository.updateQuantidade(cod_ingrediente, quantidade);
+    public void updateQuantidade(int codIngrediente, int quantidade, String gerenteCodFuncionario) {
+        ingredienteRepository.updateQuantidade(codIngrediente, quantidade, gerenteCodFuncionario);
     }
 
     public Ingrediente getIngredienteByCod(int cod_ingrediente) {
