@@ -23,4 +23,33 @@ public class ProdutoPedidoController {
     public List<ProdutoPedido> getProdutosByPedidoId(@PathVariable int cod_pedido_fk) {
         return produtoPedidoService.getProdutosByPedidoId(cod_pedido_fk);
     }
+    @GetMapping("/mais_baratos")
+    public List<ProdutoPedido> getProdutosMaisBaratos() {
+        return produtoPedidoService.getProdutosMaisBaratos();
+    }
+
+    @GetMapping("/mais_caros")
+    public List<ProdutoPedido> getProdutosMaisCaros() {
+        return produtoPedidoService.getProdutosMaisCaros();
+    }
+
+    @GetMapping("/maior_quantidade")
+    public List<ProdutoPedido> getProdutosMaiorQuantidade() {
+        return produtoPedidoService.getProdutosMaiorQuantidade();
+    }
+
+    @GetMapping("/menor_quantidade")
+    public List<ProdutoPedido> getProdutosMenorQuantidade() {
+        return produtoPedidoService.getProdutosMenorQuantidade();
+    }
+
+    @GetMapping("/ordem_alfabetica")
+    public List<ProdutoPedido> getProdutosOrdemAlfabetica() {
+        return produtoPedidoService.getProdutosOrdemAlfabetica();
+    }
+
+    @GetMapping("/mais_pedidos_crescente")
+    public List<ProdutoPedido> getProdutosMaisPedidosCrescente() {
+        return produtoPedidoService.getProdutosMaisPedidosCrescente();
+    }
 }

@@ -24,4 +24,27 @@ public class ProdutoPedidoService {
     public List<ProdutoPedido> getProdutosByPedidoId(int cod_pedido_fk) {
         return produtoPedidoRepository.findByPedidoId(cod_pedido_fk);
     }
+    public List<ProdutoPedido> getProdutosMaisBaratos() {
+        return produtoPedidoRepository.findProdutosMaisBaratos();
+    }
+
+    public List<ProdutoPedido> getProdutosMaisCaros() {
+        return produtoPedidoRepository.findProdutosMaisCaros();
+    }
+
+    public List<ProdutoPedido> getProdutosMaiorQuantidade() {
+        return produtoPedidoRepository.findProdutosMaiorQuantidade();
+    }
+
+    public List<ProdutoPedido> getProdutosMenorQuantidade() {
+        return produtoPedidoRepository.findProdutosMenorQuantidade();
+    }
+
+    public List<ProdutoPedido> getProdutosOrdemAlfabetica() {
+        return produtoPedidoRepository.findProdutosOrdemAlfabetica();
+    }
+
+    public List<ProdutoPedido> getProdutosMaisPedidosCrescente() {
+        return produtoPedidoRepository.findProdutosMaisPedidosCrescente();
+    }
 }

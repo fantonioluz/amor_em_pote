@@ -36,6 +36,55 @@ public class ProdutoPedidoRepository {
         return jdbcTemplate.query(sql, new Object[]{cod_pedido}, new ProdutoPedidoRowMapper());
     }
 
+    public List<ProdutoPedido> findProdutosMaisBaratos() {
+        String sql = "SELECT ppp.*, p.nome_produto, p.valor AS valor_produto " +
+                "FROM produto_pedido ppp " +
+                "LEFT JOIN produto p ON ppp.cod_produto_fk = p.cod_produto " +
+                "ORDER BY p.valor ASC";
+        return jdbcTemplate.query(sql, new ProdutoPedidoRowMapper());
+    }
+
+    public List<ProdutoPedido> findProdutosMaisCaros() {
+        String sql = "SELECT ppp.*, p.nome_produto, p.valor AS valor_produto " +
+                "FROM produto_pedido ppp " +
+                "LEFT JOIN produto p ON ppp.cod_produto_fk = p.cod_produto " +
+                "ORDER BY p.valor DESC";
+        return jdbcTemplate.query(sql, new ProdutoPedidoRowMapper());
+    }
+
+    public List<ProdutoPedido> findProdutosMaiorQuantidade() {
+        String sql = "SELECT ppp.*, p.nome_produto, p.valor AS valor_produto " +
+                "FROM produto_pedido ppp " +
+                "LEFT JOIN produto p ON ppp.cod_produto_fk = p.cod_produto " +
+                "ORDER BY ppp.quantidade_produto_pedido DESC";
+        return jdbcTemplate.query(sql, new ProdutoPedidoRowMapper());
+    }
+
+    public List<ProdutoPedido> findProdutosMenorQuantidade() {
+        String sql = "SELECT ppp.*, p.nome_produto, p.valor AS valor_produto " +
+                "FROM produto_pedido ppp " +
+                "LEFT JOIN produto p ON ppp.cod_produto_fk = p.cod_produto " +
+                "ORDER BY ppp.quantidade_produto_pedido ASC";
+        return jdbcTemplate.query(sql, new ProdutoPedidoRowMapper());
+    }
+
+    public List<ProdutoPedido> findProdutosOrdemAlfabetica() {
+        String sql = "SELECT ppp.*, p.nome_produto, p.valor AS valor_produto " +
+                "FROM produto_pedido ppp " +
+                "LEFT JOIN produto p ON ppp.cod_produto_fk = p.cod_produto " +
+                "ORDER BY p.nome_produto ASC";
+        return jdbcTemplate.query(sql, new ProdutoPedidoRowMapper());
+    }
+
+    public List<ProdutoPedido> findProdutosMaisPedidosCrescente() {
+        String sql = "SELECT ppp.*, p.nome_produto, p.valor AS valor_produto, COUNT(ppp.cod_produto_fk) AS num_pedidos " +
+                "FROM produto_pedido ppp " +
+                "LEFT JOIN produto p ON ppp.cod_produto_fk = p.cod_produto " +
+                "GROUP BY ppp.cod_produto_fk, ppp.cod_pedido_fk, ppp.quantidade_produto_pedido, p.nome_produto, p.valor " +
+                "ORDER BY num_pedidos ASC";
+        return jdbcTemplate.query(sql, new ProdutoPedidoRowMapper());
+    }
+
     private static final class ProdutoPedidoRowMapper implements RowMapper<ProdutoPedido> {
         @Override
         public ProdutoPedido mapRow(ResultSet rs, int rowNum) throws SQLException {
