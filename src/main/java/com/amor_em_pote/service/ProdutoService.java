@@ -65,4 +65,25 @@ public class ProdutoService {
             ingredienteRepository.usoIngrediente(codIngrediente, -quantidade);
         }
     }
+
+    public List<Produto> listarProdutosMaisBaratos() {
+        return produtoRepository.findMaisBaratos();
+    }
+
+    public List<Produto> listarProdutosMaisCaros() {
+        return produtoRepository.findMaisCaros();
+    }
+
+    public List<Produto> listarProdutosMaiorQuantidade() {
+        return produtoRepository.findMaiorQuantidade();
+    }
+
+    public List<Produto> listarProdutosMenorQuantidade() {
+        return produtoRepository.findMenorQuantidade();
+    }
+
+    public List<Produto> listarProdutosOrdemAlfabetica() {
+        return produtoRepository.findOrdemAlfabetica();
+    }
+
 }

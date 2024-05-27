@@ -63,6 +63,30 @@ public class ProdutoRepository {
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
+    public List<Produto> findMaisBaratos() {
+        String sql = "SELECT * FROM produto ORDER BY valor ASC";
+        return jdbcTemplate.query(sql, new ProdutoRowMapper());
+    }
+
+    public List<Produto> findMaisCaros() {
+        String sql = "SELECT * FROM produto ORDER BY valor DESC";
+        return jdbcTemplate.query(sql, new ProdutoRowMapper());
+    }
+
+    public List<Produto> findMaiorQuantidade() {
+        String sql = "SELECT * FROM produto ORDER BY quantidade DESC";
+        return jdbcTemplate.query(sql, new ProdutoRowMapper());
+    }
+
+    public List<Produto> findMenorQuantidade() {
+        String sql = "SELECT * FROM produto ORDER BY quantidade ASC";
+        return jdbcTemplate.query(sql, new ProdutoRowMapper());
+    }
+
+    public List<Produto> findOrdemAlfabetica() {
+        String sql = "SELECT * FROM produto ORDER BY nome_produto ASC";
+        return jdbcTemplate.query(sql, new ProdutoRowMapper());
+    }
 
 
     private static final class ProdutoRowMapper implements RowMapper<Produto> {

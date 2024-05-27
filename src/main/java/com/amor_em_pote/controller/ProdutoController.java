@@ -73,7 +73,30 @@ public class ProdutoController {
     }
 
 
+    @GetMapping("/mais-baratos")
+    public List<Produto> listarProdutosMaisBaratos() {
+        return produtoService.listarProdutosMaisBaratos();
+    }
 
+    @GetMapping("/mais-caros")
+    public List<Produto> listarProdutosMaisCaros() {
+        return produtoService.listarProdutosMaisCaros();
+    }
+
+    @GetMapping("/maior-quantidade")
+    public List<Produto> listarProdutosMaiorQuantidade() {
+        return produtoService.listarProdutosMaiorQuantidade();
+    }
+
+    @GetMapping("/menor-quantidade")
+    public List<Produto> listarProdutosMenorQuantidade() {
+        return produtoService.listarProdutosMenorQuantidade();
+    }
+
+    @GetMapping("/ordem-alfabetica")
+    public List<Produto> listarProdutosOrdemAlfabetica() {
+        return produtoService.listarProdutosOrdemAlfabetica();
+    }
 
     @DeleteMapping("/{cod_produto}")
     public void deleteProduto(@PathVariable int cod_produto) {

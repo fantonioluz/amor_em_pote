@@ -48,21 +48,34 @@
     <div class="row">
         <div class="column">
             <h2>Todos os Produtos</h2>
-            <button class="nav-button" id="getAllProdutos">Atualizar Lista</button>
-            <table id="produtosTable">
-                <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Nome</th>
-                    <th>Descrição</th>
-                    <th>Valor</th>
-                    <th>Quantidade</th>
-                    <th>Cozinheiro</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+            <div>
+                <button class="nav-button" id="getAllProdutos">Atualizar Lista</button>
+                <br />
+                <label for="sortOptions">Ordenar por:</label>
+                <select id="sortOptions">
+                    <option value="none">Selecione</option>
+                    <option value="maisBaratos">Mais Baratos</option>
+                    <option value="maisCaros">Mais Caros</option>
+                    <option value="maiorQuantidade">Maior Quantidade</option>
+                    <option value="menorQuantidade">Menor Quantidade</option>
+                    <option value="ordemAlfabetica">Ordem Alfabética</option>
+                </select>
+                <br />
+                <table id="produtosTable">
+                    <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Valor</th>
+                        <th>Quantidade</th>
+                        <th>Cozinheiro</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -71,10 +84,18 @@
     document.addEventListener('DOMContentLoaded', function() {
         fetchIngredientes();
         fetchCozinheiros();
+        fetchProdutos();
 
         document.getElementById('addProdutoForm').addEventListener('submit', function(event) {
             event.preventDefault();
             createProduto();
+        });
+
+        document.getElementById('getAllProdutos').addEventListener('click', fetchProdutos);
+
+        document.getElementById('sortOptions').addEventListener('change', function() {
+            const selectedOption = this.value;
+            fetchSortedProdutos(selectedOption);
         });
     });
 
@@ -165,27 +186,57 @@
         });
     }
 
-    document.getElementById('getAllProdutos').addEventListener('click', fetchProdutos);
-
     function fetchProdutos() {
         fetch('/produtos/all')
             .then(response => response.json())
             .then(data => {
-                const produtosTable = document.querySelector('#produtosTable tbody');
-                produtosTable.innerHTML = '';
-                data.forEach(produto => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${produto.cod_produto}</td>
-                        <td>${produto.nome_produto}</td>
-                        <td>${produto.descricao}</td>
-                        <td>R$ ${produto.valor.toFixed(2)}</td>
-                        <td>${produto.quantidade}</td>
-                        <td>${produto.nome_cozinheiro || 'Não atribuído'}</td>
-                    `;
-                    produtosTable.appendChild(tr);
-                });
+                updateTable(data);
             });
+    }
+
+    function fetchSortedProdutos(order) {
+        let endpoint = '/produtos/orderBy';
+        switch (order) {
+            case 'maisBaratos':
+                endpoint += 'ValorAsc';
+                break;
+            case 'maisCaros':
+                endpoint += 'ValorDesc';
+                break;
+            case 'maiorQuantidade':
+                endpoint += 'QuantidadeDesc';
+                break;
+            case 'menorQuantidade':
+                endpoint += 'QuantidadeAsc';
+                break;
+            case 'ordemAlfabetica':
+                endpoint += 'NomeAsc';
+                break;
+            default:
+                endpoint = '/produtos/all';
+        }
+        fetch(endpoint)
+            .then((response) => response.json())
+            .then((data) => {
+                updateTable(data);
+            });
+    }
+
+    function updateTable(data) {
+        const produtosTable = document.querySelector('#produtosTable tbody');
+        produtosTable.innerHTML = '';
+        data.forEach(produto => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${produto.cod_produto}</td>
+                <td>${produto.nome_produto}</td>
+                <td>${produto.descricao}</td>
+                <td>R$ ${produto.valor.toFixed(2)}</td>
+                <td>${produto.quantidade}</td>
+                <td>${produto.nome_cozinheiro || 'Não atribuído'}</td>
+            `;
+            produtosTable.appendChild(tr);
+        });
     }
 </script>
 </body>
