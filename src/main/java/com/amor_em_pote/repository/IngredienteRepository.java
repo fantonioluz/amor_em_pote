@@ -4,11 +4,11 @@ import com.amor_em_pote.model.Ingrediente;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import javax.swing.JOptionPane;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class IngredienteRepository {
@@ -19,13 +19,16 @@ public class IngredienteRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void save(Ingrediente ingrediente) {
-        if (ingrediente.getQuantidade() > 0) {
-            String sql = "INSERT INTO ingrediente (cod_ingrediente, nome_ingrediente, descricao, valor, quantidade) VALUES (?, ?, ?, ?, ?)";
-            jdbcTemplate.update(sql, ingrediente.getCod_ingrediente(), ingrediente.getNome_ingrediente(), ingrediente.getDescricao(), ingrediente.getValor(), ingrediente.getQuantidade());
-        } else {
-            JOptionPane.showMessageDialog(null, "Ingrediente deve ter quantidade maior que 0 (zero)!", "Alerta", JOptionPane.WARNING_MESSAGE);
-        }
+    public void save(Ingrediente ingrediente, String gerenteCodFuncionario) {
+        String sqlIngrediente = "INSERT INTO ingrediente (nome_ingrediente, descricao, valor, quantidade) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sqlIngrediente, ingrediente.getNome_ingrediente(), ingrediente.getDescricao(), ingrediente.getValor(), ingrediente.getQuantidade());
+
+        // Pega o ID do ingrediente recém-adicionado
+        int ingredienteId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+
+        // Insere na tabela compra_ingrediente_gerente_fornecedor
+        String sqlCompra = "INSERT INTO compra_ingrediente_gerente_fornecedor (fk_ingrediente_cod_ingrediente, fk_gerente_fk_funcionario_cod_funcionario) VALUES (?, ?)";
+        jdbcTemplate.update(sqlCompra, ingredienteId, gerenteCodFuncionario);
     }
 
     public Ingrediente findById(int cod_ingrediente) {
@@ -64,29 +67,41 @@ public class IngredienteRepository {
         return jdbcTemplate.query(sql, new IngredienteRowMapper());
     }
 
-
     public List<Ingrediente> findAllOrderByQuantidadeAsc() {
         String sql = "SELECT * FROM ingrediente ORDER BY quantidade ASC";
         return jdbcTemplate.query(sql, new IngredienteRowMapper());
     }
+
     public List<Ingrediente> findAllOrderByQuantidadeDesc() {
         String sql = "SELECT * FROM ingrediente ORDER BY quantidade DESC";
         return jdbcTemplate.query(sql, new IngredienteRowMapper());
     }
+
     public List<Ingrediente> findAllOrderByNomeAsc() {
         String sql = "SELECT * FROM ingrediente ORDER BY nome_ingrediente ASC";
         return jdbcTemplate.query(sql, new IngredienteRowMapper());
     }
+
     public List<Ingrediente> findAllOrderByValorAsc() {
         String sql = "SELECT * FROM ingrediente ORDER BY valor ASC";
         return jdbcTemplate.query(sql, new IngredienteRowMapper());
     }
+
     public List<Ingrediente> findAllOrderByValorDesc() {
         String sql = "SELECT * FROM ingrediente ORDER BY valor DESC";
         return jdbcTemplate.query(sql, new IngredienteRowMapper());
     }
 
 
+    public List<Map<String, Object>> getCompraHistorico() {
+        String sql = "SELECT c.*, i.nome_ingrediente, f.nome AS nome_gerente " +
+                "FROM compra_ingrediente_gerente_fornecedor c " +
+                "JOIN ingrediente i ON c.fk_ingrediente_cod_ingrediente = i.cod_ingrediente " +
+                "JOIN gerente g ON c.fk_gerente_fk_funcionario_cod_funcionario = g.fk_funcionario_cod_funcionario " +
+                "JOIN funcionario f ON g.fk_funcionario_cod_funcionario = f.cpf_funcionario " +
+                "ORDER BY c.hora_compra DESC";
+        return jdbcTemplate.queryForList(sql);
+    }
 
     private static final class IngredienteRowMapper implements RowMapper<Ingrediente> {
         @Override

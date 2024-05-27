@@ -1,12 +1,12 @@
 package com.amor_em_pote.controller;
 
 import com.amor_em_pote.model.Ingrediente;
-import com.amor_em_pote.repository.IngredienteRepository;
 import com.amor_em_pote.service.IngredienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/ingredientes")
@@ -14,21 +14,15 @@ public class IngredienteController {
 
     @Autowired
     private IngredienteService ingredienteService;
-    private IngredienteRepository ingredienteRepository;
 
     @PostMapping("/add")
-    public void addIngrediente(@RequestBody Ingrediente ingrediente) {
-        ingredienteService.saveIngrediente(ingrediente);
+    public void addIngrediente(@RequestBody Ingrediente ingrediente, @RequestParam String gerenteCodFuncionario) {
+        ingredienteService.saveIngrediente(ingrediente, gerenteCodFuncionario);
     }
 
     @GetMapping("/{cod_ingrediente}")
     public Ingrediente getIngredienteByCod(@PathVariable int cod_ingrediente) {
         return ingredienteService.getIngredienteByCod(cod_ingrediente);
-    }
-
-    @PutMapping("/update/{cod_ingrediente}")
-    public void updateQuantidade(@PathVariable int cod_ingrediente, @RequestBody Ingrediente ingrediente) {
-        ingredienteService.updateQuantidade(cod_ingrediente, ingrediente.getQuantidade());
     }
 
     @GetMapping("/all")
@@ -45,6 +39,7 @@ public class IngredienteController {
     public void deleteIngredienteByCod(@PathVariable int cod_ingrediente) {
         ingredienteService.deleteIngredienteByCod(cod_ingrediente);
     }
+
     @GetMapping("/orderByQuantidadeAsc")
     public List<Ingrediente> getIngredientesOrderByQuantidadeAsc() {
         return ingredienteService.getIngredientesOrderByQuantidadeAsc();
@@ -70,9 +65,14 @@ public class IngredienteController {
         return ingredienteService.getIngredientesOrderByValorDesc();
     }
 
-
     @GetMapping("/alertas")
     public List<Ingrediente> getAlertasQuantidadeBaixa() {
         return ingredienteService.getIngredientesComQuantidadeBaixa();
     }
+
+    @GetMapping("/historico-compras")
+    public List<Map<String, Object>> getCompraHistorico() {
+        return ingredienteService.getCompraHistorico();
+    }
+
 }

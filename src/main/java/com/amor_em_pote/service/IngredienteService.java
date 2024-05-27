@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class IngredienteService {
@@ -17,8 +18,8 @@ public class IngredienteService {
         this.ingredienteRepository = ingredienteRepository;
     }
 
-    public void saveIngrediente(Ingrediente ingrediente) {
-        ingredienteRepository.save(ingrediente);
+    public void saveIngrediente(Ingrediente ingrediente, String gerenteCodFuncionario) {
+        ingredienteRepository.save(ingrediente, gerenteCodFuncionario);
     }
 
     public void updateQuantidade(int cod_ingrediente, int quantidade) {
@@ -68,4 +69,9 @@ public class IngredienteService {
     public List<Ingrediente> getIngredientesOrderByValorDesc() {
         return ingredienteRepository.findAllOrderByValorDesc();
     }
+
+    public List<Map<String, Object>> getCompraHistorico() {
+        return ingredienteRepository.getCompraHistorico();
+    }
+
 }
