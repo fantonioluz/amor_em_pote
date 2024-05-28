@@ -7,18 +7,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <header>
-    <div class="title">Amor em Pote</div>
-    <div class="logo">
-        <img src="images/logo.png" alt="Logo" class="logo-img">
-    </div>
+    <img src="images/logo.png" alt="Logo" class="logo-img">
+    <nav class="navbar">
+        <a class="nav-button" href="index.html">Inicio</a>
+        <a class="nav-button" href="ingrediente.html">Estoque</a>
+        <a href="produto.html" class="nav-button">Produtos</a>
+        <a href="pedido.html" class="nav-button">Pedidos</a>
+    </nav>
 </header>
-<nav class="navbar">
-    <a class="nav-button" href="clientes.html">Clientes</a>
-    <a class="nav-button" href="ingrediente.html">Estoque</a>
-    <a class="nav-button" href="produto.html">Produtos</a>
-    <a class="nav-button" href="pedido.html">Pedidos</a>
-</nav>
 
 <div class="container">
     <div class="row">
@@ -44,7 +42,7 @@
     <div class="row">
         <div class="column">
             <h2>Todos os Clientes</h2>
-            <button class="nav-button" onclick="fetchClientes()">Atualizar Lista</button>
+            <button class="att-button" onclick="fetchClientes()">Atualizar Lista</button>
             <table id="clientesTable">
                 <thead>
                 <tr>
