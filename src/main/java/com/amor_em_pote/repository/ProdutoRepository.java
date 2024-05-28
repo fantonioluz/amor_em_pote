@@ -64,30 +64,44 @@ public class ProdutoRepository {
     }
 
     public List<Produto> findMaisBaratos() {
-        String sql = "SELECT * FROM produto ORDER BY valor ASC";
+        String sql = "SELECT p.*, f.nome AS nome_cozinheiro FROM produto p " +
+                "LEFT JOIN cozinheiro c ON p.fk_cozinheiro_cod_funcionario = c.fk_cozinheiro_cod_funcionario " +
+                "LEFT JOIN funcionario f ON c.fk_cozinheiro_cod_funcionario = f.cpf_funcionario " +
+                "ORDER BY p.valor ASC";
         return jdbcTemplate.query(sql, new ProdutoRowMapper());
     }
 
     public List<Produto> findMaisCaros() {
-        String sql = "SELECT * FROM produto ORDER BY valor DESC";
+        String sql = "SELECT p.*, f.nome AS nome_cozinheiro FROM produto p " +
+                "LEFT JOIN cozinheiro c ON p.fk_cozinheiro_cod_funcionario = c.fk_cozinheiro_cod_funcionario " +
+                "LEFT JOIN funcionario f ON c.fk_cozinheiro_cod_funcionario = f.cpf_funcionario " +
+                "ORDER BY p.valor DESC";
         return jdbcTemplate.query(sql, new ProdutoRowMapper());
     }
 
     public List<Produto> findMaiorQuantidade() {
-        String sql = "SELECT * FROM produto ORDER BY quantidade DESC";
+        String sql = "SELECT p.*, f.nome AS nome_cozinheiro FROM produto p " +
+                "LEFT JOIN cozinheiro c ON p.fk_cozinheiro_cod_funcionario = c.fk_cozinheiro_cod_funcionario " +
+                "LEFT JOIN funcionario f ON c.fk_cozinheiro_cod_funcionario = f.cpf_funcionario " +
+                "ORDER BY p.quantidade DESC";
         return jdbcTemplate.query(sql, new ProdutoRowMapper());
     }
 
     public List<Produto> findMenorQuantidade() {
-        String sql = "SELECT * FROM produto ORDER BY quantidade ASC";
+        String sql = "SELECT p.*, f.nome AS nome_cozinheiro FROM produto p " +
+                "LEFT JOIN cozinheiro c ON p.fk_cozinheiro_cod_funcionario = c.fk_cozinheiro_cod_funcionario " +
+                "LEFT JOIN funcionario f ON c.fk_cozinheiro_cod_funcionario = f.cpf_funcionario " +
+                "ORDER BY p.quantidade ASC";
         return jdbcTemplate.query(sql, new ProdutoRowMapper());
     }
 
     public List<Produto> findOrdemAlfabetica() {
-        String sql = "SELECT * FROM produto ORDER BY nome_produto ASC";
+        String sql = "SELECT p.*, f.nome AS nome_cozinheiro FROM produto p " +
+                "LEFT JOIN cozinheiro c ON p.fk_cozinheiro_cod_funcionario = c.fk_cozinheiro_cod_funcionario " +
+                "LEFT JOIN funcionario f ON c.fk_cozinheiro_cod_funcionario = f.cpf_funcionario " +
+                "ORDER BY p.nome_produto ASC";
         return jdbcTemplate.query(sql, new ProdutoRowMapper());
     }
-
 
     private static final class ProdutoRowMapper implements RowMapper<Produto> {
         @Override
@@ -99,7 +113,7 @@ public class ProdutoRepository {
             produto.setValor(rs.getFloat("valor"));
             produto.setQuantidade(rs.getInt("quantidade"));
             produto.setFk_cozinheiro_cod_funcionario(rs.getString("fk_cozinheiro_cod_funcionario"));
-            produto.setNome_cozinheiro(rs.getString("nome_cozinheiro")); // Adicionado para exibição
+            produto.setNome_cozinheiro(rs.getString("nome_cozinheiro"));
             return produto;
         }
     }

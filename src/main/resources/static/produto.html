@@ -11,9 +11,9 @@
     <img src="images/logo.png" alt="Logo" class="logo-img">
     <nav class="navbar">
         <a href="index.html" class="nav-button">Início</a>
-        <a href="ingrediente.html" class="nav-button">Estoque</a>
         <a href="pedido.html" class="nav-button">Pedidos</a>
         <a href="clientes.html" class="nav-button">Clientes</a>
+        <a href="ingrediente.html" class="nav-button">Ingredientes</a>
     </nav>
 </header>
 
@@ -53,6 +53,11 @@
         <div class="column">
             <h2>Todos os Produtos</h2>
             <button class="att-button" id="getAllProdutos">Atualizar Lista</button>
+            <button class="filter-button" id="filterMaisBaratos">Mais Baratos</button>
+            <button class="filter-button" id="filterMaisCaros">Mais Caros</button>
+            <button class="filter-button" id="filterMaiorQuantidade">Maior Quantidade</button>
+            <button class="filter-button" id="filterMenorQuantidade">Menor Quantidade</button>
+            <button class="filter-button" id="filterOrdemAlfabetica">Ordem Alfabética</button>
             <table id="produtosTable">
                 <thead>
                 <tr>
@@ -79,6 +84,23 @@
         document.getElementById('addProdutoForm').addEventListener('submit', function(event) {
             event.preventDefault();
             createProduto();
+        });
+
+        document.getElementById('getAllProdutos').addEventListener('click', fetchProdutos);
+        document.getElementById('filterMaisBaratos').addEventListener('click', function() {
+            fetchProdutosByFilter('/produtos/mais-baratos');
+        });
+        document.getElementById('filterMaisCaros').addEventListener('click', function() {
+            fetchProdutosByFilter('/produtos/mais-caros');
+        });
+        document.getElementById('filterMaiorQuantidade').addEventListener('click', function() {
+            fetchProdutosByFilter('/produtos/maior-quantidade');
+        });
+        document.getElementById('filterMenorQuantidade').addEventListener('click', function() {
+            fetchProdutosByFilter('/produtos/menor-quantidade');
+        });
+        document.getElementById('filterOrdemAlfabetica').addEventListener('click', function() {
+            fetchProdutosByFilter('/produtos/ordem-alfabetica');
         });
     });
 
@@ -169,10 +191,29 @@
         });
     }
 
-    document.getElementById('getAllProdutos').addEventListener('click', fetchProdutos);
-
     function fetchProdutos() {
         fetch('/produtos/all')
+            .then(response => response.json())
+            .then(data => {
+                const produtosTable = document.querySelector('#produtosTable tbody');
+                produtosTable.innerHTML = '';
+                data.forEach(produto => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${produto.cod_produto}</td>
+                        <td>${produto.nome_produto}</td>
+                        <td>${produto.descricao}</td>
+                        <td>R$ ${produto.valor.toFixed(2)}</td>
+                        <td>${produto.quantidade}</td>
+                        <td>${produto.nome_cozinheiro || 'Não atribuído'}</td>
+                    `;
+                    produtosTable.appendChild(tr);
+                });
+            });
+    }
+
+    function fetchProdutosByFilter(url) {
+        fetch(url)
             .then(response => response.json())
             .then(data => {
                 const produtosTable = document.querySelector('#produtosTable tbody');

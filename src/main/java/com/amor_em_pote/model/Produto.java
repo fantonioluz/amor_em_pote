@@ -1,8 +1,6 @@
 package com.amor_em_pote.model;
 
-
 public class Produto {
-
     private int cod_produto;
     private String nome_produto;
     private String descricao;
@@ -13,11 +11,14 @@ public class Produto {
 
     public Produto() {}
 
-    public Produto(int cod_produto, String nome_produto, String descricao, float valor) {
+    public Produto(int cod_produto, String nome_produto, String descricao, float valor, int quantidade, String fk_cozinheiro_cod_funcionario, String nome_cozinheiro) {
         this.cod_produto = cod_produto;
         this.nome_produto = nome_produto;
         this.descricao = descricao;
         this.valor = valor;
+        this.quantidade = quantidade;
+        this.fk_cozinheiro_cod_funcionario = fk_cozinheiro_cod_funcionario;
+        this.nome_cozinheiro = nome_cozinheiro;
     }
 
     public int getCod_produto() {
@@ -49,11 +50,7 @@ public class Produto {
     }
 
     public void setValor(float valor) {
-        if (valor > 0) {
-            this.valor = valor;
-        } else {
-            throw new IllegalArgumentException("Valor must be greater than 0");
-        }
+        this.valor = valor;
     }
 
     public int getQuantidade() {
@@ -80,4 +77,3 @@ public class Produto {
         this.nome_cozinheiro = nome_cozinheiro;
     }
 }
-
