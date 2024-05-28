@@ -4,21 +4,28 @@
     box-sizing: border-box;
 }
 
+body {
+    background: #f5f5f5;
+    color: #000;
+    font-family: Arial, sans-serif;
+}
+
 header {
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
     padding: 20px;
     background-color: #764526;
-    color: #ffffff;
+    color: #fff;
+    height: 65px;
 }
 
-.title {
-    font-size: 24px;
-}
-
-.logo {
-    font-size: 24px;
+.logo-img {
+    margin-top: 30px;
+    max-height: 120px;
+    width: auto;
+    padding: 0;
 }
 
 .navbar {
@@ -29,6 +36,7 @@ header {
 }
 
 .nav-button {
+    text-decoration: none;
     margin: 0 10px;
     padding: 10px 20px;
     background-color: #d2691e;
@@ -49,15 +57,9 @@ h2 {
     margin-bottom: 15px;
 }
 
-body {
-    background: #f5f5f5;
-    color: #000;
-    font-family: Arial, sans-serif;
-}
-
 .container {
     width: 90%;
-    margin: 0 auto;
+    margin: 50px auto;
     display: flex;
     flex-direction: column;
 }
@@ -102,8 +104,35 @@ form button {
     transition: background-color 0.3s;
 }
 
-button:hover {
+form button:hover {
     background-color: #cd853f;
+}
+
+.att-button {
+    padding: 10px 20px;
+    background-color: #d2691e;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.att-button:hover {
+    background-color: #cd853f;
+}
+
+.consult-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.consult-buttons .nav-button {
+    margin: 0;
 }
 
 #pedidosTable {

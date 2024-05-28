@@ -8,16 +8,13 @@
 </head>
 <body>
 <header>
-    <div class="title">Amor em Pote</div>
-    <div class="logo">
-        LOGO
-    </div>
+    <img src="images/logo.png" alt="Logo" class="logo-img">
+    <nav class="navbar">
+        <a href="index.html" class="nav-button">Início</a>
+        <a href="clientes.html" class="nav-button">Clientes</a>
+        <a href="produto.html" class="nav-button">Produtos</a>
+    </nav>
 </header>
-<nav class="navbar">
-    <a class="nav-button" href="clientes.html">Clientes</a>
-    <a class="nav-button" href="produto.html">Produtos</a>
-    <a class="nav-button" href="pedido.html">Pedidos</a>
-</nav>
 
 <div class="container">
     <div class="row">
@@ -37,6 +34,7 @@
                     <option value="">Selecione um cliente</option>
                 </select>
                 <button type="button" onclick="showNewClientForm()">Cadastrar Novo Cliente</button>
+                <br/> <br/>
                 <div id="newClientForm" style="display: none;">
                     <!-- Formulário para cadastrar novo cliente -->
                     <label for="newClientCpf">CPF:</label>
@@ -52,11 +50,13 @@
                     <label for="newClientTelefones">Telefones (separados por vírgula):</label>
                     <input type="text" id="newClientTelefones" name="newClientTelefones" />
                     <button type="button" onclick="addNewClient()">Adicionar Cliente</button>
+                    <br/> <br/>
                 </div>
                 <div id="produtosContainer">
                     <h3>Selecione os Produtos</h3>
                 </div>
                 <h3>Valor Total: <span id="valorTotal">R$ 0.00</span></h3>
+                <br/> <br/>
                 <button type="submit">Adicionar Pedido</button>
             </form>
         </div>
@@ -64,13 +64,16 @@
     <div class="row">
         <div class="column">
             <h2>Todos os Pedidos</h2>
-            <button class="nav-button" id="getAllPedidos">Atualizar Lista</button>
+            <button class="att-button" id="getAllPedidos">Atualizar Lista</button>
+            <br/> <br/>
             <div class="row">
                 <div class="column">
                     <h2>Consultas Especiais</h2>
-                    <button class="nav-button" onclick="fetchPedidosByDate()">Pedidos por Data</button>
-                    <button class="nav-button" onclick="fetchPedidosByMonth()">Pedidos por Mês</button>
-                    <button class="nav-button" onclick="fetchPedidosByYear()">Pedidos por Ano</button>
+                    <div class="consult-buttons">
+                        <button class="nav-button" onclick="fetchPedidosByDate()">Pedidos por Data</button>
+                        <button class="nav-button" onclick="fetchPedidosByMonth()">Pedidos por Mês</button>
+                        <button class="nav-button" onclick="fetchPedidosByYear()">Pedidos por Ano</button>
+                    </div>
                 </div>
             </div>
             <table id="pedidosTable">
