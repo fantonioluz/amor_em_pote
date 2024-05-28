@@ -72,7 +72,15 @@
     <div class="row">
         <div class="column">
             <h2>Histórico de Compras</h2>
-            <button class="att-button" onclick="fetchCompraHistorico()">Atualizar Histórico</button><br>
+            <button class="att-button" onclick="fetchCompraHistorico()">Atualizar Histórico</button>
+            <br/> <br/>
+
+            <div>
+            <button class="att-button" onclick="fetchAlertas()">Ver Alertas de Quantidade Baixa</button>
+            </div>
+
+            <br/>
+
             <table id="historicoTable">
                 <thead>
                 <tr>
@@ -83,6 +91,27 @@
                 </thead>
                 <tbody></tbody>
             </table>
+
+
+            <!-- Modal para alertas de quantidade baixa -->
+            <div id="alertModal" class="modal-alert">
+                <div class="modal-content-alert">
+                    <h2>Alertas de Quantidade Baixa</h2>
+                    <table id="alertasTable">
+                        <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Quantidade</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <br/> <br/>
+                    <button type="button" class="close-button-alert" onclick="closeAlertModal()">Fechar</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -273,6 +302,46 @@
                 });
             });
     }
+
+    function fetchAlertas() {
+        fetch('/ingredientes/alertas')
+            .then((response) => response.json())
+            .then((data) => {
+                updateAlertTable(data);
+                openAlertModal();
+            });
+    }
+
+    function updateAlertTable(data) {
+        const alertasTable = document.querySelector('#alertasTable tbody');
+        alertasTable.innerHTML = '';
+        data.forEach((ingrediente) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td>${ingrediente.cod_ingrediente}</td>
+            <td>${ingrediente.nome_ingrediente}</td>
+            <td>${ingrediente.descricao}</td>
+            <td>${ingrediente.quantidade}</td>
+        `;
+            alertasTable.appendChild(tr);
+        });
+    }
+
+    function openAlertModal() {
+        document.getElementById('alertModal').style.display = 'block';
+    }
+
+    function closeAlertModal() {
+        document.getElementById('alertModal').style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchIngredientes();
+        fetchGerentes();
+        fetchCompraHistorico();
+        fetchAlertas(); // Opcional: para carregar alertas ao carregar a página
+    });
+
 
     document.addEventListener('DOMContentLoaded', () => {
         fetchIngredientes();
