@@ -13,19 +13,19 @@ body {
 header {
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
     padding: 20px;
     background-color: #764526;
     color: #fff;
+    height: 65px;
 }
 
-.title, .logo {
-    font-size: 24px;
-}
 .logo-img {
-    max-height: 50px; /* Ajuste o tamanho conforme necessário /
-    padding: 0; / Remove qualquer padding adicional /
-    margin-left: 10px; / Ajuste conforme necessário */
+    margin-top: 30px;
+    max-height: 120px;
+    width: auto;
+    padding: 0;
 }
 
 .navbar {

@@ -8,18 +8,15 @@
 </head>
 <body>
 <header>
-    <div class="title">Amor em Pote</div>
-    <div class="logo">
-        <img src="images/logo.png" alt="Logo" class="logo-img">
-    </div>
+    <img src="images/logo.png" alt="Logo" class="logo-img">
+    <nav class="navbar">
+        <a href="index.html" class="nav-button">Início</a>
+        <a href="produto.html" class="nav-button">Produtos</a>
+        <a href="pedido.html" class="nav-button">Pedidos</a>
+        <a href="clientes.html" class="nav-button">Clientes</a>
+        <a href="ingrediente.html" class="nav-button">Ingredientes</a>
+    </nav>
 </header>
-<nav class="navbar">
-    <a href="index.html" class="nav-button">Início</a>
-    <a href="produto.html" class="nav-button">Produtos</a>
-    <a href="pedido.html" class="nav-button">Pedidos</a>
-    <a href="clientes.html" class="nav-button">Clientes</a>
-    <a href="ingrediente.html" class="nav-button">Ingredientes</a>
-</nav>
 
 <div class="container">
     <div class="row">
@@ -27,19 +24,27 @@
             <h2>Adicionar Produto</h2>
             <form id="addProdutoForm">
                 <label for="nome_produto">Nome:</label>
-                <input type="text" id="nome_produto" name="nome_produto" required><br>
+                <input type="text" id="nome_produto" name="nome_produto" required>
+
                 <label for="descricao">Descrição:</label>
-                <input type="text" id="descricao" name="descricao" required><br>
+                <input type="text" id="descricao" name="descricao" required>
+
                 <label for="valor">Valor:</label>
-                <input type="number" id="valor" name="valor" required><br>
+                <input type="number" id="valor" name="valor" required>
+
                 <label for="quantidade">Quantidade:</label>
-                <input type="number" id="quantidade" name="quantidade" required><br>
-                <label for="ingredientes">Ingredientes:</label>
-                <div id="ingredientesList"></div><br>
+                <input type="number" id="quantidade" name="quantidade" required>
+
+                <br/> <br/>
+                <label for="ingredientesList">Ingredientes:</label>
+                <br/>
+                <div id="ingredientesList"></div>
+
+                <br/> <br/>
                 <label for="cozinheiro">Cozinheiro:</label>
                 <select id="cozinheiro" name="cozinheiro" required>
                     <option value="">Selecione um cozinheiro</option>
-                </select><br>
+                </select>
                 <button type="submit">Adicionar Produto</button>
             </form>
         </div>
@@ -48,34 +53,21 @@
     <div class="row">
         <div class="column">
             <h2>Todos os Produtos</h2>
-            <div>
-                <button class="nav-button" id="getAllProdutos">Atualizar Lista</button>
-                <br />
-                <label for="sortOptions">Ordenar por:</label>
-                <select id="sortOptions">
-                    <option value="none">Selecione</option>
-                    <option value="maisBaratos">Mais Baratos</option>
-                    <option value="maisCaros">Mais Caros</option>
-                    <option value="maiorQuantidade">Maior Quantidade</option>
-                    <option value="menorQuantidade">Menor Quantidade</option>
-                    <option value="ordemAlfabetica">Ordem Alfabética</option>
-                </select>
-                <br />
-                <table id="produtosTable">
-                    <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                        <th>Valor</th>
-                        <th>Quantidade</th>
-                        <th>Cozinheiro</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
+            <button class="att-button" id="getAllProdutos">Atualizar Lista</button>
+            <table id="produtosTable">
+                <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                    <th>Quantidade</th>
+                    <th>Cozinheiro</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -84,18 +76,10 @@
     document.addEventListener('DOMContentLoaded', function() {
         fetchIngredientes();
         fetchCozinheiros();
-        fetchProdutos();
 
         document.getElementById('addProdutoForm').addEventListener('submit', function(event) {
             event.preventDefault();
             createProduto();
-        });
-
-        document.getElementById('getAllProdutos').addEventListener('click', fetchProdutos);
-
-        document.getElementById('sortOptions').addEventListener('change', function() {
-            const selectedOption = this.value;
-            fetchSortedProdutos(selectedOption);
         });
     });
 
@@ -123,9 +107,9 @@
                     quantityInput.min = '1';
                     quantityInput.max = ingrediente.quantidade;
                     quantityInput.value = '1';
-                    quantityInput.style.marginLeft = '10px';
 
                     const div = document.createElement('div');
+                    div.className = 'ingrediente-row'
                     div.appendChild(checkbox);
                     div.appendChild(label);
                     div.appendChild(quantityInput);
@@ -186,57 +170,27 @@
         });
     }
 
+    document.getElementById('getAllProdutos').addEventListener('click', fetchProdutos);
+
     function fetchProdutos() {
         fetch('/produtos/all')
             .then(response => response.json())
             .then(data => {
-                updateTable(data);
+                const produtosTable = document.querySelector('#produtosTable tbody');
+                produtosTable.innerHTML = '';
+                data.forEach(produto => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${produto.cod_produto}</td>
+                        <td>${produto.nome_produto}</td>
+                        <td>${produto.descricao}</td>
+                        <td>R$ ${produto.valor.toFixed(2)}</td>
+                        <td>${produto.quantidade}</td>
+                        <td>${produto.nome_cozinheiro || 'Não atribuído'}</td>
+                    `;
+                    produtosTable.appendChild(tr);
+                });
             });
-    }
-
-    function fetchSortedProdutos(order) {
-        let endpoint = '/produtos/orderBy';
-        switch (order) {
-            case 'maisBaratos':
-                endpoint += 'ValorAsc';
-                break;
-            case 'maisCaros':
-                endpoint += 'ValorDesc';
-                break;
-            case 'maiorQuantidade':
-                endpoint += 'QuantidadeDesc';
-                break;
-            case 'menorQuantidade':
-                endpoint += 'QuantidadeAsc';
-                break;
-            case 'ordemAlfabetica':
-                endpoint += 'NomeAsc';
-                break;
-            default:
-                endpoint = '/produtos/all';
-        }
-        fetch(endpoint)
-            .then((response) => response.json())
-            .then((data) => {
-                updateTable(data);
-            });
-    }
-
-    function updateTable(data) {
-        const produtosTable = document.querySelector('#produtosTable tbody');
-        produtosTable.innerHTML = '';
-        data.forEach(produto => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${produto.cod_produto}</td>
-                <td>${produto.nome_produto}</td>
-                <td>${produto.descricao}</td>
-                <td>R$ ${produto.valor.toFixed(2)}</td>
-                <td>${produto.quantidade}</td>
-                <td>${produto.nome_cozinheiro || 'Não atribuído'}</td>
-            `;
-            produtosTable.appendChild(tr);
-        });
     }
 </script>
 </body>

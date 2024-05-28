@@ -8,17 +8,14 @@
 </head>
 <body>
 <header>
-    <div class="title">Amor em Pote</div>
-    <div class="logo">
-        LOGO
-    </div>
+    <img src="images/logo.png" alt="Logo" class="logo-img">
+    <nav class="navbar">
+        <a href="ingrediente.html" class="nav-button">Estoque</a>
+        <a href="produto.html" class="nav-button">Produtos</a>
+        <a href="pedido.html" class="nav-button">Pedidos</a>
+        <a href="clientes.html" class="nav-button">Clientes</a>
+    </nav>
 </header>
-<nav class="navbar">
-    <a href="ingrediente.html" class="nav-button">Estoque</a>
-    <a href="produto.html" class="nav-button">Produtos</a>
-    <a href="pedido.html" class="nav-button">Pedidos</a>
-    <a href="clientes.html" class="nav-button">Clientes</a>
-</nav>
 
 <div class="container">
     <div class="row">
@@ -41,11 +38,12 @@
             </form>
         </div>
     </div>
-    <hr>
+
     <div class="row">
         <div class="column">
             <h2>Todos os Ingredientes</h2>
-            <button class="nav-button" id="getAllIngredientes">Atualizar Lista</button><br>
+            <button class="att-button" id="getAllIngredientes">Atualizar Lista</button>
+            <br/> <br/>
             <label for="sortOptions">Ordenar por:</label>
             <select id="sortOptions">
                 <option value="none">Selecione</option>
@@ -70,11 +68,11 @@
             </table>
         </div>
     </div>
-    <hr>
+
     <div class="row">
         <div class="column">
             <h2>Histórico de Compras</h2>
-            <button class="nav-button" onclick="fetchCompraHistorico()">Atualizar Histórico</button><br>
+            <button class="att-button" onclick="fetchCompraHistorico()">Atualizar Histórico</button><br>
             <table id="historicoTable">
                 <thead>
                 <tr>
@@ -101,8 +99,8 @@
             <select id="editGerente" name="editGerente" required>
                 <option value="">Selecione um gerente</option>
             </select><br>
-            <button type="submit">Salvar</button>
-            <button type="button" onclick="closeEditModal()">Cancelar</button>
+            <button type="submit" class="save-button">Salvar</button>
+            <button type="button" class="cancel-button" onclick="closeEditModal()">Cancelar</button>
         </form>
     </div>
 </div>
@@ -193,7 +191,7 @@
                 <td>${ingrediente.descricao}</td>
                 <td>R$ ${ingrediente.valor.toFixed(2)}</td>
                 <td>${ingrediente.quantidade}</td>
-                <td><button onclick="openEditModal(${ingrediente.cod_ingrediente}, ${ingrediente.quantidade})">Editar</button></td>
+                <td><button class="edit-button" onclick="openEditModal(${ingrediente.cod_ingrediente}, ${ingrediente.quantidade})">Editar</button></td>
             `;
             ingredientesTable.appendChild(tr);
         });
