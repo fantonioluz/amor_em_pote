@@ -130,6 +130,29 @@ button:hover {
     background-color: #cd853f;
 }
 
+.filter-button {
+    padding: 10px 20px;
+    background-color: #d2691e;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.filter-button:hover {
+    background-color: #cd853f;
+}
+
+.att-filter-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
 #produtosTable, #clientesTable, #ingredientesTable, #pedidosTable {
     width: 100%;
     border-collapse: collapse;
