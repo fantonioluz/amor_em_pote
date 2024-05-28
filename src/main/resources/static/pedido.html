@@ -147,35 +147,72 @@
         fetch('/pedidos/all')
             .then(response => response.json())
             .then(data => {
-                const pedidosTable = document.querySelector('#pedidosTable tbody');
-                pedidosTable.innerHTML = '';
-                data.forEach(pedido => {
-                    const produtosList = pedido.produtos.map(p => `${p.nome_produto} (Quantidade: ${p.quantidade_produto_pedido}, Preço: R$ ${p.valor_produto.toFixed(2)})`).join('<br>');
-                    const entregador = pedido.nomeEntregador ? pedido.nomeEntregador : 'Não atribuído'; // Certifique-se de que está acessando o campo correto
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                    <td>${pedido.cod_pedido}</td>
-                    <td>${pedido.descricao}</td>
-                    <td>R$ ${pedido.valor.toFixed(2)}</td>
-                    <td>${pedido.meio_pagamento}</td>
-                    <td>${pedido.status}</td>
-                    <td>${new Date(pedido.data_pedido).toLocaleString()}</td>
-                    <td>${pedido.fk_cliente_cpf}</td>
-                    <td>${pedido.nomeCliente}</td>
-                    <td>${pedido.cod_pagamento}</td>
-                    <td>${produtosList}</td>
-                    <td>${entregador}</td>
-                    <td>
-                        <select class="entregadorSelect" data-pedido-id="${pedido.cod_pedido}">
-                            <option value="">Selecione um entregador</option>
-                        </select>
-                        <button class="nav-button" onclick="assignEntregador(${pedido.cod_pedido})">Atribuir</button>
-                    </td>
-                `;
-                    pedidosTable.appendChild(tr);
-                    fetchEntregadores(pedido.cod_pedido);
-                });
+                updatePedidosTable(data);
             });
+    }
+
+    function fetchPedidosByDate() {
+        const date = prompt('Digite a data (YYYY-MM-DD):');
+        if (date) {
+            fetch(`/pedidos/data/${date}`)
+                .then(response => response.json())
+                .then(data => {
+                    updatePedidosTable(data);
+                });
+        }
+    }
+
+    function fetchPedidosByMonth() {
+        const month = prompt('Digite o mês (MM):');
+        if (month) {
+            fetch(`/pedidos/mes/${month}`)
+                .then(response => response.json())
+                .then(data => {
+                    updatePedidosTable(data);
+                });
+        }
+    }
+
+    function fetchPedidosByYear() {
+        const year = prompt('Digite o ano (YYYY):');
+        if (year) {
+            fetch(`/pedidos/ano/${year}`)
+                .then(response => response.json())
+                .then(data => {
+                    updatePedidosTable(data);
+                });
+        }
+    }
+
+    function updatePedidosTable(data) {
+        const pedidosTable = document.querySelector('#pedidosTable tbody');
+        pedidosTable.innerHTML = '';
+        data.forEach(pedido => {
+            const produtosList = pedido.produtos.map(p => `${p.nome_produto} (Quantidade: ${p.quantidade_produto_pedido}, Preço: R$ ${p.valor_produto.toFixed(2)})`).join('<br>');
+            const entregador = pedido.nomeEntregador ? pedido.nomeEntregador : 'Não atribuído'; // Certifique-se de que está acessando o campo correto
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td>${pedido.cod_pedido}</td>
+            <td>${pedido.descricao}</td>
+            <td>R$ ${pedido.valor.toFixed(2)}</td>
+            <td>${pedido.meio_pagamento}</td>
+            <td>${pedido.status}</td>
+            <td>${new Date(pedido.data_pedido).toLocaleString()}</td>
+            <td>${pedido.fk_cliente_cpf}</td>
+            <td>${pedido.nomeCliente}</td>
+            <td>${pedido.cod_pagamento}</td>
+            <td>${produtosList}</td>
+            <td>${entregador}</td>
+            <td>
+                <select class="entregadorSelect" data-pedido-id="${pedido.cod_pedido}">
+                    <option value="">Selecione um entregador</option>
+                </select>
+                <button class="nav-button" onclick="assignEntregador(${pedido.cod_pedido})">Atribuir</button>
+            </td>
+        `;
+            pedidosTable.appendChild(tr);
+            fetchEntregadores(pedido.cod_pedido);
+        });
     }
 
     function fetchEntregadores(pedidoId) {
@@ -327,44 +364,6 @@
         fetchAvailableProducts();
         fetchClientes();
     });
-    function fetchPedidosByDate() {
-        const date = prompt('Digite a data (YYYY-MM-DD):');
-        if (date) {
-            fetch(`/pedidos/data/${date}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Atualiza a exibição dos pedidos por data
-                });
-        }
-    }
-
-    function fetchPedidosByMonth() {
-        const month = prompt('Digite o mês (MM):');
-        if (month) {
-            fetch(`/pedidos/mes/${month}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Atualiza a exibição dos pedidos por mês
-                });
-        }
-    }
-
-    function fetchPedidosByYear() {
-        const year = prompt('Digite o ano (YYYY):');
-        if (year) {
-            fetch(`/pedidos/ano/${year}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Atualiza a exibição dos pedidos por ano
-                });
-        }
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-        fetchPedidos();
-        fetchAvailableProducts();
-        fetchClientes();
-    });
 </script>
 </body>
 </html>
-
