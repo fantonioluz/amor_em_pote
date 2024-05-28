@@ -4,28 +4,28 @@
     box-sizing: border-box;
 }
 
+body {
+    background: #f5f5f5;
+    color: #000;
+    font-family: Arial, sans-serif;
+}
+
 header {
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
     padding: 20px;
     background-color: #764526;
-    color: #ffffff;
-}
-
-.title {
-    font-size: 24px;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
+    color: #fff;
+    height: 65px;
 }
 
 .logo-img {
-    max-height: 50px;
+    margin-top: 30px;
+    max-height: 120px;
+    width: auto;
     padding: 0;
-    margin-left: 10px;
 }
 
 .navbar {
@@ -36,6 +36,7 @@ header {
 }
 
 .nav-button {
+    text-decoration: none;
     margin: 0 10px;
     padding: 10px 20px;
     background-color: #d2691e;
@@ -64,7 +65,7 @@ body {
 
 .container {
     width: 90%;
-    margin: 0 auto;
+    margin: 50px auto;
     display: flex;
     flex-direction: column;
 }
@@ -113,6 +114,22 @@ button:hover {
     background-color: #cd853f;
 }
 
+.att-button {
+    padding: 10px 20px;
+    background-color: #d2691e;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.att-button:hover {
+    background-color: #cd853f;
+}
+
 #produtosTable, #clientesTable, #ingredientesTable, #pedidosTable {
     width: 100%;
     border-collapse: collapse;
@@ -137,3 +154,183 @@ button:hover {
 #produtosTable tr:nth-child(even), #clientesTable tr:nth-child(even), #ingredientesTable tr:nth-child(even), #pedidosTable tr:nth-child(even) {
     background-color: #f2f2f2;
 }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #f5f5f5;
+    color: #000;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #764526;
+    color: #fff;
+    height: 65px;
+}
+
+.logo-img {
+    margin-top: 30px;
+    max-height: 120px;
+    width: auto;
+    padding: 0;
+}
+
+.navbar {
+    margin: 3rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-button {
+    text-decoration: none;
+    margin: 0 10px;
+    padding: 10px 20px;
+    background-color: #d2691e;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+    background-color: #cd853f;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+body {
+    background: #f5f5f5;
+    color: #000;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    width: 90%;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.column {
+    flex: 1;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form button {
+    background-color: #d2691e;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #cd853f;
+}
+
+.att-button {
+    padding: 10px 20px;
+    background-color: #d2691e;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.att-button:hover {
+    background-color: #cd853f;
+}
+
+#produtosTable, #clientesTable, #ingredientesTable, #pedidosTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#produtosTable th, #produtosTable td, #clientesTable th, #clientesTable td, #ingredientesTable th, #ingredientesTable td, #pedidosTable th, #pedidosTable td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+#produtosTable th, #clientesTable th, #ingredientesTable th, #pedidosTable th {
+    background-color: #d2691e;
+    color: white;
+}
+
+#produtosTable td, #clientesTable td, #ingredientesTable td, #pedidosTable td {
+    background-color: #f9f9f9;
+}
+
+#produtosTable tr:nth-child(even), #clientesTable tr:nth-child(even), #ingredientesTable tr:nth-child(even), #pedidosTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#ingredientesList {
+    display: flex;
+    flex-direction: column;
+}
+
+.ingrediente-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.ingrediente-row input[type="checkbox"] {
+    margin-right: 7px;
+    margin-bottom: 5px;
+}
+
+.ingrediente-row label {
+    white-space: nowrap;
+    margin-right: 10px;
+}
+
+
